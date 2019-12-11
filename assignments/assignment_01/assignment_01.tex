@@ -1,0 +1,178 @@
+\documentclass[10pt,letterpaper,oneside]{article}
+\usepackage{fontspec}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{csquotes}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage[shortlabels]{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[labelfont=bf,font={small}]{caption}
+\usepackage[svgnames]{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem*{observation}{Observation}
+\newtheorem*{example}{Example}
+\newtheorem{definition}{Definition}
+\newtheorem*{remark}{Remark}
+
+\usepackage[left=1in,right=1in,top=0.75in,bottom=1in,marginparwidth=0.6in]{geometry}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.5em}
+\renewcommand{\baselinestretch}{1.25}
+\renewcommand{\vec}[1]{{\mathbf{#1}}}
+
+\newfontfamily\symbolfont{Symbola}
+
+\pagestyle{fancy}
+
+\fancyhead[L]{SYDE 556/750}
+\fancyhead[C]{Assignment 1}
+\fancyhead[R]{Winter 2020}
+
+\reversemarginpar
+
+\newcommand{\Marks}[1]{\hspace{0pt}\marginpar{\raggedleft[{#1}]}\ignorespaces}
+
+\begin{document}
+	
+	\begin{center}
+		{\large\bf SYDE 556/750 --- Assignment 1}\\
+		Due date: January 27, 2020\\
+	\end{center}
+
+	\colorbox{GhostWhite}{\begin{minipage}{\textwidth}{\vspace{0.25cm}\centering\large\textsc{Notes}\\}\begin{minipage}{0.95\textwidth}
+		\vspace{0.25cm}
+		\begin{itemize}
+			\item This assignment is worth 20 marks (20\% of the final grade). The number of marks for each question is indicated in brackets to the left of each question.
+			\item There is a late penalty of one mark per day late.
+			\item Please use Python 3 along with the \texttt{numpy} and \texttt{matplotlib} libraries to solve these assignments. You are highly encouraged to fill out this Jupyter Notebook template:
+			\begin{center}
+				\url{https://student.cs.uwaterloo.ca/~astoecke/syde556/assignment_01_template.ipynb}
+			\end{center}
+			\item Please hand in \textit{both} a PDF version of your results, as well as your executable code/the \texttt{ipynb} file. When using Jupyter Notebook, make sure your code runs without errors by \textit{restarting the kernel and re-running all cells} before submitting!
+			\item Place your files in an archive named \texttt{<Lastname>.Assignment1.zip}, containing files \texttt{<Lastname>.Assignment1.Code.ipynb} and \texttt{<Lastname>.Assignment1.pdf}, where \texttt{<Lastname>} should be replaced with your last name.
+			\item Send your assignments to \texttt{astoecke@uwaterloo.ca} using your University of Waterloo email account. The deadline is at \texttt{23:59 EST} on the date indicated above.
+			\item \textbf{Do not use or refer to any code from Nengo!}
+		\end{itemize}
+	\end{minipage}\end{minipage}}
+
+	\section{Representation of Scalars}
+
+	\subsection{Basic encoding and decoding}
+
+	Implement a neural representation of a scalar value $x$. For the neuron model, use a rectified linear neuron model, i.e.,~$a=G[J]=\max(J,0)$. Choose the maximum firing $a^\mathrm{max}$ rates randomly (uniformly distributed between \SI{100}{\hertz} and \SI{200}{\hertz} at $x=1$), and choose the $x$-intercepts $\xi$ randomly (uniformly distributed between $-0.95$ and $0.95$). Use those values to compute the corresponding $\alpha$ and $J^\mathrm{bias}$ parameters for each neuron. The encoders $e$ are randomly chosen and are either $+1$ or $-1$ for each neuron. Go through these steps:
+
+	\begin{enumerate}[a)]
+		\item \Marks{0.5} \textit{Computing gain and bias.} In general, for a neuron model $a = G[J]$ (and assuming that the inverse $J = G^{-1}[a]$ exists), solve the following system of equations to compute the gain $\alpha$, and the bias $J^\mathrm{bias}$ given a maximum rate $a^\mathrm{max}$ and an $x$-intercept $\xi$.
+		\begin{align*}
+			a^\mathrm{max} &= G[\alpha + J^\mathrm{bias}] \,, & 0 &= G[\alpha \xi + J^\mathrm{bias}] \,.
+		\end{align*}
+		Now, simplify these equations for the specific case $G[J] = \max(J, 0)$.
+		\item \Marks{0.5} \textit{Neuron tuning curves.} Plot the neuron tuning curves $a_i(x)$ for 16 randomly generated neurons following the intercept and maximum rate distributions described above.
+		\begin{itemize}
+			\item[{\symbolfont 📖}] See Figure 2.4 in the book for an example, but with a different neuron model and a different range of maximum firing rates.
+			\item[{\symbolfont 🖈}] Since you can't compute this for every possible $x$ value between $-1$ and $1$, monotonously sample the $x$-axis with $\Delta x=0.05$, i.e.~there should be $41$ monotonously increasing $x$ values. Use this sampling throughout this question.
+		\end{itemize}
+		\item \Marks{1} \textit{Computing identity decoders.} Compute the optimal identity decoder $\vec d$ for those 16 neurons (as shown in class). Report the value of the individual decoder coefficients. Compute $d$ using the matrix notation mentioned in the course notes. Do not apply any regularization. $A$ is the matrix of activities (the same data used to generate the plot in 1.1b).
+		\begin{itemize}
+			\item[{\symbolfont 🖈}] When performing the matrix inversion required to compute $\vec d$, the lack of regularization may result in numerical issues and corresponding warning messages. Try setting a fixed random seed (e.g.~by calling \texttt{np.random.seed}) to reliably generate tuning curves that do not have this problem.
+		\end{itemize}
+		\item \Marks{1} \textit{Evaluating decoding errors.} Compute and plot $\hat{x}=\sum_i d_i a_i(x)$. Overlay on the plot the line $y=x$. Make a separate plot of $x-\hat{x}$ to see what the error looks like. Report the Root Mean Squared Error (RMSE) value.
+		\begin{itemize}
+			\item[{\symbolfont 📖}] See Figure 2.7 for an example.
+		\end{itemize}
+		\item \Marks{1} \textit{Decoding under noise.} Now try decoding under noise. Add random normally distributed noise to $a$ and decode again. The noise is a random variable with mean $\mu=0$ and standard deviation of $\sigma=0.2 \max(A)$ (where $\max(A)$ is the maximum firing rate of all the neurons). Resample this variable for every different $x$ value for every different neuron. Create all the same plots as in part d). Report the RMSE.
+		\item \Marks{1} \textit{Accounting for decoder noise.} Recompute the decoder $\vec d$ taking noise into account (i.e.,~apply the appropriate regularization, as shown in class). Show how these decoders behave when decoding both with and without noise added to $a$ by making the same plots as in c) and d). Report the RMSE for all cases.
+		\begin{itemize}
+			\item[{\symbolfont 🖈}] As in the previous question, $\sigma = 0.2 \max(A)$.
+		\end{itemize}
+		\item \Marks{1} \textit{Interpretation.} Show a 2x2 table of the four RMSE values reported in parts d), e), and f). This should show the effects of adding noise and whether the decoders $d$ are computed taking noise into account. Write a few sentences commenting on what the table shows, i.e.,~what the effect of adding noise to the activities is with respect to the measured error and why accounting for noise when computing the decoders increases/decreases/does not change the measured RMSE.
+	\end{enumerate}
+
+	\subsection{Exploring sources of error}
+
+	Use the program you wrote in 1.1 to examine the sources of error in the representation.
+
+	\begin{enumerate}[a)]
+		\item \Marks{2} \textit{Exploring error due to distortion and noise.} Plot the error due to distortion $E_\mathrm{dist}$ and the error due to noise $E_\mathrm{noise}$ as a function of $N$, the number of neurons. Generate two different loglog plots (one for each type of error) with $N$ values of at least $[4, 8, 16, 32, 64, 128, 256, 512]$. For each $N$ value, do at least $5$ runs and average the results. For each run, different $\alpha$, $J^\mathrm{bias}$, and $e$ values should be generated for each neuron. Compute $d$ under noise, with $\sigma = 0.1 \max(A)$. Show visually that the errors are proportional to $1/N$ or $1/N^2$.
+		\begin{itemize}
+			\item[{\symbolfont 🖈}] Do \textit{not} add noise to $A$ when computing the decoders in this question. Instead, appropriately account for noise when computing the decoders.
+			\item[{\symbolfont 📖}] See Equation 2.9 and Figure 2.6 in the book.
+		\end{itemize}
+		\item \Marks{1} \textit{Adapting the noise level.} Repeat part a) with $\sigma = 0.01 \max(A)$.
+		\item \Marks{1} \textit{Interpretation.} What does the difference between the graphs in a) and b) tell us about the sources of error in neural populations?
+	\end{enumerate}
+
+	\subsection{Leaky Integrate-and-Fire neurons}
+
+	Change the code to use the rate approximation of the LIF neuron model
+	\begin{align*}
+		G[J] = \begin{cases} {\frac{1}{\tau_\mathrm{ref}-\tau_\mathrm{RC}\ln(1-\frac{1}J)}} &\mbox{if } J > 1 \,, \\ 0 &\mbox{otherwise} \,.\end{cases}
+	\end{align*}
+
+	\begin{enumerate}[a)]
+		\item \Marks{0.5} \textit{Computing gain and bias.} As in the second part of 1.1a), given a maximum firing rate $a^\mathrm{max}$ and a bias $J^\mathrm{bias}$, write down the equations for computing $\alpha$ and the $J^\mathrm{bias}$ for this specific neuron model.
+		\item \Marks{0.5} \textit{Neuron tuning curves.} Generate the same plot as in 1.1b). Use $\tau_\mathrm{ref}=\SI{2}{\milli\second}$ and $\tau_{RC}=\SI{20}{\milli\second}$. Use the same distribution of $x$-intercepts and maximum firing rates as in 1.1, i.e.,~choose the maximum firing rates $a^\mathrm{max}$ as uniformly distributed between \SI{100}{\hertz} and \SI{200}{\hertz} at $x=1$, choose the $x$-intercepts $\xi$ as uniformly distributed between $-0.95$ and $0.95$, and choose the encoders $e$ as either $-1$ or $+1$.
+		\item \Marks{1.5} \textit{Impact of noise.} Generate the same four plots as in 1.1f) (adding/not adding noise to $A$, accounting/not accounting for noise when computing $\vec d$), and report the RMSE both with and without noise.
+	\end{enumerate}
+	
+	\section{Representation of Vectors}
+
+	\subsection{Vector tuning curves}
+
+	\begin{enumerate}[a)]
+		\item \Marks{1} \emph{Plotting 2D tuning curves.} Plot the tuning curve of an LIF neuron whose 2D preferred direction vector is at an angle of $\theta=-\pi/4$, has an $x$-intercept at the origin $(0,0)$, and has a maximum firing rate of \SI{100}{\hertz}.
+		\begin{itemize}
+			\item[{\symbolfont 🖈}] Remember that $J=\alpha \langle \vec e, \vec x \rangle + J^\mathrm{bias}$, and both $\vec x$ and $\vec e$ are 2D vectors.
+			\item[{\symbolfont 🖈}] In general, the maximum firing rate of a neuron is defined to occur when the input is of unit length along its preferred direction, i.e.,~$\langle \vec e, \vec x \rangle = 1$, which, for unit-length $\vec e$ is equivalent to $\vec e = \vec x$. Of course, if we increase the magnitude of the input vector beyond unit length, neurons would start firing faster than their maximum firing rate. Similarly, here the \enquote{maximum firing rate} means the firing rate when $\vec x = \vec e$. This should allow you to reuse your equations from 1.3a) to compute $\alpha$ and $J^\mathrm{bias}$ for a desired maximum firing rate and $x$-intercept.
+			\item[{\symbolfont 🐍}] To generate 3D plots in Python, see \href{http://matplotlib.org/mpl_toolkits/mplot3d/tutorial.html}{here}.
+			\item[{\symbolfont 📖}] This is a 3D plot similar to Figure 2.8a in the book.
+		\end{itemize}
+		\item \Marks{1} \emph{Plotting the 2D tuning curve along the unit circle.} Plot the tuning curve for the same neuron as in a), but only considering the points around the unit circle, i.e., sample the activation for different angles $\theta$. Fit a curve of the form $c_1 \cos(c_2\theta+c_3)+c_4$ to the tuning curve and plot it as well.
+		\begin{itemize}
+			\item[{\symbolfont 📖}] This will be similar to Figure 2.8b in the book.
+			\item[{\symbolfont 🐍}] To do curve fitting in Python, see \href{http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html}{here}.
+		\end{itemize}
+		\item \Marks{0.5} \emph{Discussion.} What makes a cosine a good choice for the curve fit in 2.1b? Why does it differ from the ideal curve?
+	\end{enumerate}
+
+	\subsection{Vector representation}
+
+	\begin{enumerate}[a)]
+		\item \Marks{1} \textit{Choosing encoding vectors.} Generate a set of $100$ random unit vectors uniformly distributed around the unit circle. These will be the encoders $\vec e$ for $100$ neurons. Plot these vectors with a quiver or line plot (i.e.,~not just points, but lines/arrows to the points).
+		\item \Marks{0.5} \textit{Computing the identity decoder.} Use LIF neurons with the same properties as in question 1.3. When computing the decoders, take into account noise with $\sigma = 0.2\max{A}$. Plot the decoders in the same way you plotted the encoders.
+		\begin{itemize}
+			\item[{\symbolfont 🖈}] The decoder will be a matrix $D \in \mathbb{R}^{2 \times 100}$. Each column in $D$ corresponds to a 2D vector.
+			\item[{\symbolfont 🖈}]
+In the scalar case, to sample the input space, you used $x$ values between $-1$ and $1$, with $\Delta x=0.05$. In this case, you can regularly tile the 2D $\vec x$ values $([1, 1], [1, 0.95], ... [-1, -0.95], [-1, 1])$. Alternatively, you can just randomly choose $1600$ different $\vec x$ values to sample.
+		\end{itemize}
+		\item \Marks{0.5} \textit{Discussion.} How do these decoding vectors compare to the encoding vectors?
+		\item \Marks{1} \textit{Testing the decoder.} Generate 20 random $\vec x$ values throughout the unit circle (i.e.,~with different directions and radiuses). For each $\vec x$ value, determine the neural activity $a_i$ for each of the 100 neurons. Now decode these values (i.e. compute $\hat{x} = D \vec a$) using the decoders from part b). Plot the original and decoded values on the same graph in different colours, and compute the RMSE.
+		\begin{itemize}
+			\item[{\symbolfont 🖈}] Technically, the RMSE is not well-defined for non-scalar data. The usual convention is to \enquote{flatten} the series, i.e.,~treat the extra dimensions as scalar datapoints. For $n$ $d$-dimensional datapoints
+			\begin{align*}
+				\mathit{RMSE}(\hat{\vec x}_1, \ldots, \hat{\vec x}_n; \vec x_1, \ldots, \vec x_n)
+					&= \sqrt{ \frac{1}{nd} \sum_{i=1}^n \sum_{j=1}^d \big({\hat x}_{i j} - x_{ij}\big)^2 } \,.
+			\end{align*}
+			\item[{\symbolfont 🐍}] Per default, the \texttt{np.mean} function computes the mean on a \enquote{flattened} array.
+		\end{itemize}
+		\item \Marks{1} \textit{Using decoders and encoders.} Repeat part d) but use the \textit{encoders} as decoders. This is what Georgopoulos used in his original approach to decoding information from populations of neurons. Plot the decoded values and compute the RMSE. In addition, recompute the RMSE in both cases, but ignore the magnitude of the decoded vectors by normalizing before computing the RMSE.
+		\item \Marks{1} \textit{Discussion.} When computing the RMSE on the normalized vectors, using the encoders as decoders should result in a larger, yet still surprisingly small error. Thinking about random unit vectors in high dimensional spaces, why is this the case? What are the relative merits of these two approaches to decoding?
+	\end{enumerate}
+
+\end{document}
