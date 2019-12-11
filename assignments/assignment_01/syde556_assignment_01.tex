@@ -1,75 +1,25 @@
-\documentclass[10pt,letterpaper,oneside]{article}
-\usepackage{fontspec}
-\usepackage{siunitx}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{graphicx}
-\usepackage{csquotes}
-\usepackage{booktabs}
-\usepackage{multicol}
-\usepackage[shortlabels]{enumitem}
-\usepackage{microtype}
-\usepackage{fancyhdr}
-\usepackage{hyperref}
-\usepackage[labelfont=bf,font={small}]{caption}
-\usepackage[svgnames]{xcolor}
+%
+% SYDE 556/750 Assignments
+%
+% This is copyrighted material, you are not allowed to redistribute this file
+% or parts thereof without permission from the copyright holders.
+%
+% (c) Chris Eliasmith
+% (c) Andreas Stöckel
+%
 
-\newtheorem{theorem}{Theorem}
-\newtheorem{claim}[theorem]{Claim}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}[theorem]{Conjecture}
+\input{../syde556_assignment_preamble.tex}
 
-\theoremstyle{definition}
-\newtheorem*{observation}{Observation}
-\newtheorem*{example}{Example}
-\newtheorem{definition}{Definition}
-\newtheorem*{remark}{Remark}
-
-\usepackage[left=1in,right=1in,top=0.75in,bottom=1in,marginparwidth=0.6in]{geometry}
-
-\setlength{\parindent}{0em}
-\setlength{\parskip}{0.5em}
-\renewcommand{\baselinestretch}{1.25}
-\renewcommand{\vec}[1]{{\mathbf{#1}}}
-
-\newfontfamily\symbolfont{Symbola}
-
-\pagestyle{fancy}
-
-\fancyhead[L]{SYDE 556/750}
-\fancyhead[C]{Assignment 1}
-\fancyhead[R]{Winter 2020}
-
-\reversemarginpar
-
-\newcommand{\Marks}[1]{\hspace{0pt}\marginpar{\raggedleft[{#1}]}\ignorespaces}
+\newcommand{\assignmentCourse}{SYDE 556/750}
+\newcommand{\assignmentName}{Assignment 1}
+\newcommand{\assignmentTerm}{Winter 2020}
+\newcommand{\assignmentDue}{January 27, 2020}
+\newcommand{\assignmentMarks}{20 marks (20\% of the final grade)}
+\newcommand{\assignmentURL}{https://github.com/astoeckel/syde556-w20/raw/master/assignment_01_template.ipynb}
+\newcommand{\assignmentEmail}{astoecke@uwaterloo.ca}
 
 \begin{document}
-	
-	\begin{center}
-		{\large\bf SYDE 556/750 --- Assignment 1}\\
-		Due date: January 27, 2020\\
-	\end{center}
-
-	\colorbox{GhostWhite}{\begin{minipage}{\textwidth}{\vspace{0.25cm}\centering\large\textsc{Notes}\\}\begin{minipage}{0.95\textwidth}
-		\vspace{0.25cm}
-		\begin{itemize}
-			\item This assignment is worth 20 marks (20\% of the final grade). The number of marks for each question is indicated in brackets to the left of each question.
-			\item There is a late penalty of one mark per day late.
-			\item Please use Python 3 along with the \texttt{numpy} and \texttt{matplotlib} libraries to solve these assignments. You are highly encouraged to fill out this Jupyter Notebook template:
-			\begin{center}
-				\url{https://student.cs.uwaterloo.ca/~astoecke/syde556/assignment_01_template.ipynb}
-			\end{center}
-			\item Please hand in \textit{both} a PDF version of your results, as well as your executable code/the \texttt{ipynb} file. When using Jupyter Notebook, make sure your code runs without errors by \textit{restarting the kernel and re-running all cells} before submitting!
-			\item Place your files in an archive named \texttt{<Lastname>.Assignment1.zip}, containing files \texttt{<Lastname>.Assignment1.Code.ipynb} and \texttt{<Lastname>.Assignment1.pdf}, where \texttt{<Lastname>} should be replaced with your last name.
-			\item Send your assignments to \texttt{astoecke@uwaterloo.ca} using your University of Waterloo email account. The deadline is at \texttt{23:59 EST} on the date indicated above.
-			\item \textbf{Do not use or refer to any code from Nengo!}
-		\end{itemize}
-	\end{minipage}\end{minipage}}
+	\assignmentHeader
 
 	\section{Representation of Scalars}
 
@@ -155,7 +105,7 @@
 
 	\begin{enumerate}[a)]
 		\item \Marks{1} \textit{Choosing encoding vectors.} Generate a set of $100$ random unit vectors uniformly distributed around the unit circle. These will be the encoders $\vec e$ for $100$ neurons. Plot these vectors with a quiver or line plot (i.e.,~not just points, but lines/arrows to the points).
-		\item \Marks{0.5} \textit{Computing the identity decoder.} Use LIF neurons with the same properties as in question 1.3. When computing the decoders, take into account noise with $\sigma = 0.2\max{A}$. Plot the decoders in the same way you plotted the encoders.
+		\item \Marks{0.5} \textit{Computing the identity decoder.} Use LIF neurons with the same properties as in question 1.3. When computing the decoders, take into account noise with $\sigma = 0.2\max(A)$. Plot the decoders in the same way you plotted the encoders.
 		\begin{itemize}
 			\item[{\symbolfont 🖈}] The decoder will be a matrix $D \in \mathbb{R}^{2 \times 100}$. Each column in $D$ corresponds to a 2D vector.
 			\item[{\symbolfont 🖈}]
@@ -171,7 +121,7 @@ In the scalar case, to sample the input space, you used $x$ values between $-1$ 
 			\end{align*}
 			\item[{\symbolfont 🐍}] Per default, the \texttt{np.mean} function computes the mean on a \enquote{flattened} array.
 		\end{itemize}
-		\item \Marks{1} \textit{Using decoders and encoders.} Repeat part d) but use the \textit{encoders} as decoders. This is what Georgopoulos used in his original approach to decoding information from populations of neurons. Plot the decoded values and compute the RMSE. In addition, recompute the RMSE in both cases, but ignore the magnitude of the decoded vectors by normalizing before computing the RMSE.
+		\item \Marks{1} \textit{Using encoders as decoders.} Repeat part d) but use the \textit{encoders} as decoders. This is what Georgopoulos used in his original approach to decoding information from populations of neurons. Plot the decoded values and compute the RMSE. In addition, recompute the RMSE in both cases, but ignore the magnitude of the decoded vectors by normalizing before computing the RMSE.
 		\item \Marks{1} \textit{Discussion.} When computing the RMSE on the normalized vectors, using the encoders as decoders should result in a larger, yet still surprisingly small error. Thinking about random unit vectors in high dimensional spaces, why is this the case? What are the relative merits of these two approaches to decoding?
 	\end{enumerate}
 

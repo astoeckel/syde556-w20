@@ -1,0 +1,68 @@
+%
+% SYDE 556/750 Assignments
+%
+% This is copyrighted material, you are not allowed to redistribute this file
+% or parts thereof without permission from the copyright holders.
+%
+% (c) Chris Eliasmith
+% (c) Andreas Stöckel
+%
+
+\documentclass[10pt,letterpaper,oneside]{article}
+
+% Required packages
+\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{siunitx}
+\usepackage{csquotes}
+\usepackage[shortlabels]{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[svgnames]{xcolor}
+
+% Setup the page geometry
+\usepackage[left=1in,right=1in,top=0.75in,bottom=1in,marginparwidth=0.6in]{geometry}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.5em}
+\renewcommand{\baselinestretch}{1.25}
+\renewcommand{\vec}[1]{{\mathbf{#1}}}
+\newfontfamily\symbolfont{Symbola}
+
+% Setup the header
+\pagestyle{fancy}
+\fancyhead[L]{\assignmentCourse}
+\fancyhead[C]{\assignmentName}
+\fancyhead[R]{\assignmentTerm}
+
+% Assignment specific commands
+\newcommand{\assignmentHeader}{
+	\begin{center}
+		{\large\bf \assignmentCourse --- \assignmentName}\\
+		Due date: \assignmentDue\\
+	\end{center}
+
+	\colorbox{GhostWhite}{\begin{minipage}{\textwidth}{\vspace{0.25cm}\centering\large\textsc{Notes}\\}\begin{minipage}{0.95\textwidth}
+		\vspace{0.25cm}
+		\begin{itemize}
+			\item This assignment is worth \assignmentMarks. The number of marks for each question is indicated in brackets to the left of each question.
+			\item Please use Python 3 along with the \texttt{numpy} and \texttt{matplotlib} libraries to solve these assignments. In particular, fill out this Jupyter Notebook template:
+			\begin{center}
+				\url{\assignmentURL}
+			\end{center}
+			\item Clearly label any plot you produce, including the axes.
+			\item You won't be judged on the quality of your code, but writing reusable functions will greatly simplify this and future assignments.
+			\item Make sure to execute the Jupyter command \enquote{Restart Kernel and Run All Cells} before submitting your solutions. You will loose marks if your code fails to run on my computer.
+			\item Send the completed notebook to \texttt{\assignmentEmail} using your University of Waterloo email account, make sure to include \enquote{[\assignmentCourse]} in the subject line. The deadline is at \texttt{23:59 EST} on \assignmentDue.
+			\item There is a late penalty of one mark per day late.
+			\item \textbf{Do not use or refer to any code from Nengo!}
+		\end{itemize}
+	\end{minipage}\end{minipage}}
+}
+
+\newcommand{\Marks}[1]{\hspace{0pt}\marginpar{\raggedleft[{#1}]}\ignorespaces}
+
+
+\reversemarginpar
+
