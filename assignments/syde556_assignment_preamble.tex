@@ -21,9 +21,10 @@
 \usepackage{fancyhdr}
 \usepackage{hyperref}
 \usepackage[svgnames]{xcolor}
+\usepackage{graphicx}
 
 % Setup the page geometry
-\usepackage[left=1in,right=1in,top=0.75in,bottom=1in,marginparwidth=0.6in]{geometry}
+\usepackage[left=1in,right=1in,top=1in,bottom=0.75in,marginparwidth=0.6in]{geometry}
 \setlength{\parindent}{0em}
 \setlength{\parskip}{0.5em}
 \renewcommand{\baselinestretch}{1.25}
@@ -38,12 +39,19 @@
 
 % Assignment specific commands
 \newcommand{\assignmentHeader}{
-	\begin{center}
-		{\large\bf \assignmentCourse --- \assignmentName}\\
+	\thispagestyle{empty}
+	\vfill
+	{\Large\begin{center}
+		\includegraphics[width=0.5\columnwidth]{../uwlogo.pdf}\\
+		{\bf \assignmentCourse}\\
+		{\bf \assignmentCourseName}\\
+		{\bf \assignmentName}\\
 		Due date: \assignmentDue\\
-	\end{center}
+	\end{center}}
 
-	\colorbox{GhostWhite}{\begin{minipage}{\textwidth}{\vspace{0.25cm}\centering\large\textsc{Notes}\\}\begin{minipage}{0.95\textwidth}
+	\vfill
+
+	\colorbox{GhostWhite}{\begin{minipage}{\textwidth}{\vspace{0.25cm}\centering\large\textsc{Important Notes -- Please Read Carefully}\\}\begin{minipage}{0.95\textwidth}
 		\vspace{0.25cm}
 		\begin{itemize}
 			\item This assignment is worth \assignmentMarks. The number of marks for each question is indicated in brackets to the left of each question.
@@ -53,12 +61,15 @@
 			\end{center}
 			\item Clearly label any plot you produce, including the axes.
 			\item You won't be judged on the quality of your code, but writing reusable functions will greatly simplify this and future assignments.
-			\item Make sure to execute the Jupyter command \enquote{Restart Kernel and Run All Cells} before submitting your solutions. You will loose marks if your code fails to run on my computer.
-			\item Send the completed notebook to \texttt{\assignmentEmail} using your University of Waterloo email account, make sure to include \enquote{[\assignmentCourse]} in the subject line. The deadline is at \texttt{23:59 EST} on \assignmentDue.
-			\item There is a late penalty of one mark per day late.
-			\item \textbf{Do not use or refer to any code from Nengo!}
+			\item Make sure to execute the Jupyter command \enquote{Restart Kernel and Run All Cells} before submitting your solutions. You will loose marks if your code fails to run or produces results that differ significantly from what you've submitted.
+			\item Rename the completed notebook to \texttt{syde556\_assignment\_NN\_<STUDENT ID>.ipynb} and email it to \texttt{\assignmentEmail} using your University of Waterloo email account, and make sure to include \enquote{[\assignmentCourse]}, \enquote{\assignmentName} and your student ID in the subject line. The deadline is at \texttt{23:59 EST} on \assignmentDue.
+			\item There is a late penalty of one mark per day late. You may be at most seven days late.
+			\assignmentExtraNotes
 		\end{itemize}
 	\end{minipage}\end{minipage}}
+	\vfill
+	\clearpage
+	\setcounter{page}{1}
 }
 
 \newcommand{\Marks}[1]{\hspace{0pt}\marginpar{\raggedleft[{#1}]}\ignorespaces}

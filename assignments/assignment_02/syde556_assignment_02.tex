@@ -1,0 +1,139 @@
+%
+% SYDE 556/750 Assignments
+%
+% This is copyrighted material, you are not allowed to redistribute this file
+% or parts thereof without permission from the copyright holders.
+%
+% (c) Chris Eliasmith
+% (c) Andreas Stöckel
+%
+
+\input{../syde556_assignment_preamble.tex}
+
+\newcommand{\assignmentCourse}{SYDE 556/750}
+\newcommand{\assignmentCourseName}{Simulating Neurobiological Systems}
+\newcommand{\assignmentName}{Assignment 2}
+\newcommand{\assignmentTerm}{Winter 2020}
+\newcommand{\assignmentDue}{February 11, 2020}
+\newcommand{\assignmentMarks}{20 marks (20\% of the final grade)}
+\newcommand{\assignmentURL}{https://github.com/astoeckel/syde556-w20/blob/master/assignments/assignment_02/syde556_assignment_02_template.ipynb}
+\newcommand{\assignmentEmail}{astoecke@uwaterloo.ca}
+\newcommand{\assignmentExtraNotes}{\item \textbf{Do not use or refer to any code from Nengo!}}
+
+\begin{document}
+	\assignmentHeader
+
+	\section{Generating a random input signal}
+
+	\subsection{Band-limited white noise}
+
+	Create a function called that generates a randomly varying $x(t)$ signal chosen from a band limited white noise distribution. Call it \texttt{generate\_signal} and ensure that it returns both $x(t)$ and $X(\omega)$, i.e.,~both its time- and Fourier-domain representation.
+
+	The inputs to this function are:
+	\begin{itemize}
+		\item \texttt{T}: the length of the signal in seconds.
+		\item \texttt{dt}: the time step in seconds.
+		\item \texttt{rms}: the root mean square power (RMS) level of the signal. The RMS $\sigma$ of a time-continous signal $x(t)$ of length $T$ is defined as
+		\begin{align*}
+			\sigma = \sqrt{\frac{1}T \int_0^T x(t)^2 \, \mathrm{d}t}
+		\end{align*}
+		\item \texttt{limit}: the maximum frequency for the signal.
+		\item \texttt{seed}: the random number seed to use (so we can deterministically generate the same signal again).
+	\end{itemize}
+
+	\begin{enumerate}[a)]
+		\item \Marks{1} \textit{Time-domain signals.} Plot $x(t)$ for three randomly generated signals with \texttt{limit} at $5$, $10$, and $\SI{20}{\hertz}$. For each of these, $\mathtt{T}=\SI{1}{\second}$, $\mathtt{dt}=\SI{1}{\milli\second}$ and $\mathtt{rms}=0.5$.
+		\item \Marks{1} \textit{Average power spectrum.} Plot the average $|X(\omega)|$ (the norm of the Fourier coefficients, or \enquote{power spectrum}) over $100$ signals generated with $\mathtt{T}=\SI{1}{\second}$, $\mathtt{dt}=\SI{1}{\milli\second}$, $\mathtt{rms}=0.5$, and $\mathtt{limit}=0.5$ (of course, each of these 100 signals should have a different \texttt{seed}). The plot should have the $x$-axis labeled \enquote{$\omega$ in radians} and the average $|X|$ value for that $\omega$ on the $y$-axis.
+		\begin{itemize}
+			\item[{\symbolfont 🐍}] For more information on how to do Fourier transformations in Python, see \href{http://docs.scipy.org/doc/numpy/reference/routines.fft.html}{here}.
+			\item[{\symbolfont 🖈}] The transformation takes you from $t$ to $\omega$ (or back the other way). Importantly, $\omega$ is frequency in radians, not in Hz. $\Delta \omega$ (i.e., the difference in frequency between two samples) will be $\frac{2\pi}T$.
+			\item[{\symbolfont 🖈}] Ensure that the generated signal has no complex components in the time domain, i.e., is purely real. It holds $X(\omega)=\overline{X(-\omega)}$ exactly if the signal is real, where $\overline{a + \mathrm{i}b} = a - \mathrm{i}b$ denotes the complex conjugate.
+			\item[{\symbolfont 🖈}] When randomly generating $X(\omega)$ values, sample them from a Normal distribution $\mathcal{N}(\mu=0; \sigma=1)$. Remember that the $X(\omega)$ are complex numbers, so sample twice from the distribution; once for the real component and once for the imaginary.
+			\item[{\symbolfont 🖈}] To implement the limit, set all $X(\omega)$ components with frequencies above the limit to $0$.
+			\item[{\symbolfont 🖈}] To implement the \texttt{rms}, generate the signal, compute its RMS ($\sigma = \sqrt{\frac{1}T \int{x(t)^2}dt}$) and rescale so it has the desired power. Make sure to rescale both the signal in the time- and Fourier-domain (you can use the same scaling factor, since the Fourier transformation is linear). Alternatively, if you want to rescale your initial coefficients, you could try to take advantage of \href{https://en.wikipedia.org/wiki/Parseval%27s_theorem#Notation_used_in_physics}{Parseval's Theorem}.
+		\end{itemize}
+	\end{enumerate}
+
+	\subsection{Gaussian power spectrum noise}
+
+	Create a modified version of your function from question 1.1 that produces noise with a different power spectrum. Instead of having the $X(\omega)$ values be $0$ outside of some limit and sampled from $\mathcal{N}(\mu=0; \sigma=1)$ inside that limit, we want a smooth drop-off of power as the frequency increases. In particular, instead of the limit, we sample from $\mathcal{N}\big(\mu=0; \sigma=e^{-{\omega^2/(2b^2)}}\big)$ where $b$ (in radians) is the new \texttt{bandwidth} parameter that replaces the \texttt{limit} parameter.
+
+	\begin{enumerate}[a)]
+		\item \Marks{1} \textit{Time-domain signals.} Plot $x(t)$ for three randomly generated signals with \texttt{bandwidth} at $5$, $10$, and $\SI{20}{\hertz}$. For each of these, $\mathtt{T}=\SI{1}{\second}$, $\mathtt{dt}=\SI{1}{\milli\second}$ and $\mathtt{rms}=0.5$.
+		\item \Marks{1} \textit{Average power spectrum.} Plot the average $|X(\omega)|$ (the norm of the Fourier coefficients, or \enquote{power spectrum}) over $100$ signals generated with $\mathtt{T}=\SI{1}{\second}$, $\mathtt{dt}=\SI{1}{\milli\second}$, $\mathtt{rms}=0.5$, and $\mathtt{bandwidth}=10$ (of course, each of these 100 signals should have a different \texttt{seed}). The plot should have the $x$-axis labeled \enquote{$\omega$ in radians} and the average $|X|$ value for that $\omega$ on the $y$-axis.
+	\end{enumerate}
+
+	\section{Simulating a spiking neuron}
+
+	Write a program to simulate a single Leaky-Integrate and Fire neuron. The core differential equation is
+	\begin{align*}
+		\frac{\mathrm{d}v}{\mathrm{d}t} = \frac{1}{\tau_\mathrm{RC}} (J - v) \,,
+	\end{align*}
+	where $\tau_\mathrm{RC}$ is the membrane time constant, $J$ is the input current and $v$ is the current membrane potential. To simplify life, this is normalized so that the resting voltage is $0$ and the thereshold voltage is $v_\mathrm{th} = 1$. This equation can be simulated numerically by taking small time steps (Euler's method). When the voltage reaches the threshold $v_\mathrm{th}$, the neuron will \enquote{spike}. It's voltage is reset to $0$ and stays there for the refractory period $\tau_\mathrm{ref}$ (to plot individual spike, place a dot or line at that time). Also, if the voltage goes below zero at any time, reset it back to zero. For this question, $\tau_\mathrm{RC}=\SI{20}{\milli\second}$ and $\tau_\mathrm{ref}=\SI{2}{\milli\second}$.
+
+	Since we want to have inputs in terms of represented values $\vec x$, we need to compute $J = \alpha \langle \vec e, \vec x \rangle + J^\mathrm{bias}$. For this neuron, set $\vec e$ to $1$ and find $\alpha$ and $J^{bias}$ such that the firing rate when $\vec x=0$ is \SI{40}{\hertz} and when $\vec x=1$ it is \SI{40}{\hertz}. To find these $\alpha$ and $J^\mathrm{bias}$ values, use the LIF rate approximation (see Assignment 1, Question 1.3):
+	\begin{align*}
+		G[J] &= \frac{1}{\tau_\mathrm{ref} - \tau_\mathrm{RC} \ln \big( 1 - \frac{1}J \big)}
+	\end{align*}
+
+	\begin{enumerate}[a)]
+		\item \Marks{1} \textit{Spike plots for constant inputs.} Plot the spike output for a constant input of $x=0$ over $1$ second. Report the number of spikes. Do the same thing for $x=1$. Use a time step of $\Delta t = \SI{1}{\milli\second}$ for the simulation.
+		\item \Marks{1} \textit{Discussion.} Does the observed number of spikes in the previous part match the expected number of spikes for $x=0$ and $x=1$? Why or why not? What aspects of the simulation would affect this accuracy?
+		\item \Marks{1} \textit{Spike plots for white noise inputs.} Plot the spike output for $x(t)$ generated using your function from part 1.1. Use $\mathtt{T}=\SI{1}{\second}$, $\mathtt{dt}=\SI{1}{\milli\second}$, $\mathtt{rms}=0.5$, and $\mathtt{limit}=\SI{30}{\hertz}$. Overlay on this plot $x(t)$.
+		\item \Marks{1} \textit{Voltage over time.} Using the same $x(t)$ signal as in part c), plot the neuron's voltage over time for the first $0.2$ seconds, along with the spikes over the same time.
+		\item \Marks{+1} \textit{{\symbolfont 🌟} Bonus question.} How could you improve this simulation (in terms of how closely the model matches actual equation) without significantly increasing the computation time? $0.5$ marks for having a good idea. Up to $1$ mark for actually implementing it and showing that it works.
+	\end{enumerate}
+
+	\section{Simulating two spiking neurons}
+
+	Write a program that simulates two neurons. The two neurons have exactly the same parameters, except one of them uses a positive encoder (i.e.,~$e = 1$) and the other one uses a negative encoder (i.e.,~$e = -1$). Other than that, use exactly the same settings as in question 2.
+
+	\begin{enumerate}[a)]
+		\item \Marks{1} \textit{Spike plots for constant inputs.} Plot $x(t)$ and the spiking output for $x(t)=0$ (both neurons should spike at about 40 spikes per second), as well as (in a separate plot) $x(t)=1$ (one neuron should spike at ~150 spikes per second, and the other should not spike at all).
+		\item \Marks{1} \textit{Spike plots for a sinusodial input.} Plot $x(t)$ and the spiking output for $x(t)=\frac{1}2 \sin(10 \pi t)$.
+		\item \Marks{1} \textit{Spike plot for a white noise signal.} Plot $x(t)$ and the spiking output for a random signal generated with your function for question 1.1 with $\mathtt{T}=\SI{2}{\second}$, $\mathtt{dt}=\SI{0.5}{\second}$, $\mathtt{rms}=0.5$, and $\mathtt{limit}=\SI{5}{\hertz}$.
+	\end{enumerate}
+
+	\section{Computing an optimal filter}
+
+	Compute the optimal filter for decoding pairs of spikes. Instead of implementing this yourself, use and complete the Python implementation that is included in the Jupyter notebook.
+
+	\begin{enumerate}[a)]
+		\item \Marks{1} \textit{Document the code.} Fill in comments where there are \texttt{\#} signs in the Python code. Make sure that your comments (where this makes sense) describe the semantics of the code and do not just repeat what is obvious from the code itself. Connect the code with the code you wrote for part 3 above, so that it uses the spike signal generated in 3c).
+		\item \Marks{1} \textit{Optimal filter.} Plot the time and frequency plots of the optimal filter for the signal you generated in question 3c). Make sure to use appropriate limits for the $x$-axis.
+		\item \Marks{1} \textit{Decoded signal.} Plot the $x(t)$ signal, the spikes, and the decoded $\hat x(t)$ value for the signal from 3c).
+		\item \Marks{0.5} \textit{Power spectra.} Plot the signal $|X(\omega)|$, spike response $|R(\omega)|$, and filtered signal $|\hat X(\omega)|$ power spectra for the signal from 3c).
+		\item \Marks{0.5} \textit{Discussion.} How do these spectra relate to the optimal filter?
+		\item \Marks{0.5} \textit{Filter for different signal bandwidths.} Plot the optmial filter $h(t)$ in the time domain when filtering spike trains for white noise signals with different \texttt{limit} values of \SI{2}{\hertz}, \SI{10}{\hertz}, and \SI{30}{\hertz}.
+		\item \Marks{0.5} \textit{Discussion.} Describe the effects on the time plot of the optimal filter as \texttt{limit} increases. Why does this happen?
+	\end{enumerate}
+
+	\section{Using post-synaptic currents as a filter}
+
+	Instead of using the optimal filter from the previous question, now we will use the post-synaptic current instead. This is of the form
+	\begin{align*}
+		h(t)= \begin{cases}
+			\alpha^{-1} t^n e^{-\frac{t}\tau} & \text{if } t \geq 0 \,, \\
+			0 & \text{otherwise} \,.
+		\end{cases}
+	\end{align*}
+	where $n$ is a non-negative integer, and $\alpha$ normalizes the filter to area one, i.e.
+	\begin{align*}
+		\alpha = \int_0^\infty t^n e^{-\frac{t}\tau} \,\mathrm{d}t \,.
+	\end{align*}
+	\begin{enumerate}[a)]
+		\item \Marks{0.5} \textit{Plotting the filter for different $n$.} Plot the normalized $h(t)$ for $n=0$, $1$, and $2$, with $\tau=\SI{7}{\milli\second}$.
+		\begin{itemize}
+			\item[\symbolfont 🖈] You should evaluate the above integral numerically to compute $\alpha$. There is no \href{http://mathworld.wolfram.com/Closed-FormSolution.html}{closed-form solution}.
+		\end{itemize}
+		\item \Marks{0.5} \textit{Discussion.} What two things do you expect increasing $n$ will do to $\hat{x}(t)$?
+		\item \Marks{0.5} \textit{Plotting the filter for different $\tau$.} Plot the normalized $h(t)$ for $\tau=\SI{2}{\milli\second}$, $\tau=\SI{5}{\milli\second}$, $\tau=\SI{10}{\milli\second}$, $\tau=\SI{20}{\milli\second}$ with $n = 0$.
+		\item \Marks{0.5} \textit{Discussion.} What two things do you expect increasing $\tau$ will do to $\hat{x}(t)$?
+		\item \Marks{1} \textit{Decoding a spike-train using the post-synaptic current filter.} Decode $\hat{x}(t)$ from the spikes generated in question 3c) using an $h(t)$ with $n=0$ and $\tau=\SI{7}{\milli\second}$. Do this by generating the spikes, filtering them with $h(t)$, and using that as your activity matrix $A$ to compute your decoders. Plot the time and frequency plots for this $h(t)$. Plot the $x(t)$ signal, the spikes, and the decoded $\hat{x}(t)$ value.
+		\begin{itemize}
+			\item[\symbolfont 🖈] Do not use in-built convolution functions for any question in part 5. Instead, implement convolution this in the time domain by placing the filter when spikes occur, and then summing. This simulates a post-synaptic current occuring on the arrival of a spike from the pre-synaptic neuron.
+		\end{itemize}
+		\item \Marks{0.5} \textit{Deocding a spike-train representing a low-frequency signal.} Use the same decoder and $h(t)$ as in part e), but generate a new $x(t)$ with $\mathtt{limit}=\SI{2}{\hertz}$. Plot the $x(t)$ signal, the spikes, and the decoded $\hat{x}(t)$ value.
+		\item \Marks{0.5} \textit{Discussion.} How do the decodings from e) and f) compare? Explain.
+	\end{enumerate}
+\end{document}
