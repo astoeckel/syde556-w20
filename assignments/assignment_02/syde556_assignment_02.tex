@@ -13,6 +13,7 @@
 \newcommand{\assignmentCourse}{SYDE 556/750}
 \newcommand{\assignmentCourseName}{Simulating Neurobiological Systems}
 \newcommand{\assignmentName}{Assignment 2}
+\newcommand{\assignmentNo}{02}
 \newcommand{\assignmentTerm}{Winter 2020}
 \newcommand{\assignmentDue}{February 11, 2020}
 \newcommand{\assignmentMarks}{20 marks (20\% of the final grade)}
@@ -89,7 +90,7 @@
 	Write a program that simulates two neurons. The two neurons have exactly the same parameters, except one of them uses a positive encoder (i.e.,~$e = 1$) and the other one uses a negative encoder (i.e.,~$e = -1$). Other than that, use exactly the same settings as in question 2.
 
 	\begin{enumerate}[a)]
-		\item \Marks{1} \textit{Spike plots for constant inputs.} Plot $x(t)$ and the spiking output for $x(t)=0$ (both neurons should spike at about 40 spikes per second), as well as (in a separate plot) $x(t)=1$ (one neuron should spike at ~150 spikes per second, and the other should not spike at all).
+		\item \Marks{1} \textit{Spike plots for constant inputs.} Plot $x(t)$ and the spiking output for $x(t)=0$ (both neurons should spike at about $40$ spikes per second), as well as (in a separate plot) $x(t)=1$ (one neuron should spike at $\approx 150$ spikes per second, and the other should not spike at all).
 		\item \Marks{1} \textit{Spike plots for a sinusodial input.} Plot $x(t)$ and the spiking output for $x(t)=\frac{1}2 \sin(10 \pi t)$.
 		\item \Marks{1} \textit{Spike plot for a white noise signal.} Plot $x(t)$ and the spiking output for a random signal generated with your function for question 1.1 with $\mathtt{T}=\SI{2}{\second}$, $\mathtt{dt}=\SI{0.5}{\second}$, $\mathtt{rms}=0.5$, and $\mathtt{limit}=\SI{5}{\hertz}$.
 	\end{enumerate}
@@ -99,7 +100,7 @@
 	Compute the optimal filter for decoding pairs of spikes. Instead of implementing this yourself, use and complete the Python implementation that is included in the Jupyter notebook.
 
 	\begin{enumerate}[a)]
-		\item \Marks{1} \textit{Document the code.} Fill in comments where there are \texttt{\#} signs in the Python code. Make sure that your comments (where this makes sense) describe the semantics of the code and do not just repeat what is obvious from the code itself. Connect the code with the code you wrote for part 3 above, so that it uses the spike signal generated in 3c).
+		\item \Marks{1} \textit{Document the code.} Fill in comments where there are \texttt{\#}-signs in the Python code. Make sure that your comments (where this makes sense) describe the semantics of the code and do not just repeat what is obvious from the code itself. Run the function with what you wrote for part 3 above, so that it uses the spike signal generated in 3c).
 		\item \Marks{1} \textit{Optimal filter.} Plot the time and frequency plots of the optimal filter for the signal you generated in question 3c). Make sure to use appropriate limits for the $x$-axis.
 		\item \Marks{1} \textit{Decoded signal.} Plot the $x(t)$ signal, the spikes, and the decoded $\hat x(t)$ value for the signal from 3c).
 		\item \Marks{0.5} \textit{Power spectra.} Plot the signal $|X(\omega)|$, spike response $|R(\omega)|$, and filtered signal $|\hat X(\omega)|$ power spectra for the signal from 3c).
