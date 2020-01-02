@@ -1,0 +1,268 @@
+% !TeX spellcheck = en_GB
+\documentclass[aspectratio=169]{beamer}
+\input{../syde556_lecture_slides_preamble}
+
+\date{January 7, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 0: Administrative Remarks}
+
+\begin{document}
+	
+\begin{frame}{}
+	\MakeTitle
+\end{frame}
+
+\begin{frame}{Organization (I)}
+	\begin{block}{Instructor}
+		\vspace{2mm}
+		\textbf{Andreas Stöckel}\\[2mm]
+		\hspace{-2.5mm}\begin{tabular}{l l}
+			Office & E7-6342 (office hours in E7-6323)\\
+			Email & \url{astoecke@uwaterloo.ca}\\
+			Website & \url{http://compneuro.uwaterloo.ca/people/andreas-stoeckel.html}\\
+			GitHub & \url{https://github.com/astoeckel}
+		\end{tabular}
+	\end{block}
+ 
+	\vfill
+
+	\begin{block}{Course website}
+		\begin{itemize}
+			\item \url{http://compneuro.uwaterloo.ca/courses/syde-750.html}
+			\item \url{https://github.com/astoeckel/syde556-w20}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Organization (II)}
+	\begin{block}{Course times and location}
+		\begin{itemize}
+			\item \textbf{Tuesday:}\\
+			11:30-12:50 in \hl{E5-4106} (SYDE 556/750)
+			\item \textbf{Thursday:}\\
+			9:00-10:20 in \hl{E5-6004} (SYDE 556/750) 
+			\item \textbf{Thursday:}\\10:30-11:20 in \hl{E5-6127} (SYDE 750, optional for 556)
+		\end{itemize}
+	\end{block}
+
+	\begin{block}{Office hours}
+		\begin{itemize}
+			\item Office hours are generally in E7-6323.
+			\item Potential times:\\
+			\texttt{Tue 13:00-14:00}, \texttt{Tue 15:00-16:00}, \texttt{Thu 11:30-12:30}, \texttt{Fri 10:30-11:30}
+			\item Alternatively, if that time doesn't work for you, by appointment.
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Textbooks and Readings}
+	\begin{columns}[T]
+		\column{0.2\textwidth}
+			\raggedleft
+			\fboxrule=0.4pt\fboxsep=0pt\fbox{\includegraphics[height={\dimexpr 0.4\textheight - 0.8pt}]{media/neural_engineering_cover.png}}\\
+		\column{0.3\textwidth}  
+			\small
+			\textbf{Main text:}\\
+			Chris Eliasmith and\\Charles H. Anderson\\
+			\emph{Neural Engineering: Computation, Representation, and Dynamics in Neurobiological Systems}, MIT Press, 2003.
+		\column{0.2\textwidth}
+			\raggedleft
+			\includegraphics[height=0.4\textheight]{media/how_to_build_a_brain_cover.png}\\
+		\column{0.3\textwidth}
+			\small
+			\textbf{Optional:}\\
+			Chris Eliasmith\\
+			\emph{How to Build a Brain}, Oxford University Press, 2013.
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Coursework}
+	\begin{columns}[t]
+		\column{0.5\textwidth}
+		\begin{block}{\hl{Four Assignments} (60\% of the mark)}
+		\begin{itemize}
+				\item 20\%, 20\%, 10\%, 10\%, respectively
+				\item Roughly two weeks for each assignment
+				\item Everyone must write their own code, generate their own graphs, and write their own answers.
+			\end{itemize}
+		\end{block}
+		\column{0.5\textwidth}
+		\begin{block}{\hl{Final Project} (40\% of the mark)}
+			\begin{itemize}
+				\item 5\% presentation, 35\% report
+				\item Build a model of some neural system.
+				\item For 556 students: extension of something seen in class
+				\item For 750 students: research project with more novelty
+				\item Have your project approved via email before Reading Week!
+			\end{itemize}
+		\end{block}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Schedule (I)}
+\small
+\begin{tabular}{p{2cm} p{2cm} p{5cm} p{3cm}}
+	\toprule
+	\textbf{Date} &	\textbf{Reading} &	\textbf{Topic} & \textbf{Assignments} \\
+	\tiny WEEK 1 & & & \\
+	Jan 7 &
+	Chapter 1 &
+	Introduction &
+	\\
+	Jan 9 &
+	Chapter 2 &
+	Neurons &
+	\\[0.05cm]
+	
+	\tiny WEEK 2 & & & \\
+	Jan 14 &
+	Chapter 2 &
+	Population Representation (I) &
+	\#1 posted\\
+	Jan 16 &
+	Chapter 2 &
+	Population Representation (II) &
+	\\[0.05cm]
+	
+	\tiny WEEK 3 & & & \\
+	Jan 21 &
+	Chapter 4 &
+	Temporal Representation (I) &
+	\\
+	Jan 23 &
+	Chapter 4 &
+	Temporal Representation (II) &
+	\\[0.05cm]
+	
+	\tiny WEEK 4 & & & \\
+	Jan 28 &
+	Chapters 5, 6 &
+	Feedforward Transformations (I) &
+	\#1 due*, \#2 posted\\
+	Jan 30 &
+	Chapters 5, 6 &
+	Feedforward Transformations (II) &
+	\\[0.05cm]
+	
+	\tiny WEEK 5 & & & \\
+	Feb 4 &
+	Chapter 8 &
+	Dynamics (I) &
+	\\
+	Feb 6 &
+	Chapter 8 &
+	Dynamics (II) &
+	\\
+	\bottomrule
+\end{tabular}
+\end{frame}
+
+
+\begin{frame}{Schedule (II)}
+	\small
+	\begin{tabular}{p{2cm} p{2cm} p{5cm} p{3cm}}
+		\toprule
+		\textbf{Date} &	\textbf{Reading} &	\textbf{Topic} & \textbf{Assignments} \\
+		\tiny WEEK 6 & & & \\
+		Feb 11 &
+		Chapter 7 &
+		Analysis of Representation &
+		\#2 due*, \#3 posted\\
+		Feb 13 &
+		\emph{provided} &
+		Temporal Basis Functions &
+		\\
+		Feb 14 &
+		&
+		&
+		Project proposal due\\[0.05cm]
+		
+		\tiny WEEK 7 & \multicolumn{3}{c}{\emph{--- Reading week, no lectures ---}} \\[0.05cm]
+		
+		\tiny WEEK 8 & & & \\
+		Feb 25 &
+		\emph{provided} &
+		Symbols (I) &
+		\\
+		Feb 27 &
+		\emph{provided} &
+		Symbols (II) &
+		\\[0.05cm]
+		
+		\tiny WEEK 9 & & & \\
+		Mar 3 &
+		Chapter 8 &
+		Memory &
+		\#3 due*, \#4 posted\\
+		Mar 5 &
+		\emph{provided} &
+		Action Selection &
+		\\[0.05cm]
+		
+		\tiny WEEK 10 & & & \\
+		Mar 10 &
+		Chaper 9 &
+		Learning (I) &
+		\\
+		Mar 12 &
+		Chaper 9 &
+		Learning (II) &
+		\\
+		\bottomrule
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{Schedule (III)}
+	\small
+	\begin{tabular}{p{2cm} p{2cm} p{5cm} p{3cm}}
+		\toprule
+		\textbf{Date} &	\textbf{Reading} &	\textbf{Topic} & \textbf{Assignments} \\
+		\tiny WEEK 11 & & & \\
+		Mar 17 &
+		\emph{provided} &
+		Spatial Semantic Pointers &
+		\#4 due*\\
+		Mar 19 &
+		\emph{provided} &
+		Biological Details &
+		\\[0.05cm]
+		
+		\tiny WEEK 12 & & & \\
+		Mar 24 &
+		\emph{provided} &
+		Other modelling frameworks &
+		\\
+		Apr 2 &
+		&
+		Conclusion &
+		\\[0.05cm]
+		
+		\tiny WEEK 13 & & & \\
+		Mar 31, Apr 2 &
+		&
+		Project presentations &
+		\\[0.05cm]
+		
+		\tiny WEEK 15 & & & \\
+		Apr 15 &
+		&
+		&
+		Projects due* \\
+		\bottomrule
+	\end{tabular}\\[0.2cm]
+	\footnotesize
+	* The project and all assignments are due at midnight ($\approx$ 11:59p EST) of that day.
+\end{frame}
+
+\begin{frame}{Homework}
+	\begin{itemize}
+		\setlength{\itemsep}{0.5cm}
+		\item \textbf{Get the \hl{textbook}}\\
+		(\enquote{Neural Engineering}, Chris Eliasmith and Charles Anderson, 2003)
+		\item \textbf{Be able to run \hl{\texttt{jupyter lab}} or (\texttt{jupyter notebook}) with \hl{Python 3}}\\
+		Install \texttt{numpy}, \texttt{scipy}, and \texttt{matplotlib}. You may want to use \href{https://www.anaconda.com/distribution/}{Anaconda}, which ships with these packets preinstalled.
+		\item Have a look at the \hl{course website} and the \hl{lecture notes}.
+		\item Start thinking about a \hl{project}\textellipsis already.
+	\end{itemize}
+\end{frame}
+
+\end{document}

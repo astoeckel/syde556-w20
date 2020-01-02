@@ -1,0 +1,68 @@
+\usepackage{fontspec}
+\usepackage{arev}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{csquotes}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{microtype}
+\usepackage[labelfont=bf,font={small}]{caption}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{calc}
+\usepackage[svgnames]{xcolor}
+\usepackage{cleveref}
+
+\newfontfamily\symbolfont{Symbola}
+\usepackage[left=1in,right=1in,top=1in,bottom=1in,marginparwidth=0.25in]{geometry}
+
+\usepackage[sorting=none]{biblatex}
+\addbibresource{../bibliography.bib}
+
+\author{Andreas Stöckel\\[0.5cm]Based on lecture notes by\\Chris Eliasmith and Terrence~C.~Stewart}
+
+\fancyhf{}
+\fancyhead[L]{SYDE 556/750 Lecture Notes}
+\fancyhead[R]{Andreas Stöckel}
+\fancyfoot[C]{\thepage}
+\pagestyle{fancy}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.5em}
+\renewcommand{\baselinestretch}{1.25}
+\renewcommand{\vec}[1]{{\mathbf{\mathrm{#1}}}}
+\newcommand{\mat}[1]{{\mathbf{\mathrm{#1}}}}
+
+\newcommand{\MakeTitle}[1]{
+\maketitle
+\begin{center}
+	\includegraphics[width=0.5\textwidth]{../assets/uwlogo.pdf}\\[1cm]
+	{#1}\
+\end{center}
+
+\vfill
+
+\thispagestyle{empty}
+\setcounter{page}{0}
+\newpage
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+\setcounter{page}{0}
+\pagenumbering{arabic}}
+
+\reversemarginpar
+
+\newcommand{\ColorBox}[3]{{\par\hspace{0pt}\marginpar{\huge\raisebox{-1ex}{\symbolfont{#1}}}\ignorespaces\fboxsep=0.5cm\colorbox{#2}{\begin{minipage}[t]{\columnwidth-1cm}{#3}\end{minipage}}}}
+
+\newcommand{\Note}[1]{\ColorBox{📌}{WhiteSmoke}{\textbf{Note:} #1}}
+\newcommand{\Example}[1]{\ColorBox{💡}{WhiteSmoke}{\textbf{Example:} #1}}

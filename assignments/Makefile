@@ -49,10 +49,21 @@ assignment_04/syde556_assignment_04_template.pdf: \
 	cd assignment_04 && ../ipynb_to_pdf.sh syde556_assignment_04_template
 
 clean:
-	rm -f assignment_??/*.aux
-	rm -f assignment_??/*.fdb_latexmk
-	rm -f assignment_??/*.fls
-	rm -f assignment_??/*.log
-	rm -f assignment_??/*.out
-	rm -f assignment_??/*_template.pdf
+	rm -f lecture_??/*.aux
+	rm -f lecture_??/*.fdb_latexmk
+	rm -f lecture_??/*.fls
+	rm -f lecture_??/*.log
+	rm -f lecture_??/*.out
+	rm -f lecture_??/*.toc
+	rm -f lecture_??/*.synctex.gz
+	rm -f lecture_??/*.run.xml
+	rm -f lecture_??/*.blg
+	rm -f lecture_??/*.bcf
+	rm -f lecture_??/*.bbl
+	rm -f lecture_??/*.nav
+	rm -f lecture_??/*.snm
+
+distclean: clean
+	rm -f lecture_??/*.pdf
+	rm -f lecture_??/*.md
 
