@@ -5,7 +5,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
 ---
 
 ### ⚠ Warning
-**All content in this repository is preliminary and subject to major changes unless explicitly linked at from the course website.**
+**All content in this repository is preliminary and subject to major changes unless explicitly linked from the course website.**
 
 ---
 
