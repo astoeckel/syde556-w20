@@ -9,7 +9,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
 
 ---
 
-## Lectures
+## 🎒 Lectures
 
 **Lecture 0** ― Administrative Remarks ― Monday, January 7
 -   **Slides**  
@@ -31,7 +31,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_01/syde556_lecture_01_notes.pdf)]
 
 
-## Assignments
+## 📝 Assignments
 
 **Assignment 1** ― due Tuesday, January 28
 -   **Instructions**  
