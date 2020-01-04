@@ -77,7 +77,7 @@ To frame the idea of Theoretical Neuroscience more clearly, let us consider anot
 	\label{tbl:physics_vs_theoretical_neuroscience}
 \end{table}
 
-Theoretical Neuroscience as a field can perhaps best be described by a comparison to Theoretical Physics, which is concerned with the nature of reality, or, phrased as a question, attempts to understand \enquote{What exists?}. Just as in neuroscience, physics is divided into numerous sub-fields, with particle physics at the smallest and astrophysics at the largest scale. The goal of theoretical physics is to find overarching descriptions that apply to all sub-fields -- examples being conservation of energy, or (as an example of a useful, but clearly limited model) Newtons laws of motion (\cref{tbl:physics_vs_theoretical_neuroscience}). Both apply to celestial objects and everyday objects alike, i.e., span multiple levels of scale and organization.
+Theoretical Neuroscience as a field can perhaps be best described by comparing it to Theoretical Physics, which is concerned with the nature of reality, or, phrased as a question, attempts to understand \enquote{What exists?}. Just as in neuroscience, physics is divided into numerous sub-fields, with particle physics at the smallest and astrophysics at the largest scale. The goal of theoretical physics is to find overarching descriptions that apply to all sub-fields -- examples being conservation of energy, or (as an example of a useful, but clearly limited model) Newtons laws of motion (\cref{tbl:physics_vs_theoretical_neuroscience}). Both apply to celestial objects and everyday objects alike, i.e., span multiple levels of scale and organization.
 
 To summarize, both fields are similar in that they attempt to find quantifications that summarize large corpora of data across vastly different scales using similar mathematical methods. The main difference lies in the question that is being answered (\enquote{What exists?} vs. \enquote{Who are we?}). Furthermore, since biology tends to be highly nonlinear, limiting the potential of mathematical analysis, Theoretical Neuroscience has to rely on even more numerical simulations than Theoretical Physics.
 
@@ -87,7 +87,7 @@ To make sure that a theory from Theoretical Neuroscience, or, more broadly, \emp
 
 \Note{Note that this implies that our theories (or \enquote{frameworks}) must be precise enough to be turned into a mathematical model -- for example, many theories from Psychology do \emph{not} pass this requirement.
 
-Since our models will get complex quite quickly, we must most certainly use some kind of computer simulation. Correspondingly, Theoretical and Computational Neuroscience often quite closely related.}
+Since our models will get complex quite quickly, we must most certainly use some kind of computer simulation. Correspondingly, Theoretical and Computational Neuroscience are often quite closely related.}
 
 In general, researchers often distinguish between the following kinds of models:
 \begin{itemize}
@@ -98,9 +98,9 @@ In general, researchers often distinguish between the following kinds of models:
 	\item \textbf{Large network/cognitive models}\\
 	May either use biophysics, pure computation, anatomy, etc.
 \end{itemize}
-Ideally, we would like to have a framework that allows us to include levels of detail below any higher level as desired. Of course, the \enquote{correct} highest level depends on the question that is being asked. Our goal in this course is to be able to build models that elicit some kind of high-level behaviour, or \emph{function} -- either through motor control, or by solving cognitive tasks. We will refer to this kind of model as \enquote{functional model}. As a consequence, we focus less on single neuron and small network models on their own, since these are often not sufficient to produce the functions we are interested in.
+Ideally, we would like to have a framework that allows us to include levels of detail below any higher level as desired. Of course, the \enquote{correct} highest level depends on the question that is being asked. Our goal in this course is to be able to build models that elicit some kind of high-level behaviour, or \emph{function} -- either through motor control, or by solving cognitive tasks. We will refer to this kind of model as a \enquote{functional model}. As a consequence, we focus less on single neuron and small network models on their own, since these are often not sufficient to produce the functions we are interested in.
 
-\Note{The term \emph{functional model} may be a little unfortunate since the term \emph{functional} is quite overloaded. As described above, we use \emph{functional} solely in the sense of \enquote{producing a behaviour} or \enquote{solving a cognitive task}.}
+\Note{The term \emph{functional model} may be a little unfortunate since \emph{functional} is quite overloaded. As described above, we use \emph{functional} solely in the sense of \enquote{producing a behaviour} or \enquote{solving a cognitive task}.}
 
 \subsection{Problems with current modelling approaches}
 
@@ -120,7 +120,7 @@ Top-down approaches can be characterized by foremost focusing on the behaviour a
 
 The problem with these approaches is that the models constructed in these frameworks are disconnected from neuroscience, which makes it hard to make predictions about e.g.~neural activities or, on a higher level, reaction times and error rates.
 
-Top-down modelling frameworks also have the problem of having no \enquote{bridging laws}. For example, if we were to build one part of our model in greater biological detail, it would be unclear how to build an interface between these levels of organization. On could argue that this is a bit like having rules of chemistry that never mention that \enquote{it's all built out of atoms and electrons}.
+Top-down modelling frameworks also have the problem of having no \enquote{bridging laws}. For example, if we were to build one part of our model in greater biological detail, it would be unclear how to build an interface between these levels of organization. One could argue that this is a bit like having rules of chemistry that never mention that \enquote{it's all built out of atoms and electrons}.
 
 Because of these missing \enquote{bridging laws}, it is also not really practical to constrain the model according to data from neuroscience. For example, the mathematical equations that are being used to describe computation within the model are not constrained. However, as we will see in the upcoming weeks, a neural substrate may not be particularly good at computing certain functions.
 
@@ -144,7 +144,7 @@ Let's start with some basic facts about the human brain:\footnote{For those of y
 	\item \textbf{Number of synapses:} 100 trillion ($10^{14}$, about $1000$-$10\,000$ per neuron)
 \end{itemize}
 
-\Note{If we were able to simulate 1000 neurons in realtime at about \SI{1}{\watt} (which is roughly the case for simple neuron models and specialised neuromorphic hardware, not counting any interconnect) a computer simulating the entire brain would consume about \SI{100}{\mega\watt}, i.e., the power output of an entire medium-scale power plant. That is almost 7 orders of magnitude more than what biology requires.}
+\Note{If we were able to simulate 1000 neurons in realtime at about \SI{1}{\watt} (which is roughly the case for simple neuron models and specialised neuromorphic hardware, not counting any interconnect), a computer simulating the entire brain would consume about \SI{100}{\mega\watt}, i.e., the power output of an entire medium-scale power plant. That is almost 7 orders of magnitude more than what biology requires.}
 
 \paragraph{Brain Structure}
 
@@ -167,9 +167,9 @@ Let's start with some basic facts about the human brain:\footnote{For those of y
 
 As can be seen in \cref{fig:brain_lateral,fig:brain_sagittal}, the human brain has several visually clearly distinct features. The most prominent of these structures is the Cerebral Cortex (the \enquote{folded} part at the top in \cref{fig:brain_sagittal}; each peak of a \enquote{fold} is called \emph{gyrus}, the corresponding trough is called \emph{sulcus}). Furthermore, we can clearly see the Cerebellum (the sponge-shaped \enquote{appendix} at the back of the brain), as well as the Brain Stem (the grey region extending into the spinal cord).
 
-Cerebal cortex has historically been subdivided into different \enquote{lobes} (\cref{fig:brain_lateral}), particularly the \enquote{Frontal Lobe}, \enquote{Temporal Lobe} (temple $\hat=$ lateral/side), \enquote{Occipital Lobe} (occiput $\hat=$ lat.~back of the head), \enquote{Parietal Lobe} (paries $\hat=$ lat.~\enquote{wall}; top of the head). As it turns out, these subdivisions are not only purely anatomical, but also have functional significance.
+Cerebral cortex has historically been subdivided into different \enquote{lobes} (\cref{fig:brain_lateral}), particularly the \enquote{Frontal Lobe}, \enquote{Temporal Lobe} (temple $\hat=$ lateral/side), \enquote{Occipital Lobe} (occiput $\hat=$ lat.~back of the head), \enquote{Parietal Lobe} (paries $\hat=$ lat.~\enquote{wall}; top of the head). As it turns out, these subdivisions are not only purely anatomical, but also have functional significance.
 
-Smaller features include the locus coeruleus, thalamus, amygdala, hypothalamus, substantia nigra, etc., which are not visible in the illustrations here.
+Smaller features include the locus coeruleus, thalamus, amygdala, hypothalamus, substantia nigra, etc., which are not (well) visible in the illustrations here.
 
 To summarize, the brain is highly structured, even at a macro-scale. We should take this structure into account when building cognitive models! Furthermore, there are many latin and greek names that you can remember (but don't feel obliged to) and impress your friends.
 
@@ -196,11 +196,11 @@ To summarize, the brain is highly structured, even at a macro-scale. We should t
 	\caption{Neurons and Synapses. \textbf{(a)} Sketch of a schematic biological model neuron. Input spikes arrive at synapses located at the dendrites and are processed in the cell body. Resulting output spikes travel along the axon to the axon terminals, where they connect to other neurons or a neuromuscular junction. From \cite{stoeckel2015design}~(fig.~2.3); inspired by \cite{kandel2012principles}~(fig.~2.2). \textbf{(b)} Diagram detailing synaptic transmission at a chemical synapse. From \cite{stoeckel2015design}~(fig.~2.10); adapted from \href{https://commons.wikimedia.org/wiki/File:SynapseSchematic_en.svg}{Wikimedia}.}
 \end{figure}
 
-The smallest unit of computation in the brain is usually assumed to be a single nerve cell, or \emph{neuron} (\cref{fig:single_neuron}). The interfaces between neurons are called synapses. Synapses are usually \enquote{chemical} (\cref{fig:chemical}), and \enquote{electrical} in some regions (e.g.,~retina).
+The smallest unit of computation in the brain is usually assumed to be a single nerve cell, or \emph{neuron} (\cref{fig:single_neuron}). The interfaces between neurons are called synapses. Synapses are either \enquote{chemical} (\cref{fig:chemical}), or \enquote{electrical} (in some regions, e.g.,~retina).
 
 In contrast to what the text-book illustration of \cref{fig:single_neuron} might suggest, neurons come in various visually distinct shapes and are often organised in a very chaotic fashion (cf.~panel \textbf{B}, \cref{fig:neuron_techniques}). Estimates of the number of neuron types range between 100 and 1000. Each neuron has beetween $1$-$200\,000$ inputs and outputs; the total axon length in the brain is estimated to be \SI{72}{\kilo\meter} (cf.~panels \textbf{D, E}, \cref{fig:neuron_techniques}).
 
-Advances in scanning techniques allow researchers to reconstruct neural networks down to a nanometer scale, which means that we will have to the \enquote{wiring diagram} of brain regions (see this \YouTube[National Geographics Video]{nvXuq9jRWKE} and this \YouTube[TEDx Talk]{F37kuXObIBU} by Jeff Lichtman).
+Advances in scanning techniques allow researchers to reconstruct neural networks down to a nanometer scale, which means that we will have access to the \enquote{wiring diagram} of entire brain regions (see this \YouTube[National Geographics Video]{nvXuq9jRWKE} and this \YouTube[TEDx Talk]{F37kuXObIBU} by Jeff Lichtman).
 
 \Aside{Scales of convergence and divergence. Granule cells in the cerebellum are one of the smallest neuron type in the brain. They receive input from exactly $4$-$5$ pre-synaptic neurons. Since more than half of all neurons in the brain are granule cells, the \emph{median} number of receiving synapses per neuron is $4$-$5$. Each Granule cell projects (diverges) onto $400$-$600$ Purkinje cells. Each Purkinje cell receives input from $175\,000$ granule cells.}
 
@@ -355,11 +355,11 @@ Modify individual types of neurons genetically, so they can either be stimulated
 
 To summarize, we have access to a vast amount of data describing the brain at both the macro- and micro-scale, and both in terms of its anatomy (i.e.,~structure) and physiology (i.e.,~mechanisms within the living system).
 
-Scientists have constructed neural models at the scale of single detailed individual neurons, as well as millions (\YouTube[HBP Video]{_UFOSHZ22q4}) and billions (\YouTube[SyNAPSE Video]{WmChhExovzY}) of neurons. Still, we don't have good theories that connect behaviour and cognition to low-level neural data. In the words of Churchland and Sejnowski (1994), neuroscience is \enquote{Data-rich and theory-poor}. This is still true today.
+Scientists have constructed neural models at the scale of single detailed individual neurons, as well as millions (\YouTube[HBP Video]{_UFOSHZ22q4}) and billions (\YouTube[SyNAPSE Video]{WmChhExovzY}) of neurons. Still, we don't have good theories that connect behaviour and cognition to low-level neural data. In the words of Churchland and Sejnowski (1994), neuroscience is \enquote{data-rich and theory-poor}. This is still true today.
 
-\Note{Problematically, neuroscientists do not agree as for what the right level of detail of neural models is. When the SyNAPSE project led by IBM's Dharmendra S.~Modha announced the simulation of a \enquote{cat-scale} brain with 1 billion neurons in 2009, the founder of the Human Brain Project (HBP), Henry Markram, denounced the SyNAPSE project as a \enquote{Hoax and PR stunt} and called for Modha to be \enquote{strung up by the toes} \cite{adee2009cat}. 
+\Note{Problematically, neuroscientists do not agree as for what the right level of detail of neural models is. When the SyNAPSE project led by IBM's Dharmendra S.~Modha announced the simulation of a \enquote{cat-scale} brain with 1 billion neurons in 2009, the founder of the Human Brain Project (HBP), Henry Markram, denounced the SyNAPSE project as a \enquote{hoax and PR stunt} and called for Modha to be \enquote{strung up by the toes} \cite{adee2009cat}. 
 	
-Markham's rage did not -- as one might expect -- stem from the fact that IBM's \enquote{cat brain} did not do what one would expect from a functional brain (controlling behaviour), but merely from the fact IBM's neurons were \enquote{too simple} and therefore cannot possibly constitute a full brain model. Markham's HBP and its predecessor, the BlueBrain project, make use of physiologically and anatomically extremely detailed neuron models that are (in part) randomly connected. As of 2020, the HBP has similarly failed to produce any \enquote{functional} brain model.
+Markham's rage did not -- as one might expect -- stem from the fact that IBM's \enquote{cat brain} did not do what one would expect from a functional brain (controlling behaviour), but merely from the fact that IBM's neurons were \enquote{too simple} and therefore cannot possibly constitute a full brain model. Markham's HBP and its predecessor, the BlueBrain project, make use of physiologically and anatomically extremely detailed neuron models that are (in part) randomly connected. Yet, as of 2020, the HBP has similarly failed to produce any \enquote{functional} brain model.
 
 Of course, this leaves that question as for what the right level of detail is to be counted as a \enquote{brain model}. Perhaps we should, as we have discussed above, focus on what actually matters -- connecting neural models to high-level behaviour.}
 
@@ -384,7 +384,7 @@ While the NEF and SPA are independent concepts, they together provide a powerful
 
 Of course, merely using these techniques does not magically mean that the models we build are good models of human cognition. In fact, depending on the kind of question we are trying to answer, our models are most definitively wrong, but that is just the nature of models. The true strength of any modelling technique is in aiding \emph{hypothesis generation}.
 
-For example, in the context of the NEF and the SPA, we might have an hypothesis as for how a certain cognitive task could be solved nn terms of the SPA. We furthermore know from empirical research which brain regions in are involved in solving this task, and as such have data from neuroscience. We can now use this data as constraints when mapping the model onto the brain using the NEF. The resulting spiking neural network model can then be simulated and probed in various ways. This allows us \emph{(a)} to \emph{verify} our hypothesis by comparing high-level behaviour data (e.g.,~timings and error rates) between human/animal subjects and our model and \emph{(b)} to make \emph{predictions} about what we should be able to measure in the case of experiments that have not been performed on real subjects.
+For example, in the context of the NEF and the SPA, we might have an hypothesis as for how a certain cognitive task could be solved in terms of the SPA. We furthermore know from empirical research which brain regions in are involved in solving this task, and as such have data from neuroscience. We can now use this data as constraints when mapping the model onto the brain using the NEF. The resulting spiking neural network model can then be simulated and probed in various ways. This allows us \emph{(a)} to \emph{verify} our hypothesis by comparing high-level behaviour data (e.g.,~timings and error rates) between human/animal subjects and our model and \emph{(b)} to make \emph{predictions} about what we should be able to measure in the case of experiments that have not been performed on real subjects.
 
 \subsection{The Nengo Simulator}
 In the end, the NEF and the SPA are just mathematical concepts. In order to aid scientists in pursuing the kind of hypothesis-driven research outlined above, we need tools that facilitate the construction of such models. The \enquote{\texttt{nengo}} (originally short for \enquote{\emph{N}eural \emph{Eng}ineering \emph{O}bjects}) neural network simulation package is such a tool. It not only provides convenient interfaces for building NEF and SPA models (as well as other kinds of artificial neural networks), but can also execute the resulting model on a variety of hard- and software-backends such GPUs and analogue and digital neuromorphic hardware.
@@ -405,7 +405,7 @@ In accordance with the above, we think of representations in the NEF as the mapp
 
 For this concept of representation to be useful, we need to define a way to \emph{decode} the represented value from the neural activity, and also a way to \emph{encode} a value as neural activites. The NEF defines the decoding process in terms of a linear decoder, and the encoding process in terms of a nonlinear encoding.
 
-Note that we talked representations in terms of the activity of a \emph{population} -- also referred to as an \emph{ensemble} -- of neurons, and not in terms of the activity of individual neurons. This is an important difference that separates the NEF from many \enquote{classical} modelling approaches in neuroscience. The NEF focuses on neuron populations as the smallest representational unit, and not individual neurons.
+Note that we talked about representations in terms of the activity of a \emph{population} -- also referred to as an \emph{ensemble} -- of neurons, and not in terms of the activity of individual neurons. This is an important difference that separates the NEF from many \enquote{classical} modelling approaches in neuroscience. The NEF focuses on neuron populations as the smallest representational unit, and not individual neurons.
 
 \newpage
 
@@ -437,7 +437,7 @@ In the NEF, we compute functions by choosing the \enquote{right} connection weig
 
 \Note{The way in which we normally choose connection weights in the NEF is fundamentally different from popular approaches for training artificial neural networks, such as \emph{backpropagation}. Since we first think about what the individual neuron populations (comparable to a \enquote{layer} of neurons) \emph{represent}, we can optimally solve for connection weights on a connection-by-connection basis.
 	
-When \enquote{training} a network using back-propagation, the training procedure alters the connection weights across multiple layers simultaneously, hence changing what is being represented by individual neurons/populations of neurons. This makes back-propagation more powerful, since we don't have to know what the right representation and transformation is supposed to be. However, it also makes \enquote{training} inherently less interpretable, much slower, and less robust (i.e., with respect to hyperparameters). In other words, in the context of modelling neurobiological systems, there is no reason why we should use something such as backpropagation, as long as we have a good idea as for what the values being represented are, and which functions have to be computed to get from one representation to the next.
+When \enquote{training} a network using back-propagation, the training procedure alters the connection weights across multiple layers simultaneously, hence changing what is being represented by individual neurons/populations of neurons. This makes back-propagation more powerful, since we don't have to know what the right representation and transformation is supposed to be. However, it also makes \enquote{training} inherently less interpretable, much slower, and less robust (with respect to hyperparameters). In other words, in the context of modelling neurobiological systems, there is no reason why we should use something such as backpropagation, as long as we have a good idea as for what the values being represented are, and which functions have to be computed to get from one representation to the next.
 
 That being said, the NEF can be combined with backpropagation-like online-learning approaches in order to build systems that \emph{learn} over time. Again, we will talk about that during the second half of the course when we discuss learning.}
 
@@ -455,14 +455,14 @@ This is particularly useful for modelling phenomena such as (short-term) memory.
 \end{align*}
 can be used to \enquote{remember} an input $\vec u$ across time. Being able to implement dynamical systems allows us to incorporate approaches from control-theory into our models. This is helpful when trying to build motor control systems, but also for inference related tasks (cf.~\enquote{filters}, \enquote{observers} in control theory).
 
-The ability to implement models with arbitrary dynamics is a central feature that sets the NEF apart from other modelling techniques. For example, the NEF provides a systematic approach for constructing stable attractor networks, which have been discussed to be an important building block of nervous systems for decades \cite{eliasmith2005unified}.
+The ability to implement models with arbitrary dynamics is a central feature that sets the NEF apart from other modelling techniques. For example, the NEF provides a systematic approach for constructing stable attractor networks, which have been hypothesised to be an important building block of nervous systems for decades \cite{eliasmith2005unified}.
 
 \Note{If time permits, we are going to discuss some newer, alternative approaches for building dynamical systems in a spiking neural substrate, such as the FORCE \cite{sussillo2009generating,nicola2017supervised} (an online dynamics learning approach) and EBN \cite{boerlin2011spikebased,boerlin2013predictive} (a method focused on efficient information transmission between neurons) at the very end of this term.}
 
 \section{Examples}
 \label{sec:examples}
 
-As mentioned above, the NEF can be seen as a neural compuler. Given a quantitative description of a behaviour (e.g. an algorithm), we can solve for the connections between neurons that will approximate that behaviour. This works for a wide variety of neuron models, both detailed and simple neuron models (next lecture). In particular, as once would expect in real biological systems, the number of neurons affects the model's accuracy, while the neuron properties influence timing and computation. This means that we can make predictions about the behaviour of a system.
+As mentioned above, the NEF can be seen as a neural compiler. Given a quantitative description of a behaviour (e.g. an algorithm), we can solve for the connections between neurons that will approximate that behaviour. This works for a wide variety of neuron models, both detailed and simple neuron models (next lecture). In particular, as once would expect in real biological systems, the number of neurons affects the model's accuracy, while the neuron properties influence timing and computation. This means that we can make predictions about the behaviour of a system.
 
 The following videos show some examples of the NEF and the SPA in action:
 \begin{multicols}{2}
