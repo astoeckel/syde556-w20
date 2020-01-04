@@ -16,12 +16,15 @@
 \usepackage{booktabs}
 \usepackage{subcaption}
 \usepackage{fancyhdr}
-\usepackage{calc}
 \usepackage[svgnames]{xcolor}
+\usepackage{mdframed}
+\usepackage{multicol}
+\usepackage[para]{footmisc}
+\usepackage{siunitx}
 \usepackage{cleveref}
 
 \newfontfamily\symbolfont{Symbola}
-\usepackage[left=1in,right=1in,top=1in,bottom=1in,marginparwidth=0.25in]{geometry}
+\usepackage[left=1in,right=1in,top=1in,bottom=1in,marginparwidth=0.3in]{geometry}
 
 \usepackage[sorting=none]{biblatex}
 \addbibresource{../bibliography.bib}
@@ -37,8 +40,21 @@
 \setlength{\parindent}{0em}
 \setlength{\parskip}{0.5em}
 \renewcommand{\baselinestretch}{1.25}
-\renewcommand{\vec}[1]{{\mathbf{\mathrm{#1}}}}
-\newcommand{\mat}[1]{{\mathbf{\mathrm{#1}}}}
+\renewcommand{\vec}[1]{{\mathbf{#1}}}
+\newcommand{\mat}[1]{{\mathbf{#1}}}
+
+\makeatletter
+\newcommand{\superimpose}[2]{%
+	{\ooalign{{#1}\hidewidth\cr{#2}\hidewidth\cr}}}
+\makeatother
+\newcommand{\SolidCircle}[2]{\superimpose{\color{#1}\symbolfont ⬤}{\textbf{\color{white}#2}}\hspace{1em}}
+\newcommand{\OPlus}{\SolidCircle{DarkGreen}{\kern0.75pt+}}
+\newcommand{\OMeh}{\SolidCircle{DarkOrange}{~}}
+\newcommand{\OMinus}{\SolidCircle{DarkRed}{\kern2.25pt--}}
+
+\newcommand{\YouTube}[2][Video]{\href{https://youtu.be/#2}{{\symbolfont 📺}~{#1}}%
+%\footnote{\url{https://youtu.be/#2}}%
+}
 
 \newcommand{\MakeTitle}[1]{
 \maketitle
@@ -54,6 +70,7 @@
 \newpage
 
 \pagenumbering{roman}
+\setcounter{tocdepth}{2}
 \tableofcontents
 \newpage
 
@@ -62,7 +79,15 @@
 
 \reversemarginpar
 
-\newcommand{\ColorBox}[3]{{\par\hspace{0pt}\marginpar{\huge\raisebox{-1ex}{\symbolfont{#1}}}\ignorespaces\fboxsep=0.5cm\colorbox{#2}{\begin{minipage}[t]{\columnwidth-1cm}{#3}\end{minipage}}}}
+
+\newcommand{\ColorBox}[3]{%
+	\marginpar{%
+		\huge\raisebox{-3ex}{\symbolfont{#1}}%
+	}%
+	\begin{mdframed}[hidealllines=true,backgroundcolor=#2,innertopmargin=0.25cm,innerbottommargin=0.25cm]%
+		{#3}
+	\end{mdframed}}
 
 \newcommand{\Note}[1]{\ColorBox{📌}{WhiteSmoke}{\textbf{Note:} #1}}
 \newcommand{\Example}[1]{\ColorBox{💡}{WhiteSmoke}{\textbf{Example:} #1}}
+\newcommand{\Aside}[1]{\ColorBox{🌟}{WhiteSmoke}{\emph{Aside:} #1}}
