@@ -11,7 +11,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
 
 ## 🎒 Lectures
 
-**Lecture 0** ― Administrative Remarks ― Monday, January 7
+**Lecture 0** ― Administrative Remarks ― Tuesday, January 7
 
 -   **Slides**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_00/syde556_lecture_00_slides.pdf)]
@@ -24,7 +24,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_00/syde556_lecture_00_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_00/syde556_lecture_00_notes.pdf)]
 
-**Lecture 1** ― Introduction ― Monday, January 7
+**Lecture 1** ― Introduction ― Tuesday, January 7
 
 -   **Slides**  
     **N/A**
