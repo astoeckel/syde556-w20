@@ -15,9 +15,12 @@
 \usepackage{subcaption}
 \usepackage{fancyhdr}
 \usepackage{pdfpages}
+\usepackage{siunitx}
+\usepackage{tikz}
 
 \defaultfontfeatures{Mapping=tex-text}
 \newfontfamily\symbolfont{Symbola}
+\newfontfamily\quotefont{Gentium}
 
 \usepackage[sorting=none]{biblatex}
 \addbibresource{../bibliography.bib}
@@ -74,19 +77,42 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]
 
+\hypersetup{%
+	colorlinks=false,% hyperlinks will be black
+	urlbordercolor=aluminium4,% hyperlink borders will be red
+	pdfborderstyle={/S/U/W 0.5}% border style will be underline of width 1pt
+}
+
+\makeatletter
+\newcommand{\superimpose}[2]{%
+	{\ooalign{{#1}\hidewidth\cr{#2}\hidewidth\cr}}}
+\makeatother
+\newcommand{\SolidCircle}[2]{\superimpose{\color{#1}\symbolfont ⬤}{\textbf{\color{white}#2}}\hspace{1em}}
+\newcommand{\OPlus}{\SolidCircle{chameleon3}{\kern0.75pt+}}
+\newcommand{\OMeh}{\SolidCircle{uwyellow}{~}}
+\newcommand{\OMinus}{\SolidCircle{scarletred3}{\kern2.25pt--}}
 
 \newcommand{\hl}[1]{\colorbox{uwyellow}{{\textbf{#1}}}}
+
+\newcommand{\ImageSources}[1]{%
+	\begin{columns}%
+		\column{1.1\textwidth}%
+		\raggedright%
+		\tiny\color{aluminium4}%
+		\setlength\lineskip{1em}%
+		\textbf{Image Sources.}	{#1}%
+	\end{columns}}
 
 \newcommand{\ColorRect}[3]{{\color{#1}\rule{#2}{#3}}}
 \setbeamertemplate{headline}{\ColorRect{black}{\textwidth}{4pt}\newline\ColorRect{uweng1}{0.25\textwidth}{4pt}\ColorRect{uweng2}{0.25\textwidth}{4pt}\ColorRect{uweng3}{0.25\textwidth}{4pt}\ColorRect{uweng4}{0.25\textwidth}{4pt}}
 
-\newcommand{\MakeTitle}{
-	\vspace{0.5cm}
-	{\textbf{\inserttitle}}\\[0.5cm]
-	\insertauthor\\[0.5cm]
-	\insertdate\\
-	\vspace{2cm}
- 	\includegraphics[width=0.5\textwidth]{../assets/uwlogo_eng.pdf}
+\newcommand{\MakeTitle}{%
+	\vspace{0.5cm}%
+	{\textbf{\inserttitle}}\\[0.5cm]%
+	\insertauthor\\[0.5cm]%
+	\insertdate\\%
+	\vspace{2cm}%
+ 	\includegraphics[width=7cm]{../assets/uwlogo_eng.pdf}%
 }
 
 \newcommand{\handwritingframe}{%
@@ -97,3 +123,55 @@
 		\end{columns}
 	\end{frame}	
 }
+
+\newcommand{\imageframe}[1]{%
+	\setbeamertemplate{navigation symbols}{}%
+	\begin{frame}[plain,noframenumbering]%
+		\begin{tikzpicture}[remember picture,overlay]%
+		\node[at=(current page.center)] {%
+			\includegraphics[width=\paperwidth]{#1}%
+		};%
+		\end{tikzpicture}%
+	\end{frame}%
+}
+
+\newcommand{\videoframe}[3][mp4]{%
+	\begin{frame}[plain,noframenumbering]%
+		\hypersetup{%
+			pdfborderstyle={/S/U/W 0}% border style will be underline of width 1pt
+		}%
+		\begin{tikzpicture}[remember picture,overlay]%
+		\node[at=(current page.center)] {%
+			\includegraphics[width=\paperwidth]{{{video/#2_#3}.jpg}}%
+		};%
+		\node[at=(current page.center)] {%
+			\ifcsname SlidesDistr\endcsname%
+				\href{https://youtu.be/#3}{\includegraphics[width=2cm]{../assets/play_button.pdf}}%
+			\else%
+				\href{video/#2_#3.#1}{\includegraphics[width=2cm]{../assets/play_button.pdf}}%
+			\fi%
+		};%
+		\end{tikzpicture}%
+	\end{frame}%
+}
+
+\newcommand{\includevideo}[4][mp4]{%
+	\begingroup%
+	\hypersetup{%
+		pdfborderstyle={/S/U/W 0}% border style will be underline of width 1pt
+	}%
+	\begin{tikzpicture}%
+	\node (A) {%
+		\includegraphics[width=#4]{{{video/#2_#3}.jpg}}%
+	};%
+	\node[at=(A.center)] {%
+		\ifcsname SlidesDistr\endcsname%
+			\href{https://youtu.be/#3}{\includegraphics[width=2cm]{../assets/play_button.pdf}}%
+		\else%
+			\href{video/#2_#3.#1}{\includegraphics[width=2cm]{../assets/play_button.pdf}}%
+		\fi%
+	};%
+	\end{tikzpicture}%
+	\endgroup%
+}
+

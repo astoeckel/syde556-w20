@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="YouTube_Icon"
+   enable-background="new 0 0 1024 721"
+   version="1.1"
+   viewBox="0 0 1024 721"
+   sodipodi:docname="play_button.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <metadata
+     id="metadata17">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs15">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient847">
+      <stop
+         style="stop-color:#666666;stop-opacity:1;"
+         offset="0"
+         id="stop843" />
+      <stop
+         style="stop-color:#4a4a4a;stop-opacity:1"
+         offset="1"
+         id="stop845" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient847"
+       id="linearGradient849"
+       x1="263.11533"
+       y1="124.11803"
+       x2="263.11533"
+       y2="606.49609"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2085"
+     id="namedview13"
+     showgrid="false"
+     inkscape:snap-page="true"
+     inkscape:zoom="0.41046642"
+     inkscape:cx="514.56698"
+     inkscape:cy="1026.9117"
+     inkscape:window-x="0"
+     inkscape:window-y="38"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Lozenge" />
+  <path
+     id="Triangle"
+     d="m407 493 276-143-276-144v287z"
+     fill="#fff" />
+  <g
+     id="Lozenge"
+     style="fill:#006680">
+    <linearGradient
+       id="SVGID_1_"
+       x1="512.5"
+       x2="512.5"
+       y1="719.7"
+       y2="1.2"
+       gradientTransform="matrix(1 0 0 -1 0 721)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#E52D27"
+         offset="0"
+         id="stop4" />
+      <stop
+         stop-color="#BF171D"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <path
+       d="M 972.4,54.9 H 52.6 V 665.8 H 972.4 Z M 407,493 V 206 l 276,144 z"
+       id="path9"
+       style="fill:url(#linearGradient849);fill-opacity:1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccc" />
+  </g>
+</svg>

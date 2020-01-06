@@ -109,7 +109,7 @@ Classically, there have been two different approaches for constructing the kind 
 \Note{We are \emph{not} saying that the approaches described below are useless! As with any scientific project, \enquote{usefulness} depends on the question that is being asked. In the context of this course, we are trying to build \enquote{functional models} (in the sense defined above), and the problems discussed below are solely with respect to this goal.}
 
 \paragraph{Bottom-up, large-scale neural models}
-Examples of this kind of approach would be the Human Brain Project (HBP; \cite{markram2012human}) or the \href{https://www.darpa.mil/program/systems-of-neuromorphic-adaptive-plastic-scalable-electronics}{DARPA SyNAPSE} research program \cite{morgan2011darpa,merolla2014million}. Here, the general idea seems to be to collect as much information as possible about \enquote{canonical microcircuits} and to simulate these in large scale on either supercomputers or specialised neuromorphic hardware (see \cite{komer2016unified} for a more thorough discussion of the HBP).
+Examples of this kind of approach would be (parts of) the Human Brain Project (HBP; \cite{markram2012human}) or the \href{https://www.darpa.mil/program/systems-of-neuromorphic-adaptive-plastic-scalable-electronics}{DARPA SyNAPSE} research program \cite{morgan2011darpa,merolla2014million}. Here, the general idea seems to be to collect as much information as possible about \enquote{canonical microcircuits} and to simulate these in large scale on either supercomputers or specialised neuromorphic hardware (see \cite{komer2016unified} for a more thorough discussion of the HBP).
 
 The idea of canonical microcircuits may be attractive from a theoretical perspective. However, this seems to ignore that the brain consists of highly specialised structures. As we will discuss next, different parts of the brain are very dissimilar in terms of connectivity, cell types, as well as the type of input and output.
 
@@ -135,13 +135,13 @@ As mentioned in the above note, these restrictions are surely fine for many rese
 
 We ended the last section asking whether we actually know enough about brains in order to expertly constrain our models and to define bridging laws. So, what \emph{do} we know about our brains?
 
-Let's start with some basic facts about the human brain:\footnote{For those of you who still find this a little too abstract, take a look at this \YouTube[video showing an unfixed human brain]{jHxyP-nUhUY} (warning: dead human body parts). In case you'd like to experience this in real life, take PSYCH~784.}
+Let's start with some basic facts about the human brain:\footnote{For those of you who still find this a little too abstract, take a look at this \YouTube[video showing an unfixed (i.e.,~untreated) human brain]{jHxyP-nUhUY} (warning: dead human body parts). In case you'd like to experience this in real life, take PSYCH~784.}
 \begin{itemize}
 	\item \textbf{Weight:} \SI{2}{\kilogram} (2\% of the body weight)
 	\item \textbf{Power consumption:} \SI{20}{\watt} (25\% of the body's total power consumption)
 	\item \textbf{Surface area:} \SIrange{1500}{2000}{\centi\metre\squared} (roughly four A4/letter pages of paper)
 	\item \textbf{Number of neurons:} \SI{100} billion ($10^{11}$, \SI{150000}{\per\milli\metre\squared})
-	\item \textbf{Number of synapses:} 100 trillion ($10^{14}$, about $1000$-$10\,000$ per neuron)
+	\item \textbf{Number of synapses:} 100 trillion ($10^{14}$, about $1000$ per neuron)
 \end{itemize}
 
 \Note{If we were able to simulate 1000 neurons in realtime at about \SI{1}{\watt} (which is roughly the case for simple neuron models and specialised neuromorphic hardware, not counting any interconnect), a computer simulating the entire brain would consume about \SI{100}{\mega\watt}, i.e., the power output of an entire medium-scale power plant. That is almost 7 orders of magnitude more than what biology requires.}
@@ -162,7 +162,7 @@ Let's start with some basic facts about the human brain:\footnote{For those of y
 		\caption{Sagittal cross-section}
 		\label{fig:brain_sagittal}
 	\end{subfigure}%
-	\caption{Illustrations depicting the human brain. \textbf{(a)} From \href{https://archive.org/details/popularsciencemo35newyuoft/page/n6}{\emph{Popular Science Monthly, Volume 35}} via \href{https://commons.wikimedia.org/wiki/File:PSM_V35_D759_Diagram_of_the_left_cerebral_hemisphere.jpg}{Wikimedia}. \textbf{(b)} Illustration by Jean-Baptiste Marc Bourgery, \emph{Traité complet de l'anatomie de l'homme} (1831 to 1854) via \href{https://commons.wikimedia.org/wiki/File:Human_brain.jpg}{Wikimedia}.}
+	\caption{Illustrations depicting the human brain. \textbf{(a)} From \href{https://archive.org/details/popularsciencemo35newyuoft/page/n6}{\emph{Popular Science Monthly, Volume 35}} (1889) via \href{https://commons.wikimedia.org/wiki/File:PSM_V35_D759_Diagram_of_the_left_cerebral_hemisphere.jpg}{Wikimedia}. \textbf{(b)} Illustration by Jean-Baptiste Marc Bourgery, \emph{Traité complet de l'anatomie de l'homme} (1831 to 1854) via \href{https://commons.wikimedia.org/wiki/File:Human_brain.jpg}{Wikimedia}.}
 \end{figure}
 
 As can be seen in \cref{fig:brain_lateral,fig:brain_sagittal}, the human brain has several visually clearly distinct features. The most prominent of these structures is the Cerebral Cortex (the \enquote{folded} part at the top in \cref{fig:brain_sagittal}; each peak of a \enquote{fold} is called \emph{gyrus}, the corresponding trough is called \emph{sulcus}). Furthermore, we can clearly see the Cerebellum (the sponge-shaped \enquote{appendix} at the back of the brain), as well as the Brain Stem (the grey region extending into the spinal cord).
@@ -318,7 +318,6 @@ Here a so called \enquote{tetrode} (an electrode with multiple tips) or a \enquo
 	\end{itemize}
 	\columnbreak
 	\begin{itemize}
-		\item[\OMinus] May be limited to the brain surface
 		\item[\OMinus] Damaging over time
 	\end{itemize}
 \end{multicols}
@@ -332,7 +331,7 @@ Use fluorescent calcium indicator to indicate the presence of $\mathrm{Ca}^{2+}$
 	\end{itemize}
 	\columnbreak
 	\begin{itemize}
-		\item[\OMinus] May be limited to the brain surface
+		\item[\OMinus] Local
 		\item[\OMinus] Invasive
 	\end{itemize}
 \end{multicols}
@@ -342,11 +341,12 @@ Modify individual types of neurons genetically, so they can either be stimulated
 \begin{multicols}{2}
 	\begin{itemize}
 		\item[\OPlus] High temporal resolution (milliseconds)
-		\item[\OPlus] High spatial resolution (individual cells)
+		\item[\OPlus] Targets individual cell types
+		\item[\OPlus] Can examine function of brain circuits
 	\end{itemize}
 	\columnbreak
 	\begin{itemize}
-		\item[\OMinus] May be limited to the brain surface
+		\item[\OMinus] Local
 		\item[\OMinus] Invasive
 	\end{itemize}
 \end{multicols}
@@ -359,7 +359,7 @@ Scientists have constructed neural models at the scale of single detailed indivi
 
 \Note{Problematically, neuroscientists do not agree as for what the right level of detail of neural models is. When the SyNAPSE project led by IBM's Dharmendra S.~Modha announced the simulation of a \enquote{cat-scale} brain with 1 billion neurons in 2009, the founder of the Human Brain Project (HBP), Henry Markram, denounced the SyNAPSE project as a \enquote{hoax and PR stunt} and called for Modha to be \enquote{strung up by the toes} \cite{adee2009cat}. 
 	
-Markham's rage did not -- as one might expect -- stem from the fact that IBM's \enquote{cat brain} did not do what one would expect from a functional brain (controlling behaviour), but merely from the fact that IBM's neurons were \enquote{too simple} and therefore cannot possibly constitute a full brain model. Markham's HBP and its predecessor, the BlueBrain project, make use of physiologically and anatomically extremely detailed neuron models that are (in part) randomly connected. Yet, as of 2020, the HBP has similarly failed to produce any \enquote{functional} brain model.
+Markham's rage did not -- as one might expect -- stem from the fact that IBM's \enquote{cat brain} did not do what one would expect from a functional brain (controlling behaviour), but merely from the fact that IBM's neurons were \enquote{too simple} and therefore cannot possibly constitute a full brain model. Markham's HBP and its predecessor, the BlueBrain project, make use of physiologically and anatomically extremely detailed neuron models that are statistically connected. Yet, as of 2020, the HBP has similarly failed to produce any \enquote{functional} brain model.
 
 Of course, this leaves that question as for what the right level of detail is to be counted as a \enquote{brain model}. Perhaps we should, as we have discussed above, focus on what actually matters -- connecting neural models to high-level behaviour.}
 
