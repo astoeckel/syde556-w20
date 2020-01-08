@@ -8,17 +8,23 @@
 
 \begin{document}
 
-\MakeTitle{\textbf{Accompanying Readings: Chapter 2.1 and Chapter 4.1 of Neural Engineering}}
+\MakeTitle{\textbf{Accompanying Readings: Chapter 4.1 and Chapter 2.1 of Neural Engineering}}
 
 \section{Overview}
 
-As we have discussed in the last lecture, we consider neurons to be the fundamental computational element in the nervous system. (Most) neurons communicate by generating action potentials (or spikes) that are sent to and received by post-synaptic neurons.
+As we discussed in the last lecture, we consider neurons to be the fundamental computational unit in the nervous system. Neurons compute by receiving action potentials (spikes) from pre-synaptic neurons. Then, under certain conditions, they may themselves emit an action potential that is propagated along the neuron's axon and in turn received by post-synaptic neurons.
 
-An important part of understanding nervous systems is thus to understand the \enquote{code} that is being exchanged between neurons. Unfortunately, there is no scientific consensus about what exactly \enquote{the neural code is}. What we do have, are very detailed models of how individual neurons generate spikes. Thus, we will approach the problem of neural representation in two stages. First, in this lecture, we will have a look at single neurons and try to get an understanding of how neurons generate action potentials. Second, in the next two lectures, we will use information theory to think about what a potential neural representation could be.
+From an engineering perspective, we could say that individual neurons exchange coded information. An important part of understanding nervous systems is thus to understand the \enquote{code} that is being used for neural communication.
+
+Unfortunately, there is no scientific consensus as for what exactly this \enquote{neural code} is. Most evidence points at a combination of population coding (i.e.,~information is encoded in the relative activities of a group of neurons) and time coding (i.e.,~the timing of individual spikes matters) \cite{rieke1999spikes}.
+
+\Note{There isn't a single neural code; different coding strategies are employed in different parts of the nervous system. Codes differ significantly between the peripheral nervous system (i.e.,~the sensory and motor neurons distributed throughout the body; especially the latter are clearly using a rate code) and the central nervous system.}
+
+What we do have however, are detailed models that describe how individual neurons generate spikes, i.e.,~what the conditions are under which incoming spikes are translated into a corresponding output spike. Thus, we will approach the problem of trying to decipher neural codes in two stages. First, in this lecture, we will have a look at single neurons and try to get an understanding of how neurons generate action potentials. We discuss a single model, the so called \enquote{Leaky Integrate-and-Fire} neuron, and summarize its behaviour in a simple analytical expression. Second, in the next two lectures, we think about the neural code in terms of \emph{representation}, which will lead us to a theory predicting what the neural code may be.
 
 \section{Spiking Neurons}
 
-\Note{We're going to have a slightly closer look at biologically detailed spiking neuron models towards the end of the class. For now, we're skimming over the details a little. Feel free to have a look at \cite{kandel2012principles} if you want to learn more about basic neurobiology.}
+\Note{We're going to have a slightly closer look at biologically detailed spiking neuron models towards the end of the class. For now, we're skimming over the details. Have a look at \cite{kandel2012principles} (particularly Chapter 7 and 8) if you want to learn more about basic neurobiology.}
 
 \begin{figure}[t]
 	\centering
@@ -27,7 +33,7 @@ An important part of understanding nervous systems is thus to understand the \en
 	\label{fig:neuron_sketch_membrane}
 \end{figure}
 
-Neurons are cells that specialise in the integration and transfer of electrical signals. Cells are generally separated from the environment by a thick, impermeable \enquote{barrier}, the \emph{cell membrane}, consisting of a bi-layer of lipid molecules. The cell membrane establishes an \enquote{intra-cellular} space that is isolated from the \enquote{extra-cellular} space. Both spaces are filled with a watery liquid, the \emph{intra-cellular fluid} and \emph{extra-cellular fluid}, respectively (\cref{fig:neuron_sketch_membrane}).
+Neurons are cells that specialise in the integration and transmission of electrical signals. Cells in general are separated from the environment by a thick, impermeable \enquote{barrier}, the \emph{cell membrane}, consisting of a bi-layer of lipid molecules. The cell membrane establishes an \enquote{intracellular} space that is isolated from the \enquote{extracellular} space. Both spaces are filled with a watery liquid, called the \emph{intracellular fluid} and \emph{extracellular fluid}, respectively (\cref{fig:neuron_sketch_membrane}).
 
 \subsection{Qualitative neural behaviour}
 
@@ -48,7 +54,7 @@ Neurons are cells that specialise in the integration and transfer of electrical 
 	\caption{Computer simulation of a Hodgkin Huxley model neuron \cite{hodgkin1952quantitative,traub1991neuronal}. The blue line corresponds to the membrane potential $v$, the dashed line to the current $J$ that is being injected into the neuron.}
 \end{figure}
 
-When we stick a sharp electrode into a neuron (akin to the \enquote{single electrode recording}), we can measure a difference in electrical potential, i.e.~a voltage $v$ between the inside and the outside of the cell (\cref{fig:neuron_sketch_membrane}). We call this initial voltage the \emph{resting potential} $E_\mathrm{L}$.\footnote{The weird symbol \enquote{$E_\mathrm{L}$} stems the more precise name of this potential, the \enquote{\textbf{L}eak channel \textbf{E}quilibrium potential}.}
+When we insert a sharp electrode into a resting neuron (akin to the \enquote{single electrode recording} we saw in the last lecture), we can measure a difference in electrical potential, i.e.,~a voltage $v$, between the intra- and extracellular space (\cref{fig:neuron_sketch_membrane}). We call this voltage the \emph{resting potential} $E_\mathrm{L}$.\footnote{The weird symbol \enquote{$E_\mathrm{L}$} stems from the alternative name of this potential, the \enquote{\textbf{L}eak channel \textbf{E}quilibrium potential}.}
 
 Instead of just measuring this potential we may also inject an external current into the neuron by hooking it up to a current source (i.e.~a power supply that regulates current instead of voltage). When doing this, we find four things:
 \begin{enumerate}
@@ -120,6 +126,8 @@ where, $\tau_\mathrm{RC} = C_\mathrm{m} R$ and $R = \frac{1}{g_\mathrm{L}}$.
 	\end{subfigure}
 	\caption{Effects of a current ramp on an Hodgkin-Huxley type model neuron and a (normalized) LIF neuron. As above, the blue line is the membrane potential, the dashed line is the input current.}
 \end{figure}
+
+\subsection{Limitations of the LIF neuron model}
 
 \section{Artificial Neurons}
 
