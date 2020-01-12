@@ -175,3 +175,11 @@
 	\endgroup%
 }
 
+\newcommand{\backupbegin}{
+	\newcounter{finalframe}
+	\setcounter{finalframe}{\value{framenumber}}
+}
+
+\newcommand{\backupend}{
+	\setcounter{framenumber}{\value{finalframe}}
+}
