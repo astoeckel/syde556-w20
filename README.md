@@ -51,7 +51,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
 
 ## 📝 Assignments
 
-### Assignment 1 ― due Tuesday, January 30
+### Assignment 1 ― due Thursday, January 30
 
 -   **Instructions**  
   [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/assignments/assignment_01/syde556_assignment_01.pdf)]
