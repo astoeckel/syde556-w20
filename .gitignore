@@ -23,3 +23,4 @@ build/
 *.pyc
 */build
 *.synctex.gz
+*.cpt
