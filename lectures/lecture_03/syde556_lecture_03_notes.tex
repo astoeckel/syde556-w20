@@ -12,11 +12,11 @@
 
 \section{Introduction}
 
-\Note{In the last lecture, we had a look at a the Leaky Integrate-and-Fire neuron model as an approximation of the behaviour of biological neurons. In this lecture, we discuss a theory of neural representation. Together with our knowledge about neural responses this forms a theory of what \enquote{the neural code} may be.}
+\Note{In the last lecture, we had a look at a the Leaky Integrate-and-Fire neuron model as an approximation of the behaviour of biological neurons. In this lecture, we discuss a theory of neural representation. Together, these two ideas will give us a theory of what \enquote{the neural code} may be.}
 
 In order to survive in natural environments, animals must build representations of their surroundings. This includes the physical properties of objects in their vicinity, such as \emph{velocity}, \emph{location}, \emph{colour}, etc., but also non-physical properties such as whether an object is \emph{edible}, or \emph{dangerous}. Of course such representations are not only limited to external objects, but may carry information about the own body (e.g., \enquote{proprioception}, configuration of limbs; location in space), up to abstract thought and emotions.
 
-For now, and mostly because it is the easiest to reason about, we shall restrict ourselves to relatively low-level representations of sensory information. In this case, representation is directly evident from correlation between some external quantity and neural activity.  We saw examples of such representations in the first lecture. For example, in the classical Hubel and Wiesel experiment (\YouTube{KE952yueVLA}, \cite{hubel1959receptive}), individual neural activity is correlated with the location and orientation of a bar of light (an \enquote{edge}) within the visual field. Similarly, in the case of place cells (\YouTube{lfNVv0A8QvI}), neural activity is correlated with the location of the animal in space.
+For now, and mostly because it is the easiest to reason about, we shall restrict ourselves to relatively low-level representations of sensory information. In this case, the fact that a neuron is representing an external quantity is directly evident from correlation between the quantity and the neuron's activity.  We saw examples of such representations in the first lecture. For example, in the classical Hubel and Wiesel experiment (\YouTube{KE952yueVLA}, \cite{hubel1959receptive}), neural activity is correlated with the location and orientation of a bar of light (an \enquote{edge}) within the visual field. Similarly, in the case of place cells (\YouTube{lfNVv0A8QvI}), neural activity is correlated with the location of the animal in space.
 
 A central claim of the Neural Engineering Framework (NEF) is that values $\vec x$ -- e.g., the physical quantities mentioned above -- are represented in the neural activity $\vec a$ of \emph{groups} of neurons. Furthermore, we claim that there is a non-linear encoding process that translates a value into a neural activity pattern, and a linear decoding process that estimates the represented value from neural activity patterns.
 
@@ -65,9 +65,9 @@ In the case of a lossless code, there exists an encoding function $f$, as well a
 \paragraph{Morse Code} Morse code is an example of such a lossless coding scheme. A function $f$ takes a character sequence and turns it into valid Morse code, consisting of dots~($\cdot$) and dashes~($-$):
 \begin{align*}
 	\begin{aligned}
-	f&: \mathcal{S}(\{\mathtt{A}, \ldots, \mathtt{Z}, \text{\textvisiblespace}\}) \rightarrow \mathbb{M} \,. \\
-	f^{-1} &: \mathbb{M} \rightarrow \mathcal{S}(\{\mathtt{A}, \ldots, \mathtt{Z}, \text{\textvisiblespace}\}) \,.
-	\end{aligned} &&\quad \text{where } \mathbb{M} \subset \mathcal{S}(\{\cdot, -\}) \text{ is the set of valid Morse messages}
+	f&: \mathcal{S}(\{\mathtt{A}, \ldots, \mathtt{Z}, \text{\textvisiblespace}\}) \rightarrow \mathbb{M} \,, \\
+	f^{-1} &: \mathbb{M} \rightarrow \mathcal{S}(\{\mathtt{A}, \ldots, \mathtt{Z}, \text{\textvisiblespace}\}) \,,
+	\end{aligned} &&\quad \text{where } \mathbb{M} \subset \mathcal{S}(\{\cdot, -\}) \text{ is the set of valid Morse messages} \,.
 \end{align*}
 Here, $\mathcal{S}$ denotes the set of all sequences consisting of the given elements (i.e., the union over all Cartesian powers).
 
@@ -97,7 +97,7 @@ We could imagine using such a binary coding scheme in the context of a neural ne
 \begin{itemize}
 	\item Individual units represent vastly different magnitudes. Since biological neural networks are noisy and we are using a linear decoding scheme, noise in the unit representing the digit $i = 8$ is amplified by a factor of $256$ compared to noise in the unit representing the digit $i = 0$.
 	\item We assume that our units can only have two possible values, zero and one, whereas neural units can have graded responses (cf.~the response curve $G[J]$).
-	\item The encoding function is complicated and there is no neurophysiological evidence that brains use a binary coding schemes.
+	\item The encoding function is quite complicated. There is no neurophysiological evidence that brains use a binary coding scheme.
 \end{itemize}}
 
 \subsection{Lossy Codes}
@@ -110,7 +110,7 @@ In contrast to lossless codes, lossy codes have no perfect inverse $f^{-1}$. Ins
 
 \paragraph{Examples of lossy codes} In mathematics and engineering, examples of such lossy codes include Principal Component Analysis (PCA; nonlinearly reduces a dataset onto its first $n$ principal basis vectors), and coding schemes for audio and images, such as MP3 and JPEG (these coding schemes are based on the Discrete Cosine Transformation).
 
-\Aside{Surprisingly, the Discrete Cosine Transformation (DCT) turns out to be a close to optimal \emph{linear} transformation for the compression of natural signals. When computing the PCA of a large corpus of natural images or audio (which optimally ensures that the most variance in the data is explained by the first dimensions), the resulting transformation is very similar to the DCT. However, the DCT of a signal $\vec x$ can be computed more efficiently (in $\mathcal{O}(d \log(d))$) compared to a general linear transformation (in $\mathcal{O}(d^2)$).}
+\Aside{Surprisingly, the Discrete Cosine Transformation (DCT) turns out to be a close to optimal \emph{linear} transformation for the compression of natural signals. When computing the PCA of a large corpus of natural images or audio (the PCA optimally ensures that the most variance in the data is explained by the first dimensions), the resulting linear transformation is very similar to the DCT. However, the DCT of a signal $\vec x$ can be computed more efficiently (in $\mathcal{O}(d \log(d))$) compared to a general linear transformation (in $\mathcal{O}(d^2)$).}
 
 \section{Neural Representation}
 
@@ -180,14 +180,16 @@ Overall, we can qualitatively distinguish between three types of tuning curves (
 	\item Responses that have a \emph{preferred stimulus}; their response is maximal if the stimulus has a certain value and decreases if the value deviates from that value (cf.~\cref{fig:saleem_et_al_tuning_curves_b,fig:eliasmith_et_al_2003_orientation_tuning}).
 \end{enumerate}
 
-We can easily generate tuning curves of type \emph{i.}~can be easily explained by rescaling and offsetting the neural input current $J$ to match the data. In other words, we have a simple current translation function that converts the stimulus $x$ into a current $J$ that is being injected into the $i$-th neuron of our population:
+Tuning curves of type \emph{i.}~can be easily explained by rescaling and offsetting the neural input current $J$ to match the data. In other words, we have a simple \emph{current translation function} $J_i(x)$ that converts the stimulus $x$ into a current $J$ that is being injected into the $i$-th neuron of our population:
 \begin{align}
 	J_i(x) &= \alpha_i x + J^\mathrm{bias}_i \,,
 	\label{eqn:current_translation_scalar}
 \end{align}
-where $\alpha_i$ is the so called \emph{gain factor} and $J^\mathrm{bias}_i$ is the \emph{bias}. These parameters are describe the parameters of individual neurons in a neuron population; they are \emph{different} for each neuron in the population. Tuning curves of type \emph{ii.}~can be generated by choosing a negative gain $\alpha$. You can try to find parameters that qualitatively match the tuning curves in \cref{fig:tuning_curves_1,fig:tuning_curves_2} by playing around with the gain and offset parameters in \CodeLink[this Jupyter Notebook]{lecture_03/media/code/tuning_curve_experiments.ipynb}.
+where $\alpha_i$ is the so called \emph{gain factor} and $J^\mathrm{bias}_i$ is the \emph{bias}. These parameters are different for each neuron in the population and model the diverse neural responses of individual neurons within the same brain area. Tuning curves of type \emph{ii.}~can be generated by choosing a negative gain $\alpha_i$.
 
-This leaves us with tuning curves of type \emph{iii.}, i.e.~tuning curves having a preferred value. We generate this problem by extending the current translation function \cref{eqn:current_translation_scalar} to accepting vectorial quantities as input.
+\Example{You can try to find parameters that qualitatively match the tuning curves in \cref{fig:tuning_curves_1,fig:tuning_curves_2} by playing around with the gain and offset parameters in \CodeLink[this Jupyter Notebook]{lecture_03/media/code/tuning_curve_experiments.ipynb}.}
+
+This leaves us with tuning curves of type \emph{iii.}, i.e.~tuning curves having a preferred value. We generate these tuning curves by extending the current translation function \cref{eqn:current_translation_scalar} to accepting vectorial quantities as input.
 
 \subsection{The Encoding Equation}
 
@@ -211,7 +213,7 @@ where $\alpha_i$, $J^\mathrm{bias}_i$ are the gain and bias terms for the $i$-th
 	\end{align*}
 	where $\| \cdot \|$ denotes the standard $L_2$-norm, and $\angle(\cdot, \cdot)$ is the angle inscribed between two vectors. Hence, the dot product is maximal if the angle between the two vectors is zero (they are pointing in the same direction, the cosine is $+1$) and zero if the two vectors are orthogonal. It is minimal (the cosine is $-1$) if the two vectors are pointing in exactly opposite directions.}
 
-Combining the current $J_i(\vec x)$ with the neuron response curve $G[J]$ (where, again, $G$ is specific to each neuron population) yields the encoding equation:
+Combining the current $J_i(\vec x)$ with the neuron response curve $G[J]$ (where, again, $G$ is specific to each neuron population) yields the \enquote{encoding equation}, which describes the nonlinear representational encoding process performed by each neuron within a population
 \begin{ImportantEqn}{Encoding Equation}
 	a_i(\vec x) &= G\big[J_i(\vec x)\big] = G\big[\alpha_i \langle \vec x, \vec e_i \rangle + J^\mathrm{bias}_i\big] \,.
 	\label{eqn:encoding}
@@ -239,7 +241,7 @@ In the case of a one-dimensional encoder, the encoding \enquote{vector} can eith
 \paragraph{Example: 2D Encoder}
 \Cref{fig:2d_encoder_tuning_curve_unit} shows a tuning curve in a 2D representational space. Note that moving along the unit-circle in 2D-space generates the \enquote{preferred direction} tuning curve type observed in nature.
 
-\section{Decoding Represented values}
+\section{Decoding Represented Values}
 
 As we have seen in the binary coding example above, some codes possess a \enquote{complex}, non-linear encoding scheme, but can be decoded using a simple linear decoder. Neuroscientists have similarly found that they can use a simple linear decoding scheme to extract represented values from neural populations -- we will later discuss some more examples.
 
@@ -262,12 +264,14 @@ Now that we now how to decode the represented value $\vec x$ \emph{in principle}
 
 \subsection{Computing Identity Decoders}
 
-In order to compute the decoders, we first have to think about what the decoders should optimally do. The roles of the decoders is to estimate the represented value and in the optimal case we would like the decoded value $\hat{\vec x}$ to be equal to or as close as possible to the encoded value $\vec x$. That is, in general we would like to minimize the error $E$ (also called a \emph{loss function})
+In order to compute the decoders, we first have to think about what the decoders should optimally do. The roles of the decoders is to estimate the represented value. In the optimal case we would like the decoded value $\hat{\vec x}$ to be equal to or as close as possible to the encoded value $\vec x$. That is, in general, we would like to minimize the error $E$ (also called a \emph{loss function})
 \begin{align}
 	\arg\min_{\mat D} E = \int_{\mathbb{X}} \|\vec x - \hat{\vec x}\| \,\mathrm{d}\vec x = \int_{\mathbb{X}} \|\vec x - \mat D \vec a(\vec x)\| \,\mathrm{d}\vec x \,,
 	\label{eqn:optimisation_problem}
 \end{align}
 where $\mathbb{X}$ is a compact subspace of the possible represented values in $\mathbb{R}^d$ we are interested in.
+
+\newpage
 
 \Note{The dynamic range of a neural representation is limited due to neural saturation and noise -- it is not possible to represent all real numbers in a single neuron population. This is why we are using this \enquote{weird} integral over a subspace $\mathbb{X}$ -- we must restrict ourselves to a range of numbers we want to be able to decode well.
 	
@@ -276,11 +280,11 @@ The quantifier \emph{compact} is just a mathematical technicality that ensures t
 \paragraph{Mathematical derivation} In order to make the math a little more digestible, assume that we want to find the decoders for scalar represented values ($d = 1$) and that the represented values we are interested in are over the interval $\mathbb{X} = [-1, 1]$. The above equation becomes
 \begin{align}
 	\arg\min_{\vec d} E
-		&= \arg\min_{\vec d} \sqrt{ \int_{-1}^1 \left(x - \langle \vec d, \vec a(x) \rangle\right)^2 } \,\mathrm{d}x \\
-		&= \arg\min_{\vec d} \frac{1}2 \int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x \,.
+		&= \arg\min_{\vec d} \sqrt{ \int_{-1}^1 \left(x - \langle \vec d, \vec a(x) \rangle\right)^2 } \,\mathrm{d}x
+		 = \arg\min_{\vec d} \frac{1}2 \int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x \,.
 	\label{eqn:decoder_loss}
 \end{align}
-This equality holds because eliminating the square root and adding a factor $\frac{1}2$ does not change the location of the minimum. Since this is a quadratic equation we know that there is exactly one extremum. In this particular case we also know that this extremum must be a minimum (since the quadratic term has a positive sign). Hence, we can find the $\vec d$ that minimizes the error by differentiating with respect to individual $d_i$ and setting the derivative to zero:
+This equality holds because eliminating the square root and adding a factor $\frac{1}2$ does not change the location of the minimum. Since this is a quadratic equation we know that there is exactly one extremum. In this particular case, we also know that this extremum must be a minimum (since the quadratic term has a positive sign). Hence, we can find the $\vec d$ that minimizes the error by differentiating with respect to individual $d_i$ and setting the derivative to zero:
 \begin{align*}
 	\frac{\partial E}{\partial d_i}
 		&= \frac{1}2 \int_{-1}^1 2 \left(x - \sum_{j = 1}^n d_j a_j(x) \right) \left(-a_i(x) \right) \,\mathrm{d}x
@@ -300,7 +304,7 @@ Upon closer inspection we see that this is a system of $n$ linear equations over
 	\left( \mat\Gamma \right)_{ij}
 		 = \int_{-1}^1 a_j(x) a_i(x) \,\mathrm{d}x \,.
 \end{align*}
-Further evaluation of the integrals is -- generally speaking -- not possible in closed form. What we can do however is to approximate the integrals by (randomly) sampling. We pick $N$ sample points $x_1, \ldots, x_N$. Then, the above equations becomes (approximately)
+Further evaluation of the integrals is -- generally speaking -- not possible in closed form. What we can do however is to approximate the integrals by (randomly) sampling. We pick $N$ sample points $x_1, \ldots, x_N$. Then, the above equation becomes (approximately)
 \begin{align*}
 	\frac{1}N \sum_{k = 1}^N a_i(x_k) x_k
 		&= \frac{1}N \sum_{j = 1}^n d_j \sum_{k = 1}^N a_j(x_k) a_i(x_k) \,.
@@ -311,7 +315,7 @@ The factor $1/N$ accounting for the discretisation of the integral cancels out. 
 	\text{where } \mat \Upsilon \approx \mat A \vec \xi \text{ and } \mat \Gamma \approx \mat A \mat A^\T \,.
 \end{align*}
 
-In general, solving \cref{eqn:optimisation_problem} directly without assuming $d = 1$ and $\mathbb{X} = [-1, 1]$, we get
+In general, solving \cref{eqn:optimisation_problem} directly (i.e.,~without assuming $d = 1$ and $\mathbb{X} = [-1, 1]$), we get
 \begin{ImportantEqn}{Computing decoders without taking noise into account}
 	\mat D^\T &\approx  (\mat A \mat A^T)^{-1} \mat A \mat X^\T \,.
 	\label{eqn:decoders}
@@ -353,7 +357,7 @@ The response curve $G[J]$ is only a first-order approximation of a neuron's beha
 Nervous systems contain various sources of error, including, but not limited to the following (cf.~\cite{gerstner2002spiking}, Chapter 5.1)
 \begin{itemize}
 	\item \textbf{Axonal jitter.}
-	The action potential transmission speed varies between spikes. This is because action potentials are transported \emph{actively}, i.e.,~they do not travel along the axon due to passive electrical properties of the axon but are constantly renewed at the so called \enquote{Nodes of Ranvier}.
+	The action potential transmission speed varies between spikes. This is because action potentials are transported \emph{actively}, i.e.,~they do not travel along the axon due to passive electrical properties of the axon, but are constantly renewed at the so called \enquote{Nodes of Ranvier}.
 	\item \textbf{Neurotransmitter vesicle release failure.}
 	Only 10-30\% of pre-synaptic spikes generate a post-synaptic event -- one reason being that the release of neurotransmitter vesicles is stochastic.
 	\item \textbf{Amount of neurotransmitter per vesicle.}
@@ -361,7 +365,7 @@ Nervous systems contain various sources of error, including, but not limited to 
 	\item \textbf{Ion channel noise.}
 	The excitatory and inhibitory post-synaptic currents are generated by ion-channels in the neuron's cell membrane opening and closing in response to receiving neuro transmitters. These ion-channels are binary: they can either be fully open or fully closed. The graded nature of post-synaptic currents stems from the fact that many ion-channels open and close in a stochastic fashion.
 	\item \textbf{Thermal noise.}
-	In general, on the level of molecular biology many processes rely on thermal noise to be triggered -- this can be seen as an explanation of the noisiness of the above processes.
+	In general, on the level of molecular biology, many processes rely on stochastic events triggered by thermal noise -- this can be seen as an explanation of the noisiness of -- among others -- the above processes.
 	\item \textbf{Network effects.}
 	Even simple, non-noisy recurrent networks of excitatory and inhibitory spiking neurons can produce highly irregular spike patterns.
 \end{itemize}
@@ -408,14 +412,14 @@ Plugging this into our derivation from above and minimizing the expectation valu
 			\int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) - \sum_{i = 1}^n d_i \eta\big) \right)^2 \,\mathrm{d}x \right]_\eta  \\
 		&= \arg\min_{\vec d} \frac{1}2 
 			\int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x
-			+ \sum_{i = 1}^n \sum_{j = 1}^n d_i d_j \mathbb{E} \left[ \eta_i \eta_j \right]_{\eta_i, \eta_j}
+			+ \sum_{i = 1}^n \sum_{j = 1}^n d_i d_j \mathbb{E} \left[ \eta_i \eta_j \right]_{\eta_i, \eta_j} \,.
 \end{align*}
 Note that the cross-terms in the above double-sum disappear: the expectation value of the product between two independent, mean zero random variables is zero. We get
 \begin{align*}
 	\arg\min_{\vec d} E
 		&= \arg\min_{\vec d} \frac{1}2 
 		\int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x
-		+ \sum_{i = 1}^n d_i^2 \mathbb{E} \left[ \eta_i^2 \right]_{\eta_i}
+		+ \sum_{i = 1}^n d_i^2 \mathbb{E} \left[ \eta_i^2 \right]_{\eta_i} \,.
 \end{align*}
 Since the mean of the distribution is zero, the remaining expectation value is exactly the variance of $\eta$:
 \begin{align}
@@ -459,6 +463,8 @@ D = np.linalg.lstsq(
         rcond=None)[0].T
 \end{lstlisting}
 Using \texttt{lstsq} is numerically more stable than manually inverting the matrix using a function such as \texttt{np.linalg.inv}.}
+
+\hrulefill {\symbolfont 🚧} To be continued {\symbolfont 🚧} \hrulefill
 
 %\subsection{Analysing Sources of Error}
 
