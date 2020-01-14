@@ -8,7 +8,7 @@
 
 \begin{document}
 
-\MakeTitle{\textbf{Accompanying Readings: Chapter 4.1 and Chapter 2.1 of Neural Engineering}}
+\MakeTitle{\textbf{Accompanying Readings: Chapter 4.1 of Neural Engineering}}
 
 \section{Introduction}
 
@@ -57,7 +57,7 @@ Instead of just measuring this potential, we may also inject an external current
 		\caption{Super-threshold neuron}%
 		\label{fig:hh_neuron_super_threshold}
 	\end{subfigure}%
-	\caption{Computer simulation of a Hodgkin Huxley type model neuron \cite{hodgkin1952quantitative,traub1991neuronal}. The blue line corresponds to the membrane potential $v$, the dashed line to the current $J$ that is being injected into the neuron. The time axis starts at \SI{0.6}{\second} to make sure that the neuron has settled into its resting state.}
+	\caption{Computer simulation of a Hodgkin Huxley type model neuron \cite{hodgkin1952quantitative,traub1991neuronal}. The blue line corresponds to the membrane potential $v$, the dashed line to the current $J$ that is being injected into the neuron. The time axis starts at \SI{0.6}{\second} to make sure that the neuron has settled into its resting state. \CodeLink[Code (simulation)]{lecture_02/media/code/hh_neuron.cpp}, \CodeLink[Code (plotting)]{lecture_02/media/code/hh_neuron_plot.ipynb}}
 \end{figure}
 
 When injecting positive (\enquote{excitatory}) currents into a neuron, we observe four major things:
@@ -70,7 +70,7 @@ When injecting positive (\enquote{excitatory}) currents into a neuron, we observ
 
 \newpage
 
-\Note{Imporatantly, neurons in biology are \emph{dynamical systems}, i.e., they possess a behaviour that evolves over time. \emph{Artificial neurons} in machine learning (see below) are time-independent. They are mathematical functions that take an input that is \enquote{immediately} being mapped onto an output.}
+\Note{Importantly, neurons in biology are \emph{dynamical systems}, i.e., they possess a behaviour that evolves over time. \emph{Artificial neurons} in machine learning (see below) are time-independent. They are mathematical functions that take an input that is \enquote{immediately} being mapped onto an output.}
 
 \subsection{The Leaky Integrate and Fire Neuron}
 
@@ -132,7 +132,7 @@ where, $\tau_\mathrm{RC} = C_\mathrm{m} R$ and $R = \frac{1}{g_\mathrm{L}}$.
 		\includegraphics{media/lif_neuron_ramp.pdf}
 		\caption{Normalized Leaky Integrate-and-Fire neuron}
 	\end{subfigure}
-	\caption{Effects of a current ramp on an Hodgkin-Huxley type model neuron and a (normalized) LIF neuron. As above, the blue line is the membrane potential, the dashed line is the input current.}
+	\caption{Effects of a current ramp on an Hodgkin-Huxley type model neuron and a (normalized) LIF neuron. As above, the blue line is the membrane potential, the dashed line is the input current. \CodeLink[Code (simulation)]{lecture_02/media/code/hh_neuron.cpp}, \CodeLink[Code (plotting)]{lecture_02/media/code/hh_neuron_plot.ipynb}}
 	\label{fig:current_ramp}
 \end{figure}
 
@@ -141,6 +141,8 @@ where, $\tau_\mathrm{RC} = C_\mathrm{m} R$ and $R = \frac{1}{g_\mathrm{L}}$.
 Furthermore, we observe that the neurons fire quite regularly, yet the rate at which each neuron emits spikes (is \enquote{firing}) increases as we increase the input current.
 
 This raises the question: instead of dealing with these complicated differential equations, could we just summarize the behaviour of the neuron, e.g.,~compute the \emph{firing rate} $a$ for a given input current $J$? At least for the LIF neuron we can derive an analytic expression $G[J]$, the so called \emph{neural response curve} that maps a current $J$ onto the average spikes per second.
+
+\newpage
 
 \Note{Of course, with this \emph{rate approximation}, we loose any information about spike timing. And having access to spike timing is still very useful when we want to bridge to lower levels of organization. We will deal with this in two weeks, when we talk about \emph{temporal representation}. Furthermore, spiking communication induces \emph{noise} that may be important from a modelling perspective.}
 
@@ -204,7 +206,7 @@ Remember that we defined $v_\mathrm{th} = 1$. Furthermore, if we only want to ch
 		\centering%
 		\includegraphics{media/lif_neuron_rate_tau_ref.pdf}%
 	\end{subfigure}%
-	\caption{Neuron response curves using the LIF rate approximation $G[J]$ for different $\tau_\mathrm{RC}$ and $\tau_\mathrm{ref}$.}
+	\caption{LIF rate approximation response curve $G[J]$ for different $\tau_\mathrm{RC}$ and $\tau_\mathrm{ref}$. \CodeLink{lecture_02/media/code/neuron_nonlinearities.ipynb}}
 	\label{fig:lif_neuron_rate}
 \end{figure}
 
@@ -223,6 +225,8 @@ For various reasons, we are not concerned with these limitations for now. First,
 Second, before we add more complexity to our models -- such as the ability to produce the complex neural responses from \cref{fig:izhikevich_whichmod_figure2} -- we should ask ourselves first what the implications for producing high-level behaviour are. In our opinion, it only makes sense to add more detail if this somehow constrains the kind of behaviour our models can produce.
 
 Lastly, many of these phenomena can also be produced by LIF neurons when considering network effects, and not just individual neurons.
+
+\newpage
 
 \Note{As hinted at above, we will talk about more complex neuron models in the NEF at the end of the course, if time permits.}
 
@@ -273,7 +277,7 @@ Next, we will take a look at some examples of neural non-linearities (or, in bio
 		\caption{Hyperbolic Tangent}%
 		\label{fig:artificial_neurons_tanh}
 	\end{subfigure}
-	\caption{Overview over some neural response functions used in artifical neural networks.}
+	\caption{Overview of some neural response functions used in artifical neural networks. \CodeLink{lecture_02/media/code/neuron_nonlinearities.ipynb}}
 	\label{fig:artificial_neurons}
 \end{figure}
 

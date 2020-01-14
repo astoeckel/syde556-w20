@@ -1,0 +1,152 @@
+% !TeX spellcheck = en_GB
+\ifcsname SlidesDistr\endcsname%
+	\documentclass[handout,aspectratio=169]{beamer}
+\else%
+	\documentclass[aspectratio=169]{beamer}
+\fi%
+\input{../syde556_lecture_slides_preamble}
+
+\date{January 14 \& 16, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 3: Representations}
+
+\begin{document}
+	
+\begin{frame}{}
+	\vspace{0.5cm}
+	\begin{columns}[c]
+		\column{0.6\textwidth}
+		\MakeTitle
+		\column{0.4\textwidth}
+		\includegraphics[width=\textwidth]{media/cubism_the_ultimate_painting_small.jpg}
+	\end{columns}
+\end{frame}
+
+\videoframe[webm]{visual_cortex}{KE952yueVLA}
+
+\videoframe[webm]{hippocampal_place_cells}{lfNVv0A8QvI}
+
+\begin{frame}{NEF Principle 1: Representation}
+	\begin{mdframed}
+		\textbf{NEF Principle 1 -- Representation}\\
+		\emph{Groups} (\enquote{populations}, or \enquote{ensembles}) of neurons \emph{represent} represent values via nonlinear encoding and linear decoding.
+	\end{mdframed}
+\end{frame}
+
+\begin{frame}{Lossless Codes}
+	\vspace{0.5cm}
+	\begin{columns}
+		\column{0.6\textwidth}
+		\includegraphics[width=\textwidth]{media/flag_alphabet_1956_small.jpg}
+		\column{0.4\textwidth}
+		\includegraphics[width=\textwidth]{media/international_morse_code.pdf}
+	\end{columns}
+	\vspace{0.25cm}
+	\begin{align*}
+		\text{Encoding:} \quad \vec a &= f(\vec x) & \text{Decoding:} \quad \vec x &= f^{-1}(\vec a)
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Binary numbers: Nonlinear encoding, linear decoding}
+	\begin{itemize}
+		\setlength{\itemsep}{0.25cm}
+		\item Represent a natural number between $0$ and $2^{n} - 1$ as $n$ binary digits.
+		\item<2-> \textbf{Nonlinear encoding}
+			\begin{align*}
+			a_i &= \big(f(x)\big)_i = \begin{cases}
+				1 & \text{if } x - 2^i \left\lfloor \frac{x}{2^i} \right\rfloor > 2^{i - 1} \,,\\
+				0 & \text{otherwise} \,.
+				\end{cases}
+			\end{align*}
+		\item<3-> \textbf{Linear decoding}\\[-1cm]
+		\begin{align*}
+			x &= f^{-1}(\vec a) = \sum_{i=0}^{n -1} 2^i a_i = \mat F \vec a = \begin{pmatrix} 1 & 2 & \ldots & 2^{n - 1}\end{pmatrix} \begin{pmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n - 1} \end{pmatrix} \,.
+		\end{align*}
+		\item<4-> This is a \hl{distributed code}. \only<5->{But, \hl{not robust} against additive noise!}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Lossy codes}
+	\begin{itemize}
+		\setlength{\itemsep}{0.5cm}
+		\item \textbf{Lossy code}\\
+		Inverse $f^{-1}$ does not exist, instead \emph{approximate} the represented value
+		\begin{align*}
+			\text{Encoding:} \quad \vec a &= f(\vec x) & \text{Decoding:} \quad \vec x &\approx g(\vec a)
+		\end{align*}
+		\item<2-> \textbf{Examples}\\
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item Audio, image, and video coding schemes\\(MP3, JPEG, H.264)\\
+			\item Basis transformation onto first $n$ principal components (PCA)\\
+			\item<3-> \textbf{Neural Representations}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Tuning curves (I)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/audition_tuning_curves_annotated.pdf}%
+		\column{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/eliasmith_et_al_2003_orientation_tuning.pdf}%
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Tuning curves (II)}
+	\begin{columns}
+		\column{0.25\textwidth}
+		\includegraphics[scale=1.25]{media/saleem_et_al_tuning_curves_a.pdf}
+		\column{0.25\textwidth}
+		\includegraphics[scale=1.25]{media/saleem_et_al_tuning_curves_b.pdf}
+		\column{0.25\textwidth}
+		\includegraphics[scale=1.25]{media/saleem_et_al_tuning_curves_c.pdf}
+		\column{0.25\textwidth}
+		\includegraphics[scale=1.25]{media/saleem_et_al_tuning_curves_d.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Preferred Directions in Higher Dimensions: Representing 2D Values}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\centering
+		\includegraphics<1->[height=5.75cm,trim=1cm 0cm 0cm 1cm,clip]{media/2d_encoder_tuning_curve.pdf}
+		\column{0.5\textwidth}
+		\centering
+		\includegraphics<2->[height=5.75cm]{media/2d_encoder_tuning_curve_unit.pdf}	
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Decoding Without Taking Noise Into Account}
+	\includegraphics[width=\textwidth]{media/decoding_example_no_noise.pdf}
+\end{frame}
+
+\begin{frame}{Decoding Noisy $\mat A$ Without Taking Noise Into Account}
+	\includegraphics[width=\textwidth]{media/decoding_example_noise.pdf}
+\end{frame}
+
+\begin{frame}{Decoding Noisy $\mat A$ Accounting for Noise}
+	\includegraphics[width=\textwidth]{media/decoding_example_noise_accounted.pdf}
+\end{frame}
+
+\backupbegin
+
+\begin{frame}{Administration}
+	\begin{itemize}
+		\setlength{\itemsep}{0.75cm}
+		\item \hl{Assignment 1 has been released.}\\[0.25cm]
+		The due date has been adjusted to January,~30.
+		\item Some new potential times for office hours\\[0.5cm]
+			\texttt{Mon 15:30-16:30}, \texttt{Mon 16:30-17:30}, \texttt{Tue 15:00-16:00},\\[0.5cm]
+			\texttt{Thu 11:30-12:30} (current slot),\texttt{Thu 12:30-13:30}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[noframenumbering]{Image sources}
+	\small
+	\textbf{Title slide}\\\enquote{The Ultimate painting.}\\Author: Clark Richert.\\From \href{https://commons.wikimedia.org/wiki/File:\%22The_Ultimate_painting\%22.jpg}{Wikimedia}.
+\end{frame}
+
+
+\backupend
+
+\end{document}

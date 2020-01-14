@@ -17,6 +17,7 @@
 \usepackage{pdfpages}
 \usepackage{siunitx}
 \usepackage{tikz}
+\usepackage{mdframed}
 
 \defaultfontfeatures{Mapping=tex-text}
 \newfontfamily\symbolfont{Symbola}
@@ -175,3 +176,11 @@
 	\endgroup%
 }
 
+\newcommand{\backupbegin}{
+	\newcounter{finalframe}
+	\setcounter{finalframe}{\value{framenumber}}
+}
+
+\newcommand{\backupend}{
+	\setcounter{framenumber}{\value{finalframe}}
+}

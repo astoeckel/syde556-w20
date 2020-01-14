@@ -23,7 +23,7 @@
 using namespace cinder;
 
 /**
- * A current source which injects a constant current during a given interval.
+ * A current source which injects a ramp current during a given interval.
  */
 class RampCurrentSource
     : public CurrentSourceBase<StepCurrentSourceState,
@@ -93,11 +93,11 @@ int main()
 	// once the neuron has settled to its resting state
 	AutoController controller;
 
-	// Assemble the neuron (an Izhikevich neuron with default parameters)
+	// Assemble the neuron (an Hodgkin Huxley neuron with Traub kinematics and
+	// default parameters)
 //	auto current_source = StepCurrentSource(0.02_nA, 1_s, 1.2_s);
 //	auto current_source = StepCurrentSource(0.025_nA, 1_s, 1.2_s);
 	auto current_source = RampCurrentSource(0.1_nA, 0.6_s, 5_s);
-
 	auto neuron = make_neuron<HodgkinHuxley>(current_source);
 
 	// Simulate the resulting ODE -- the recorder will record the results
