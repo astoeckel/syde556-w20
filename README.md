@@ -35,7 +35,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_01/syde556_lecture_01_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_01/syde556_lecture_01_notes.pdf)]
 
-### Lecture 2 ― Neurons ― January 9
+### Lecture 2 ― Neurons ― January 9, 14
 
 -   **Slides**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_02/syde556_lecture_02_slides_distr.pdf)]
@@ -48,10 +48,23 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_02/syde556_lecture_02_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_02/syde556_lecture_02_notes.pdf)]
 
+### Lecture 3 ― Representation ― January 14, 16
+
+-   **Slides**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_03/syde556_lecture_03_slides_distr.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_03/syde556_lecture_03_slides_distr.pdf)]
+
+-   **Slides (Annotated)**  
+    **N/A**
+
+-   **Notes**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_03/syde556_lecture_03_notes.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_03/syde556_lecture_03_notes.pdf)]
+
 
 ## 📝 Assignments
 
-### Assignment 1 ― due Tuesday, January 30
+### Assignment 1 ― due Thursday, January 30
 
 -   **Instructions**  
   [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/assignments/assignment_01/syde556_assignment_01.pdf)]
