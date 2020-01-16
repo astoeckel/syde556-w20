@@ -280,7 +280,7 @@ The quantifier \emph{compact} is just a mathematical technicality that ensures t
 \paragraph{Mathematical derivation} In order to make the math a little more digestible, assume that we want to find the decoders for scalar represented values ($d = 1$) and that the represented values we are interested in are over the interval $\mathbb{X} = [-1, 1]$. The above equation becomes
 \begin{align}
 	\arg\min_{\vec d} E
-		&= \arg\min_{\vec d} \sqrt{ \int_{-1}^1 \left(x - \langle \vec d, \vec a(x) \rangle\right)^2 } \,\mathrm{d}x
+		&= \arg\min_{\vec d} \int_{-1}^1 \sqrt{ \left(x - \langle \vec d, \vec a(x) \rangle\right)^2 } \,\mathrm{d}x
 		 = \arg\min_{\vec d} \frac{1}2 \int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x \,.
 	\label{eqn:decoder_loss}
 \end{align}
@@ -435,7 +435,7 @@ Adding such a weight penalisation term is commonly referred to as \emph{regulari
 \begin{align*}
 	\lambda \sum_{i = 1}^n |d_i|^\ell \,,
 \end{align*}
-where $\lambda$ is the so called \enquote{regularisation factor}. Hence, in the case above, we are using $L_2$ regularisation with $\lambda = \sigma^2$.
+where $\lambda$ is the so called \enquote{regularisation factor}. Hence, in the case above, we are using $L_2$ regularisation with $\lambda = N \sigma^2$.
 
 The effect of regularisation is the following: when solving for $\vec d$, we try to balance between minimizing the error and not having large decoder coefficients $d_i^2$. Since the coefficients are being squared, the optimal solution will be small, non-zero decoder coefficients that effectively \enquote{average} over the activities from multiple neurons. This averaging is also able to reduce the impact of noise on the activities.}
 
