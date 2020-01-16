@@ -448,7 +448,7 @@ The effect of regularisation is the following: when solving for $\vec d$, we try
 
 We can now continue to solve for $\vec{d}$ as above. After some linear algebra, we arrive at the following equation (here, directly for arbitrary represented dimensions $d \geq 1$)
 \begin{ImportantEqn}{Computing decoders taking noise into account}
-	\mat D^\T &\approx  \left(\frac{1}{N} \mat A \mat A^\T + \sigma^2 \mat I\right)^{-1} \mat A \mat X^\T \,, \text{ where $\mat I$ is the $n \times n$ identity matrix}
+	\mat D^\T &\approx  \left(\mat A \mat A^\T + N \sigma^2 \mat I\right)^{-1} \mat A \mat X^\T \,, \text{ where $\mat I$ is the $n \times n$ identity matrix}
 	\label{eqn:decoders_noise}
 \end{ImportantEqn}
 Adding a scaled version of the identity matrix to $\mat A \mat A^T$ ensures that the resulting matrix is always invertible. If $\sigma^2$ is large enough, this inversion is possible in a numerically stable way. As visible in \cref{fig:decoding_example_noise_accounted}, the decoding error is now in an acceptable range, even if we add noise to the pre-population.
@@ -459,22 +459,93 @@ import numpy as np
 A = np.array(...) # n x N array
 X = np.array(...) # d x N array
 D = np.linalg.lstsq(
-        A @ A.T / N + np.square(sigma) * np.eye(n), A @ X.T,
+        A @ A.T + N * np.square(sigma) * np.eye(n), A @ X.T,
         rcond=None)[0].T
 \end{lstlisting}
 Using \texttt{lstsq} is numerically more stable than manually inverting the matrix using a function such as \texttt{np.linalg.inv}.}
 
-\hrulefill {\symbolfont 🚧} To be continued {\symbolfont 🚧} \hrulefill
+\Note{Alternative derivation of \cref{eqn:decoders_noise}. The matrix $\mat A \in \mathbb{R}^{n \times N}$ contains samples of neural activities for different represented values. In particular, we have $n$ rows (one for each neuron in the population) for $N$ samples $\vec x_1, \ldots, \vec x_N$ in each row. Furthermore, we assume that there is Gaussian noise superimposed onto our measurements. So we have
+\begin{align*}
+	\mat A &= \begin{pmatrix}
+		a_1({\vec x}_1) + \eta_{1, 1} & \ldots & a_1(\vec x_N) + \eta_{1,N} \\
+		\vdots & \ddots & \vdots \\
+		a_n({\vec x}_1) + \eta_{n, 1} & \ldots & a_n(\vec x_N) + \eta_{n, N}
+	\end{pmatrix} \,, \quad \text{where } \eta_{i, j} \sim \mathcal{N}(0, \sigma^2) \\
+	 &= \begin{pmatrix}
+	 a_1({\vec x}_1) & \ldots & a_1(\vec x_N) \\
+	 \vdots & \ddots & \vdots \\
+	 a_n({\vec x}_1) & \ldots & a_n(\vec x_N)
+	 \end{pmatrix} + \begin{pmatrix}
+	 \eta_{1, 1} & \ldots & \eta_{1,N} \\
+	 \vdots & \ddots & \vdots \\
+	 \eta_{n, 1} & \ldots & \eta_{n, N}
+	 \end{pmatrix} \\
+	 &= \mat A_\mathrm{GT} + \mat E \,.
+\end{align*}
+The matrix $\mat A_\mathrm{GT}$ is a hypothetical matrix of unknown \enquote{ground truth} values and $\mat E$ is the matrix of zero mean Gaussian noise terms. Looking at the term $\mat A \mat A^\T$ from \cref{eqn:decoders} we find
+\begin{align*}
+	\mat A \mat A^\T
+		&= (\mat A_\mathrm{GT} + \mat E) (\mat A_\mathrm{GT} + \mat E)^\T
+		 = \mat A_\mathrm{GT}^{} \mat A_\mathrm{GT}^\T + \mat A_\mathrm{GT} \mat E^\T + \mat E \mat A_\mathrm{GT}^\T + \mat E \mat E^\T \,.
+\end{align*}
+The expectation value of the terms $\mat A_\mathrm{GT} \mat E^\T$ and $\mat E \mat A_\mathrm{GT}^\T$ is zero:
+\begin{align*}
+	\mathbb{E}\Big[ \big( \mat A_\mathrm{GT}^\T \mat E \big)_{ij} \Big]_{\mat E}
+		= \mathbb{E}\Big[ \big( \mat E^\T \mat A_\mathrm{GT} \big)_{ij} \Big]_{\mat E}
+		= \mathbb{E}\Big[ \sum_{k = 1}^N a_i(\vec x_k) \eta_{j, k} \Big]_{\mat E}
+		= \mathbb{E}\Big[ \sum_{k = 1}^N a_j(\vec x_k) \eta_{i, k} \Big]_{\mat E}
+		= 0 \,,
+\end{align*}
+whereas the term $\mathbb{E}\big[ \mat E^\T \mat E \big]$ evaluates to $N \sigma^2 \mat I$. Hence, for $N \to \infty$ (which, according to the law of large numbers, is bringing us close to the expectation value), we get
+\begin{align*}
+	(\mat A \mat A^T)^{-1} \mat A \mat X^\T
+		&\approx (\mat A^{}_\mathrm{GT} \mat A_\mathrm{GT}^\T + N \sigma^2 \mat I)^{-1} \mat A_\mathrm{GT} \mat X^\T \,.
+\end{align*}
+Comparing this to \cref{eqn:decoders_noise}, we see that we implicitly assume in \cref{eqn:decoders_noise} that our randomly sampled activities $\mat A$ are equal to the hidden ground truth $\mat A_\mathrm{GT}$, which -- on average -- is correct, since we assume that $\eta_{i,j}$ has a zero mean. We then manually add the term $N \sigma^2 \mat I$, which we would get if we let $N$ go towards infinity -- without actually needing infinitely many samples. Pretty clever, since this saves us a lot of time!
 
-%\subsection{Analysing Sources of Error}
+However, the other way round, this derivation shows us that we don't really need to add the term $N \sigma^2 \mat I$ to our sampled activities if only $N$ is large enough (in particular, $N \gg n$).}
 
-%\section{Examples}
-%
-%\subsection{Horizontal Eye Control (1D)}
-%
-%\subsection{Arm Movements (2D)}
-%
-%\subsection{Higher-dimensional Tuning}
+\subsection{Analysing Sources of Error}
+
+\hrulefill {\symbolfont 🚧} To be filled in {\symbolfont 🚧} \hrulefill
+
+\section{Building a model of a neural population}
+
+With the knowledge we gained above, let's discuss how to practically build a model of a neuron population representing a $d$-dimensional vector $\vec x$. This can be roughly mapped onto the methodology described in \cite{eliasmith2003neural}, Chapter 1.5.
+
+\paragraph{Step 1 and 2: System Description and Design Specification}
+First, we have to make a decision regarding the dimensionality $d$ of the quantity $\vec x$ we want to represent, as well as what the range of values $\mathbb{X}$ is. Normally, we define $\mathbb{X}$ as a $d$-dimensional hyper-ball with radius $r$, that is $\mathbb{X} = \big\{ \vec x \mid \| \vec x \| \leq r, \vec x \in \mathbb{R}^d \big\}$ (typically $r = 1$).
+
+Furthermore, we have to specify how many neurons $n$ are in the population, and what their tuning curves are. This will have an impact on the precision with which the values are represented. The tuning curves will determine the parameters we choose for $\alpha_i$, $J^\mathrm{bias}_i$, $\vec e_i$.
+
+In case we have no specific information about the tuning curves, we select these parameters for each neuron in the population such that\textellipsis
+\begin{itemize}
+	\item[\textellipsis] the encoders $\vec e_i$ should be uniformly sampled from the unit-sphere. This can be achieved by sampling each encoder component from a normal distribution (i.e.,~a Gaussian distribution with mean zero and variance one) and normalising the resulting vectors to length one.
+	\item[\textellipsis] the maximum neural firing rate is limited to the maximum rate we observe in biology. The maximum firing rate is the rate we get when the represented value $\vec x$ is aligned with the encoding vector $\vec e_i$, i.e.~$\langle \vec x, \vec e_i \rangle = r$. Typically, the maximum firing rates of a population should be uniformly distributed between \SIrange{100}{200}{\per\second}. Per default, Nengo uses a maximum firing rate range between \SIrange{200}{400}{\per\second}, which is typically to large for most brain regions.
+	\item[\textellipsis] the $x$-intercepts, i.e.~the value of $\langle \vec x, \vec e_i \rangle$ at which the neuron just starts to have a nonzero activity should be uniformly sampled from $[-r, r]$.
+\end{itemize}
+
+\paragraph{Step 3: Implementation}
+After we have chosen the parameters above, we can encode values $\vec x$ in the population. In other words, we can take an $\vec x$ and compute the neural population response $\vec a(\vec x)$ according to the encoding equation. We can then uniformly sample $N$ samples $\vec x_1, \ldots, \vec x_N$ from $\mathbb{X}$ and compute neural activation matrix $\mat A$.
+
+Finally, this allows us to compute the decoders $\mat D$ according to \cref{eqn:decoders_noise}, where $\sigma$ depends on the amount of noise we expect in the neural activities. As a rule of thumb, a value of $\sigma = 0.2 \max\{\mat A\}$ is a good starting point.
+
+\newpage
+
+\Note{This might all still seem a little abstract -- for this reason, you will implement all these steps in Assignment 1.}
+
+\subsection{Example: Horizontal Eye Control (1D)}
+
+\hrulefill {\symbolfont 🚧} To be filled in {\symbolfont 🚧} \hrulefill
+
+\subsection{Example: Arm Movements (2D)}
+
+\hrulefill {\symbolfont 🚧} To be filled in {\symbolfont 🚧} \hrulefill
+
+\subsection{Example: Higher-dimensional Tuning}
+
+\hrulefill {\symbolfont 🚧} To be filled in {\symbolfont 🚧} \hrulefill
+
 
 \printbibliography
 

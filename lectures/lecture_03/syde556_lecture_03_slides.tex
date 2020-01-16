@@ -120,12 +120,85 @@
 	\includegraphics[width=\textwidth]{media/decoding_example_no_noise.pdf}
 \end{frame}
 
+\begin{frame}{Sources of Noise in Biological Neural Networks}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\begin{itemize}
+			\item \textbf{Axonal jitter}\\
+			Active axonal spike propagation
+			\item \textbf{Vesicle release failure}\\
+			10-30\% of pre-synaptic events cause post-synaptic current
+			\item \textbf{Neurotransmitter per vesicle}\\
+			Varying amounts of neurotransmitter\\
+			\item \textbf{Ion channel noise}\\
+			Ion-channels are \enquote{binary}, stochastic
+			\item \textbf{Thermal noise}
+			\item \textbf{Network effects}\\
+			Simple, noise-free inhibitory/excitatory networks produce irregular spike trains
+		\end{itemize}
+		\column{0.5\textwidth}
+			\includegraphics[width=\textwidth]{media/synapse_schematic.pdf}
+			\begin{itemize}			
+				\item<2-> \hl{How to model?} \only<3->{Gaussian noise}
+			\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{NEF Principle 0: Noise}
+\begin{mdframed}
+	\textbf{NEF Principle 0 -- Noise}\\
+	Biological neural systems are subject to significant amounts of noise from various sources. Any analysis of such systems must take the effects of noise into account.
+\end{mdframed}
+\end{frame}
+
 \begin{frame}{Decoding Noisy $\mat A$ Without Taking Noise Into Account}
 	\includegraphics[width=\textwidth]{media/decoding_example_noise.pdf}
 \end{frame}
 
 \begin{frame}{Decoding Noisy $\mat A$ Accounting for Noise}
 	\includegraphics[width=\textwidth]{media/decoding_example_noise_accounted.pdf}
+\end{frame}
+
+\begin{frame}{Summary: Building a model of neural representation (Encoding)}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\begin{block}{\hl{Encoding}}
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item Select $d$, possible range $\vec x \in \mathbb{X}$, usually $\mathbb{X} = \big\{ \vec x \mid \| \vec x \| \leq r, \vec x \in \mathbb{R}^d \big\}$ ($r = 1$)
+			\item Select number of neurons $n$
+			\item Select tuning curves, maximum rates\\$\Rightarrow$ $\vec e_i$, $\alpha_i$, $J^\mathrm{bias}_i$\\[0.125cm]
+			\begin{itemize}
+				\setlength{\itemsep}{0.125cm}
+				\item Sample $\vec e_i$ from unit-sphere
+				\item Uniformly distribute $\alpha_i$, $J^\mathrm{bias}_i$
+			\end{itemize}
+			\item Encoding equation:\vspace{-0.25cm}
+			$$a_i(\vec x) = G\big[ \alpha_i \langle \vec e_i, \vec x \rangle + J^\mathrm{bias}_i\big]$$
+		\end{itemize}
+		\end{block}
+		\column{0.5\textwidth}
+		\includegraphics{media/tuning_curves.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Summary: Building a model of neural representation (Decoding)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\begin{block}{\hl{Decoding}}
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item Uniformly sample $N$ samples from $\mathbb{X}$, $\mat X = \big( \vec x_1, \ldots, \vec x_N \big)$
+			\item Compute $\mat A$, where $(\mat A) = a_i(\vec )$
+			\item Decoder computation:\vspace{-0.25cm}
+			$$\mat D = \big( \mat A \mat A^\T + N \sigma^2 \mat I \big) \mat A \mat X^T$$
+			\item Decoding equation:\vspace{-0.25cm}
+			$$\hat{\mat X} = \mat D \mat A$$
+		\end{itemize}
+		\end{block}
+		\column{0.5\textwidth}
+		\includegraphics{media/decoding.pdf}
+	\end{columns}
 \end{frame}
 
 \backupbegin
@@ -136,8 +209,8 @@
 		\item \hl{Assignment 1 has been released.}\\[0.25cm]
 		The due date has been adjusted to January,~30.
 		\item Some new potential times for office hours\\[0.5cm]
-			\texttt{Mon 15:30-16:30}, \texttt{Mon 16:30-17:30}, \texttt{Tue 15:00-16:00},\\[0.5cm]
-			\texttt{Thu 11:30-12:30} (current slot),\texttt{Thu 12:30-13:30}
+			{\color{aluminium4}\texttt{Mon 15:30-16:30}, \texttt{Mon 16:30-17:30}, \texttt{Tue 15:00-16:00},}\\[0.5cm]
+			\texttt{Thu 11:30-12:30} (current slot){\color{aluminium4}, \texttt{Thu 12:30-13:30}}
 	\end{itemize}
 \end{frame}
 
