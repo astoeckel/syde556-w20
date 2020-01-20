@@ -41,7 +41,7 @@
 			\item[{\symbolfont 📖}] See Figure 2.4 in the book for an example, but with a different neuron model and a different range of maximum firing rates.
 			\item[{\symbolfont 🖈}] Since you can't compute this for every possible $x$ value between $-1$ and $1$, monotonously sample the $x$-axis with $\Delta x=0.05$, i.e.~there should be $41$ monotonously increasing $x$ values. Use this sampling throughout this question.
 		\end{itemize}
-		\item \Marks{1} \textit{Computing identity decoders.} Compute the optimal identity decoder $\vec d$ for those 16 neurons (as shown in class). Report the value of the individual decoder coefficients. Compute $d$ using the matrix notation mentioned in the course notes. Do not apply any regularization. $A$ is the matrix of activities (the same data used to generate the plot in 1.1b).
+		\item \Marks{1} \textit{Computing identity decoders.} Compute the optimal identity decoder $\vec d$ for those 16 neurons (as shown in class). Report the value of the individual decoder coefficients. Compute $\vec d$ using the matrix notation mentioned in the course notes. Do not apply any regularization. $\mat A$ is the matrix of activities (the same data used to generate the plot in 1.1b).
 		\begin{itemize}
 			\item[{\symbolfont 🖈}] When performing the matrix inversion required to compute $\vec d$, the lack of regularization may result in numerical issues and corresponding warning messages. Try setting a fixed random seed (e.g.~by calling \texttt{np.random.seed}) to reliably generate tuning curves that do not have this problem.
 		\end{itemize}
@@ -49,10 +49,10 @@
 		\begin{itemize}
 			\item[{\symbolfont 📖}] See Figure 2.7 for an example.
 		\end{itemize}
-		\item \Marks{1} \textit{Decoding under noise.} Now try decoding under noise. Add random normally distributed noise to $a$ and decode again. The noise is a random variable with mean $\mu=0$ and standard deviation of $\sigma=0.2 \max(A)$ (where $\max(A)$ is the maximum firing rate of all the neurons). Resample this variable for every different $x$ value for every different neuron. Create all the same plots as in part d). Report the RMSE.
+		\item \Marks{1} \textit{Decoding under noise.} Now try decoding under noise. Add random normally distributed noise to $\mat A$ and decode again. The noise is a random variable with mean $\mu=0$ and standard deviation of $\sigma=0.2 \max(\mat A)$ (where $\max(\mat A)$ is the maximum firing rate of all the neurons). Resample this variable for every different $x$ value for every different neuron. Create all the same plots as in part d). Report the RMSE.
 		\item \Marks{1} \textit{Accounting for decoder noise.} Recompute the decoder $\vec d$ taking noise into account (i.e.,~apply the appropriate regularization, as shown in class). Show how these decoders behave when decoding both with and without noise added to $a$ by making the same plots as in c) and d). Report the RMSE for all cases.
 		\begin{itemize}
-			\item[{\symbolfont 🖈}] As in the previous question, $\sigma = 0.2 \max(A)$.
+			\item[{\symbolfont 🖈}] As in the previous question, $\sigma = 0.2 \max(\mat A)$.
 		\end{itemize}
 		\item \Marks{1} \textit{Interpretation.} Show a 2x2 table of the four RMSE values reported in parts d), e), and f). This should show the effects of adding noise and whether the decoders $d$ are computed taking noise into account. Write a few sentences commenting on what the table shows, i.e.,~what the effect of adding noise to the activities is with respect to the measured error and why accounting for noise when computing the decoders increases/decreases/does not change the measured RMSE.
 	\end{enumerate}
@@ -62,12 +62,12 @@
 	Use the program you wrote in 1.1 to examine the sources of error in the representation.
 
 	\begin{enumerate}[a)]
-		\item \Marks{2} \textit{Exploring error due to distortion and noise.} Plot the error due to distortion $E_\mathrm{dist}$ and the error due to noise $E_\mathrm{noise}$ as a function of $N$, the number of neurons. Generate two different loglog plots (one for each type of error) with $N$ values of at least $[4, 8, 16, 32, 64, 128, 256, 512]$. For each $N$ value, do at least $5$ runs and average the results. For each run, different $\alpha$, $J^\mathrm{bias}$, and $e$ values should be generated for each neuron. Compute $d$ under noise, with $\sigma = 0.1 \max(A)$. Show visually that the errors are proportional to $1/N$ or $1/N^2$.
+		\item \Marks{2} \textit{Exploring error due to distortion and noise.} Plot the error due to distortion $E_\mathrm{dist}$ and the error due to noise $E_\mathrm{noise}$ as a function of $N$, the number of neurons. Generate two different loglog plots (one for each type of error) with $N$ values of at least $[4, 8, 16, 32, 64, 128, 256, 512]$. For each $N$ value, do at least $5$ runs and average the results. For each run, different $\alpha$, $J^\mathrm{bias}$, and $e$ values should be generated for each neuron. Compute $d$ under noise, with $\sigma = 0.1 \max(\mat A)$. Show visually that the errors are proportional to $1/N$ or $1/N^2$.
 		\begin{itemize}
-			\item[{\symbolfont 🖈}] Do \textit{not} add noise to $A$ when computing the decoders in this question. Instead, appropriately account for noise when computing the decoders.
+			\item[{\symbolfont 🖈}] Do \textit{not} add noise to $\mat A$ when computing the decoders in this question. Instead, appropriately account for noise when computing the decoders.
 			\item[{\symbolfont 📖}] See Equation 2.9 and Figure 2.6 in the book.
 		\end{itemize}
-		\item \Marks{1} \textit{Adapting the noise level.} Repeat part a) with $\sigma = 0.01 \max(A)$.
+		\item \Marks{1} \textit{Adapting the noise level.} Repeat part a) with $\sigma = 0.01 \max(\mat A)$.
 		\item \Marks{1} \textit{Interpretation.} What does the difference between the graphs in a) and b) tell us about the sources of error in neural populations?
 	\end{enumerate}
 
@@ -81,7 +81,7 @@
 	\begin{enumerate}[a)]
 		\item \Marks{0.5} \textit{Computing gain and bias.} As in the second part of 1.1a), given a maximum firing rate $a^\mathrm{max}$ and a bias $J^\mathrm{bias}$, write down the equations for computing $\alpha$ and the $J^\mathrm{bias}$ for this specific neuron model.
 		\item \Marks{0.5} \textit{Neuron tuning curves.} Generate the same plot as in 1.1b). Use $\tau_\mathrm{ref}=\SI{2}{\milli\second}$ and $\tau_{RC}=\SI{20}{\milli\second}$. Use the same distribution of $x$-intercepts and maximum firing rates as in 1.1, i.e.,~choose the maximum firing rates $a^\mathrm{max}$ as uniformly distributed between \SI{100}{\hertz} and \SI{200}{\hertz} at $x=1$, choose the $x$-intercepts $\xi$ as uniformly distributed between $-0.95$ and $0.95$, and choose the encoders $e$ as either $-1$ or $+1$.
-		\item \Marks{1.5} \textit{Impact of noise.} Generate the same four plots as in 1.1f) (adding/not adding noise to $A$, accounting/not accounting for noise when computing $\vec d$), and report the RMSE both with and without noise.
+		\item \Marks{1.5} \textit{Impact of noise.} Generate the same four plots as in 1.1f) (adding/not adding noise to $\mat A$, accounting/not accounting for noise when computing $\vec d$), and report the RMSE both with and without noise.
 	\end{enumerate}
 	
 	\section{Representation of Vectors}
@@ -108,14 +108,14 @@
 
 	\begin{enumerate}[a)]
 		\item \Marks{1} \textit{Choosing encoding vectors.} Generate a set of $100$ random unit vectors uniformly distributed around the unit circle. These will be the encoders $\vec e$ for $100$ neurons. Plot these vectors with a quiver or line plot (i.e.,~not just points, but lines/arrows to the points).
-		\item \Marks{0.5} \textit{Computing the identity decoder.} Use LIF neurons with the same properties as in question 1.3. When computing the decoders, take into account noise with $\sigma = 0.2\max(A)$. Plot the decoders in the same way you plotted the encoders.
+		\item \Marks{0.5} \textit{Computing the identity decoder.} Use LIF neurons with the same properties as in question 1.3. When computing the decoders, take into account noise with $\sigma = 0.2\max(\mat A)$. Plot the decoders in the same way you plotted the encoders.
 		\begin{itemize}
 			\item[{\symbolfont 🖈}] The decoder will be a matrix $D \in \mathbb{R}^{2 \times 100}$. Each column in $D$ corresponds to a 2D vector.
 			\item[{\symbolfont 🖈}]
 In the scalar case, to sample the input space, you used $x$ values between $-1$ and $1$, with $\Delta x=0.05$. In this case, you can regularly tile the 2D $\vec x$ values $([1, 1], [1, 0.95], ... [-1, -0.95], [-1, 1])$. Alternatively, you can just randomly choose $1600$ different $\vec x$ values to sample.
 		\end{itemize}
 		\item \Marks{0.5} \textit{Discussion.} How do these decoding vectors compare to the encoding vectors?
-		\item \Marks{1} \textit{Testing the decoder.} Generate 20 random $\vec x$ values throughout the unit circle (i.e.,~with different directions and radiuses). For each $\vec x$ value, determine the neural activity $a_i$ for each of the 100 neurons. Now decode these values (i.e. compute $\hat{x} = D \vec a$) using the decoders from part b). Plot the original and decoded values on the same graph in different colours, and compute the RMSE.
+		\item \Marks{1} \textit{Testing the decoder.} Generate 20 random $\vec x$ values throughout the unit circle (i.e.,~with different directions and radiuses). For each $\vec x$ value, determine the neural activity $a_i$ for each of the 100 neurons. Now decode these values (i.e.,~compute $\hat{x} = \mat D \vec a$) using the decoders from part b). Plot the original and decoded values on the same graph in different colours, and compute the RMSE.
 		\begin{itemize}
 			\item[{\symbolfont 🖈}] Technically, the RMSE is not well-defined for non-scalar data. The usual convention is to \enquote{flatten} the series, i.e.,~treat the extra dimensions as scalar datapoints. For $n$ $d$-dimensional datapoints
 			\begin{align*}
