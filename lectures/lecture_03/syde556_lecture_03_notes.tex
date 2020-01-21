@@ -435,7 +435,7 @@ Adding such a weight penalisation term is commonly referred to as \emph{regulari
 \begin{align*}
 	\lambda \sum_{i = 1}^n |d_i|^\ell \,,
 \end{align*}
-where $\lambda$ is the so called \enquote{regularisation factor}. Hence, in the case above, we are using $L_2$ regularisation with $\lambda = \frac{N \sigma^2}2$.
+where $\lambda$ is the so called \enquote{regularisation factor}. Hence, in the case above, we are using $L_2$ regularisation with $\lambda = \frac{\sigma^2}2$.
 
 The effect of regularisation is the following: when solving for $\vec d$, we try to balance between minimizing the error and not having large decoder coefficients $d_i^2$. Since the coefficients are being squared, the optimal solution will be small, non-zero decoder coefficients that effectively \enquote{average} over the activities from multiple neurons. This averaging is also able to reduce the impact of noise on the activities.}
 
