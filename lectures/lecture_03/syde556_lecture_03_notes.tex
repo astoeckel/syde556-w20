@@ -412,7 +412,7 @@ Plugging this into our derivation from above and minimizing the expectation valu
 			\int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) - \sum_{i = 1}^n d_i \eta\big) \right)^2 \,\mathrm{d}x \right]_\eta  \\
 		&= \arg\min_{\vec d} \frac{1}2 
 			\int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x
-			+ \sum_{i = 1}^n \sum_{j = 1}^n d_i d_j \mathbb{E} \left[ \eta_i \eta_j \right]_{\eta_i, \eta_j} \,.
+			+ \frac{1}2 \sum_{i = 1}^n \sum_{j = 1}^n d_i d_j \mathbb{E} \left[ \eta_i \eta_j \right]_{\eta_i, \eta_j} \,.
 \end{align*}
 Note that the cross-terms in the above double-sum disappear: the expectation value of the product between two independent, mean zero random variables is zero. We get
 \begin{align*}
