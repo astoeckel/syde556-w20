@@ -171,7 +171,7 @@
 			\begin{itemize}
 				\setlength{\itemsep}{0.125cm}
 				\item Sample $\vec e_i$ from unit-sphere
-				\item Uniformly distribute $\alpha_i$, $J^\mathrm{bias}_i$
+				\item Uniformly distribute $x$-intercept, maximum~rate
 			\end{itemize}
 			\item Encoding equation:\vspace{-0.25cm}
 			$$a_i(\vec x) = G\big[ \alpha_i \langle \vec e_i, \vec x \rangle + J^\mathrm{bias}_i\big]$$
@@ -189,9 +189,9 @@
 		\begin{itemize}
 			\setlength{\itemsep}{0.25cm}
 			\item Uniformly sample $N$ samples from $\mathbb{X}$, $\mat X = \big( \vec x_1, \ldots, \vec x_N \big)$
-			\item Compute $\mat A$, where $(\mat A) = a_i(\vec )$
+			\item Compute $\mat A$, where $(\mat A)_{ik} = a_i(\vec x_k)$
 			\item Decoder computation:\vspace{-0.25cm}
-			$$\mat D = \big( \mat A \mat A^\T + N \sigma^2 \mat I \big) \mat A \mat X^T$$
+			$$\mat D^\T = \big( \mat A \mat A^\T + N \sigma^2 \mat I \big)^{-1} \mat A \mat X^\T$$
 			\item Decoding equation:\vspace{-0.25cm}
 			$$\hat{\mat X} = \mat D \mat A$$
 		\end{itemize}
