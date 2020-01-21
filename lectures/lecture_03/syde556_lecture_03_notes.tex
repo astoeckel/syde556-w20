@@ -2,7 +2,7 @@
 \documentclass[10pt,letterpaper,oneside]{article}
 \input{../syde556_lecture_notes_preamble}
 
-\date{January 14 \& 16, 2020}
+\date{January 14 \& 16 \& 21, 2020}
 \title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 3: Representation}
 
 
@@ -419,14 +419,14 @@ Note that the cross-terms in the above double-sum disappear: the expectation val
 	\arg\min_{\vec d} E
 		&= \arg\min_{\vec d} \frac{1}2 
 		\int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x
-		+ \sum_{i = 1}^n d_i^2 \mathbb{E} \left[ \eta_i^2 \right]_{\eta_i} \,.
+		+ \frac{1}2 \sum_{i = 1}^n d_i^2 \mathbb{E} \left[ \eta_i^2 \right]_{\eta_i} \,.
 \end{align*}
 Since the mean of the distribution is zero, the remaining expectation value is exactly the variance of $\eta$:
 \begin{align}
 \arg\min_{\vec d} E
 	&= \arg\min_{\vec d} \frac{1}2 
 	\int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x
-	+ \sigma^2 \sum_{i = 1}^n d_i^2 \,.
+	+ \frac{1}2 \sigma^2 \sum_{i = 1}^n d_i^2 \,.
 	\label{eqn:decoder_loss_regularised}
 \end{align}
 \Note{\emph{Equivalence of \enquote{taking Gaussian noise into account} and $L_2$-regularisation.} \Cref{eqn:decoder_loss_regularised} can be interpreted in a different, but extremely useful manner. Essentially, our error expression is exactly the same as when we set out to derive this equation without noise, cf.~\cref{eqn:decoder_loss}. The difference is that we penalize the magnitude of the coefficients $d_i$: the larger $|d_i|$, the larger the error $E$ will be.
@@ -435,7 +435,7 @@ Adding such a weight penalisation term is commonly referred to as \emph{regulari
 \begin{align*}
 	\lambda \sum_{i = 1}^n |d_i|^\ell \,,
 \end{align*}
-where $\lambda$ is the so called \enquote{regularisation factor}. Hence, in the case above, we are using $L_2$ regularisation with $\lambda = N \sigma^2$.
+where $\lambda$ is the so called \enquote{regularisation factor}. Hence, in the case above, we are using $L_2$ regularisation with $\lambda = \frac{N \sigma^2}2$.
 
 The effect of regularisation is the following: when solving for $\vec d$, we try to balance between minimizing the error and not having large decoder coefficients $d_i^2$. Since the coefficients are being squared, the optimal solution will be small, non-zero decoder coefficients that effectively \enquote{average} over the activities from multiple neurons. This averaging is also able to reduce the impact of noise on the activities.}
 
@@ -448,7 +448,7 @@ The effect of regularisation is the following: when solving for $\vec d$, we try
 
 We can now continue to solve for $\vec{d}$ as above. After some linear algebra, we arrive at the following equation (here, directly for arbitrary represented dimensions $d \geq 1$)
 \begin{ImportantEqn}{Computing decoders taking noise into account}
-	\mat D^\T &\approx  \left(\mat A \mat A^\T + N \sigma^2 \mat I\right)^{-1} \mat A \mat X^\T \,, \text{ where $\mat I$ is the $n \times n$ identity matrix}
+	\mat D^\T &\approx  \left(\mat A \mat A^\T + \frac{N \sigma^2}{2} \mat I\right)^{-1} \mat A \mat X^\T \,, \text{ where $\mat I$ is the $n \times n$ identity matrix}
 	\label{eqn:decoders_noise}
 \end{ImportantEqn}
 Adding a scaled version of the identity matrix to $\mat A \mat A^T$ ensures that the resulting matrix is always invertible. If $\sigma^2$ is large enough, this inversion is possible in a numerically stable way. As visible in \cref{fig:decoding_example_noise_accounted}, the decoding error is now in an acceptable range, even if we add noise to the pre-population.
@@ -459,7 +459,7 @@ import numpy as np
 A = np.array(...) # n x N array
 X = np.array(...) # d x N array
 D = np.linalg.lstsq(
-        A @ A.T + N * np.square(sigma) * np.eye(n), A @ X.T,
+        A @ A.T + 0.5 * N * np.square(sigma) * np.eye(n), A @ X.T,
         rcond=None)[0].T
 \end{lstlisting}
 Using \texttt{lstsq} is numerically more stable than manually inverting the matrix using a function such as \texttt{np.linalg.inv}.}
@@ -507,7 +507,30 @@ However, the other way round, this derivation shows us that we don't really need
 
 \subsection{Analysing Sources of Error}
 
-\hrulefill {\symbolfont 🚧} To be filled in {\symbolfont 🚧} \hrulefill
+\begin{figure}
+	\centering
+	\includegraphics{media/error_experiment.pdf}
+	\caption{Error due to noise (\emph{left}) and error due to static distortion (\emph{right}). Experiment for a population of LIF neurons with randomly distributed tuning curves and firing rates between \SIrange{100}{200}{\per\second}, uniform $x$-intercepts over $[-1, 1]$, and $\sigma = 0.01$. \CodeLink{lecture_03/media/code/error_experiment.ipynb}}
+	\label{fig:error_experiment}
+\end{figure}
+
+We mentioned earlier that neural representations are \emph{lossy}, i.e.,~we cannot perfectly reconstruct the represented value $\vec x$. Looking at our loss function $E$ in \cref{eqn:decoder_loss_regularised}, we see that we modelled the error as caused by two separate effects
+\begin{align}
+E &= \underbrace{\frac{1}2 \int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x}_{E_\mathrm{dist}} + \underbrace{\frac{1}2 \sigma^2 \sum_{i = 1}^n d_i^2}_{E_\mathrm{noise}} \,.
+\label{eqn:decoder_loss_regularised_sources}
+\end{align}
+The left term, $E_\mathrm{dist}$, describes errors that are caused by \emph{static distortion}, whereas the right term, $E_\mathrm{noise}$, describes errors due to \emph{noise}.
+
+\paragraph{Errors due to static distortion}
+These errors are caused by the shape of the neural tuning curves. Since we assume that the tuning curves are not changing over time, we call this error \enquote{static}. $E_\mathrm{dist}$ is caused by the fact that we are trying to decode the \emph{linear} identity function using a \emph{linear} decoder. Hence, if our tuning curves are, well, \enquote{curved} (such as tuning curves based on LIF neurons), the decoder must somehow eliminate that curvature. The only way to accomplish this for a linear decoder is to find the right weighted average over the tuning curves. However, in general, for randomly distributed tuning curves, there is no way to perfectly decode a linear function from nonlinear tuning curves. Hence, there will always be some degree of error due to static distortion.
+
+\Note{Of course, we can construct edge-case tuning curve distributions in which perfect decoding is possible. For example, consider two ReLU neurons representing a scalar value with encoder $e_1 = 1$ and encoder $e_2 = -1$ (gain and bias are $1$ and $0$ for both neurons, respectively). Then, the decoder $\vec d = (1, -1)$ will perfectly decode the represented value.}
+
+\paragraph{Errors due to noise}
+The term $E_\mathrm{noise}$ is giving us an estimate of the amount of error caused by noise, under the assumption that the noise is actually from a Gaussian distribution with variance $\sigma^2$. Intuitively, this error depends on the magnitude of the decoding coefficients -- if all decoding coefficients are zero, noise is effectively eliminated (although, of course $E_\mathrm{distr}$ will be large). The larger the decoding coefficients, the more noise is transported from the neural activities $\vec a$ to the decoded values $\hat{\vec x}$.
+
+\paragraph{Error for varying neuron counts $n$}
+Given equation \cref{eqn:decoder_loss_regularised_sources} we can estimate the amount of error caused by static distortion versus the amount of error caused by noise in the neural activities as we change the number of neurons $n$. The (square) error due to noise decreases proportionally to about $1/n$, the error due to distortion decreases proportionally to about $1/n^2$ (cf.~\cref{fig:error_experiment}).
 
 \section{Building a model of a neural population}
 
@@ -518,11 +541,11 @@ First, we have to make a decision regarding the dimensionality $d$ of the quanti
 
 Furthermore, we have to specify how many neurons $n$ are in the population, and what their tuning curves are. This will have an impact on the precision with which the values are represented. The tuning curves will determine the parameters we choose for $\alpha_i$, $J^\mathrm{bias}_i$, $\vec e_i$.
 
-In case we have no specific information about the tuning curves, we select these parameters for each neuron in the population such that\textellipsis
+In case we have no specific information about the tuning curves, we select these parameters for each neuron in the population such that
 \begin{itemize}
-	\item[\textellipsis] the encoders $\vec e_i$ should be uniformly sampled from the unit-sphere. This can be achieved by sampling each encoder component from a normal distribution (i.e.,~a Gaussian distribution with mean zero and variance one) and normalising the resulting vectors to length one.
-	\item[\textellipsis] the maximum neural firing rate is limited to the maximum rate we observe in biology. The maximum firing rate is the rate we get when the represented value $\vec x$ is aligned with the encoding vector $\vec e_i$, i.e.~$\langle \vec x, \vec e_i \rangle = r$. Typically, the maximum firing rates of a population should be uniformly distributed between \SIrange{100}{200}{\per\second}. Per default, Nengo uses a maximum firing rate range between \SIrange{200}{400}{\per\second}, which is typically to large for most brain regions.
-	\item[\textellipsis] the $x$-intercepts, i.e.~the value of $\langle \vec x, \vec e_i \rangle$ at which the neuron just starts to have a nonzero activity should be uniformly sampled from $[-r, r]$.
+	\item The encoders $\vec e_i$ should be uniformly sampled from the unit-sphere. This can be achieved by sampling each encoder component from a normal distribution (i.e.,~a Gaussian distribution with mean zero and variance one) and normalising the resulting vectors to length one.
+	\item The maximum neural firing rate is limited to the maximum rate we observe in biology. The maximum firing rate is the rate we get when the represented value $\vec x$ is aligned with the encoding vector $\vec e_i$, i.e.~$\langle \vec x, \vec e_i \rangle = r$. Typically, the maximum firing rates of a population should be uniformly distributed between \SIrange{100}{200}{\per\second}. Per default, Nengo uses a maximum firing rate range between \SIrange{200}{400}{\per\second}, which is typically to large for most brain regions.
+	\item The $x$-intercepts, i.e.~the value of $\langle \vec x, \vec e_i \rangle$ at which the neuron just starts to have a nonzero activity should be uniformly sampled from $[-r, r]$.
 \end{itemize}
 
 \paragraph{Step 3: Implementation}
@@ -530,21 +553,163 @@ After we have chosen the parameters above, we can encode values $\vec x$ in the 
 
 Finally, this allows us to compute the decoders $\mat D$ according to \cref{eqn:decoders_noise}, where $\sigma$ depends on the amount of noise we expect in the neural activities. As a rule of thumb, a value of $\sigma = 0.2 \max\{\mat A\}$ is a good starting point.
 
-\newpage
-
 \Note{This might all still seem a little abstract -- for this reason, you will implement all these steps in Assignment 1.}
 
-\subsection{Example: Horizontal Eye Control (1D)}
+\subsection{Example: Horizontal Eye Position (1D)}
 
-\hrulefill {\symbolfont 🚧} To be filled in {\symbolfont 🚧} \hrulefill
+\begin{figure}
+	\includegraphics{media/sparks_et_al_2002_brainstem_eye.jpg}
+	\caption{Extraocular muscles and typical activity of motor neurons. \textbf{(a)} Anatomical drawing of the muscles controlling eye position. \textbf{(b)} Neural activity and eye position over time. \textbf{(c)} Neural activity over eye position for two abducens motor neurons. There is a linear relationship between eye position and firing rate. Caption and figure copied from \cite{sparks2002brainstem}.}
+	\label{fig:sparks_et_al_2002_brainstem_eye}
+\end{figure}
+
+\Cref{fig:sparks_et_al_2002_brainstem_eye} is taken from a review paper on the neural circuits involved in eye position control \cite{sparks2002brainstem}. The depicted neural activities show the firing rates of neurons forming the abducens nerve, which is directly connected to the muscles controlling eye location. As visible in the figure, there is an almost linear relationship between the eye position (in degrees) and the neural activity. In addition to neurons exhibiting a positive relationship between eye position and firing rate (\enquote{on} neurons), there are also neurons with the opposite relationship (\enquote{off} neurons).
+
+\begin{figure}
+	\centering
+	\includegraphics{media/1d_eye_position.pdf}
+	\caption{Model of eye position representation. \emph{Left:} Population tuning curves. \emph{Right:} Ideal versus actual decoding under noise. \CodeLink{lecture_03/media/code/1d_eye_position.ipynb}}
+	\label{fig:1d_eye_position}
+\end{figure}
+
+We can now go through the three steps described above and try to build a neural ensemble that represents eye location. See \cref{fig:1d_eye_position} for an example.
+\begin{multicols}{2}
+\begin{itemize}
+	\item \textbf{Step 1: System Description}
+	\begin{itemize}
+		\item What is being represented?
+		\begin{itemize}
+			\item Represented quantity $x$ is the horizontal eye position
+		\end{itemize}
+		\item What do the tuning curves look like?
+		\begin{itemize}
+			\item Extremely linear, low $\tau_\mathrm{ref}$, high $\tau_\mathrm{RC}$
+			\item Some neurons have $e = 1$, others have $e = -1$
+			\item Firing rates up to \SI{300}{\per\second}
+		\end{itemize}
+	\end{itemize}
+	\columnbreak
+	\item \textbf{Step 2: Design Specification}
+	\begin{itemize}
+		\item Range of values
+		\begin{itemize}
+			\item $\mathbb{X} = [-60, 60]$
+		\end{itemize}
+		\item Amount of noise
+		\begin{itemize}
+			\item About $20\%$ of the maximum firing rate, hence $\sigma^2 = 0.04$
+		\end{itemize}
+	\end{itemize}
+	\item \textbf{Step 3: Implementation}
+	\begin{itemize}
+		\item Choose parameters that determine the tuning curves
+		\item Compute decoders
+	\end{itemize}
+\end{itemize}
+\end{multicols}
 
 \subsection{Example: Arm Movements (2D)}
 
-\hrulefill {\symbolfont 🚧} To be filled in {\symbolfont 🚧} \hrulefill
+\begin{figure}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{media/georgopoulos_spike_raster.png}
+		\caption{Spike rasters for different movement directions}
+		\label{fig:georgopoulos_a}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{media/georgopoulos_tuning.png}
+		\caption{Single neuron tuning curve}
+		\label{fig:georgopoulos_b}
+	\end{subfigure}
+	\caption{Experiment by Georgopoulos et~al, 1982. Diagram shows recordings from a single cell in motor cortex representing direction of hand movement and/or hand position. \textbf{(a)} Recordings from the same cell in motor cortex over different trials. The individual sections correspond to a monkey moving their hand from a centre location into one of eight directions. \textbf{(b)} Averaged tuning curve over different directions with a sine fit. Figures copied from \cite{georgopoulos1982relations}.}
+	\label{fig:georgopoulos}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{media/georgopoulos_directions.png}
+		\caption{Population vectors}
+		\label{fig:population_vector}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics{media/2d_tuning.pdf}
+		\caption{Tuning curve model}
+		\label{fig:georgopoulos_model}
+	\end{subfigure}
+	\caption{\textbf{(a)} Visualisation of the concept of a population vector. Each neuron (black lines) has a preferred direction. The magnitude of the neural activity while the animal is moving their arm into a certain direction corresponds to the length of the black line. Georgopoulos decodes the motion direction from the population by computing the average of the preferred direction vectors, weighted by the neural activity of the corresponding neurons. In NEF terminology, this corresponds to using the matrix of encoders $\mat E$ as decoders $\mat D$. \textbf{(b)} Model of the movement direction tuning curve modelled in the NEF. \CodeLink{lecture_03/media/code/2d_arm_movement.ipynb}}
+\end{figure}
+
+\Cref{fig:georgopoulos_a} shows data from a experiment by Georgopoulos et~al., in which neural activity in motor cortex is recorded while a monkey is moving their hand into one of eight directions. The neural activity is found to be highly correlated with the direction of movement, with individual neurons having a clear \enquote{preferred direction} (\cref{fig:georgopoulos_b}). This gave rise to the idea of a \enquote{population vector}, i.e.,~that the represented vector of the population is the average of the preferred directions, weighted by the neural activities (\cref{fig:population_vector}).
+
+\Note{While conceptually similar (i.e.,~there is a linear decoding scheme), the NEF does \emph{not} use \enquote{population vectors} in order to represent vectorial quantities¸ -- in particular, the decoding process is different. Georgopulos essentially uses the encoders (i.e.,~the preferred directions) as decoders (cf.~\cref{fig:population_vector}):
+\begin{align*}
+	\hat{\vec x} \approx \sum_{i = 1}^n a_i(\vec x) \vec e_i = \mat E \mat A 
+\end{align*}	
+This gives a reasonable estimate of the direction, but a terrible estimate of the magnitude of the represented vector. In the NEF, we essentially assume that there is some correlation between the represented value and the activity, and the decoders is used to decipher that encoded value from the population activities.}
+
+Again, we can model this system using the NEF Principle 1. A single tuning curve that has been modelled in this way is depicted in \cref{fig:georgopoulos_model}.
+\begin{multicols}{2}
+	\begin{itemize}
+		\item \textbf{Step 1: System Description}
+		\begin{itemize}
+			\item What is being represented?
+			\begin{itemize}
+				\item $\vec x$ the movement direction (or hand position)
+			\end{itemize}
+			\item What do the tuning curves look like?
+			\begin{itemize}
+				\item Bell-shaped
+				\item Encoders are randomly distributed along the unit circle
+				\item Firing rates up to \SI{60}{\per\second}
+			\end{itemize}
+		\end{itemize}
+		\columnbreak
+		\item \textbf{Step 2: Design Specification}
+		\begin{itemize}
+			\item Range of values
+			\begin{itemize}
+				\item $\mathbb{X} = \{\vec x \mid \|\vec x\| \leq r, \vec x \in \mathbb{R}^2 \}$
+			\end{itemize}
+			\item Amount of noise
+			\begin{itemize}
+				\item About $20\%$ of the maximum firing rate
+			\end{itemize}
+		\end{itemize}
+		\item \textbf{Step 3: Implementation}
+		\begin{itemize}
+			\item Choose parameters that determine the tuning curves
+			\item Compute decoders
+		\end{itemize}
+	\end{itemize}
+\end{multicols}
 
 \subsection{Example: Higher-dimensional Tuning}
 
-\hrulefill {\symbolfont 🚧} To be filled in {\symbolfont 🚧} \hrulefill
+\begin{figure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{media/ear_internal_anatomy_numbered.pdf}
+		\caption{Inner ear anatomy}
+		\label{fig:ear_internal_anatomy_numbered}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{media/eliasmith_et_al_2003_axis_aligned.pdf}
+		\caption{Axis-aligned versus uniform encoders}
+		\label{fig:eliasmith_et_al_2003_axis_aligned}
+	\end{subfigure}
+	\caption{\textbf{(a)} Anatomy of the inner ear. (1) Nervus vestibularis, (2) Nervus cochlearis, (3) Nervus intermediofacialis, (4) Ganglion geniculi, (5) Chorda tympani, (6) Cochlea, (7) Ductus semicirculares, (8) Malleus, (9) Membrana tympani, (10) Tuba auditiva. Figure from \href{https://commons.wikimedia.org/wiki/File:Ear_internal_anatomy_numbered.svg}{Wikimedia}, by Patrick J. Lynch. \textbf{(b)} Difference between modelling multi-dimensional ensembles with axis aligned vectors or uniformly distributed encoders.}
+\end{figure}
+
+While we assumed in the previous example that encoders are randomly distributed, this is not necessarily the case. For example, take the vestibular system, i.e.,~the part of the inner ear responsible for sensing head acceleration \cref{fig:ear_internal_anatomy_numbered}. This system consists of three orthogonal canals (the \enquote{semicircular canals}), each detecting movement along one spatial dimension.  We could correspondingly model the sensory system as a population of neurons representing a three-dimensional quantity, namely the direction into which the head is accelerating. However, it would be biologically implausible to choose random preferred directions, i.e.~encoders. Due to the physical properties of the organ, the preferred directions of the individual neurons are axis aligned, we have encoders of the form
+\begin{align*}
+	\vec e_i \in \big\{ [1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1] \big\} \,.
+\end{align*}
+This is equivalent to just using three independent one-dimensional neuron populations. In general, the choice of the encoders affects the representation accuracy: axis-aligned encoders result in a lower accuracy compared to encoders uniformly sampled from the unit sphere. (\cref{fig:eliasmith_et_al_2003_axis_aligned}).
 
 
 \printbibliography

@@ -6,7 +6,7 @@
 \fi%
 \input{../syde556_lecture_slides_preamble}
 
-\date{January 14 \& 16, 2020}
+\date{January 14 \& 16 \& 21, 2020}
 \title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 3: Representations}
 
 \begin{document}
@@ -199,6 +199,148 @@
 		\column{0.5\textwidth}
 		\includegraphics{media/decoding.pdf}
 	\end{columns}
+\end{frame}
+
+\begin{frame}{Example: Horizontal Eye Position (1D)}
+	\includegraphics[width=\textwidth]{media/sparks_et_al_2002_brainstem_eye.pdf}
+\end{frame}
+
+\begin{frame}{Example: Horizontal Eye Position (1D) (cont.)}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\setlength{\itemsep}{0.5cm}
+			\item \textbf{Step 1: System Description}
+			\begin{itemize}
+				\setlength{\itemsep}{0.5cm}
+				\item What is being represented?
+				\begin{itemize}
+					\setlength{\itemsep}{0.25cm}
+					\item $x$ is the horizontal eye position
+				\end{itemize}
+				\item What is the tuning curve shape?
+				\begin{itemize}
+					\setlength{\itemsep}{0.25cm}
+					\item Linear, low $\tau_\mathrm{ref}$, high $\tau_\mathrm{RC}$
+					\item $e_i \in \{1, -1\}$
+					\item Firing rates up to \SI{300}{\per\second}
+				\end{itemize}
+			\end{itemize}
+			\columnbreak
+			\item \textbf{Step 2: Design Specification}
+			\begin{itemize}
+				\setlength{\itemsep}{0.25cm}
+				\item Range of values
+				\begin{itemize}
+					\setlength{\itemsep}{0.25cm}
+					\item $\mathbb{X} = [-60, 60]$
+				\end{itemize}
+				\item Amount of noise
+				\begin{itemize}
+					\setlength{\itemsep}{0.25cm}
+					\item About $20\%$ of $\max(\mat A)$
+				\end{itemize}
+			\end{itemize}
+			\item \textbf{Step 3: Implementation}
+			\begin{itemize}
+				\setlength{\itemsep}{0.25cm}
+				\item Choose tuning curve parameters
+				\item Compute decoders
+			\end{itemize}
+		\end{itemize}
+	\end{multicols}
+\end{frame}
+
+\begin{frame}{Example: Arm Movements (2D)}
+	\centering
+	\includegraphics[width=0.5\textwidth]{media/georgopoulos_spike_raster.png}%
+	\includegraphics[width=0.5\textwidth]{media/georgopoulos_tuning.png}
+\end{frame}
+
+\begin{frame}{Example: Arm Movements (2D) (cont.)}
+	\begin{columns}
+		\column{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{media/georgopoulos_directions.png}%
+		\column{0.6\textwidth}
+		\begin{itemize}
+			\setlength{\itemsep}{0.2cm}
+			\item Experiment by Georgopoulos et~al., 1982
+			\item Preferred arm movement directions $\vec e_i$
+			\item \hl{Idea:} \emph{Population Vectors}, decode using
+			\begin{align*}
+				\hat{\vec x} &= \sum_{i=1}^n a_i(\vec x) \vec e_i = {\mat E} {\mat A}
+			\end{align*}
+			\item[\OPlus]<2-> Good direction estimate
+			\item[\OMinus]<3-> Cannot reconstruct magnitude
+			\item[]<4-> \hl{The NEF does not use population vectors!}
+		\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Example: Arm Movements (2D) (cont.)}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\setlength{\itemsep}{0.5cm}
+			\item \textbf{Step 1: System Description}
+			\begin{itemize}
+				\setlength{\itemsep}{0.5cm}
+				\item What is being represented?
+				\begin{itemize}
+					\setlength{\itemsep}{0.25cm}
+					\item $\vec x$ the movement direction\\(or hand position)
+				\end{itemize}
+				\item What is the tuning curve shape?
+				\begin{itemize}
+					\setlength{\itemsep}{0.25cm}
+					\item Bell-shaped
+					\item Encoders are randomly distributed along the unit circle
+					\item Firing rates up to \SI{60}{\per\second}
+				\end{itemize}
+			\end{itemize}
+			\columnbreak
+			\item \textbf{Step 2: Design Specification}
+			\begin{itemize}
+				\setlength{\itemsep}{0.25cm}
+				\item Range of values
+				\begin{itemize}
+					\item $\mathbb{X} = \{\vec x \mid \|\vec x\| \leq r, \vec x \in \mathbb{R}^2 \}$
+				\end{itemize}
+				\item Amount of noise
+				\begin{itemize}
+					\setlength{\itemsep}{0.25cm}
+					\item About $20\%$ of $\max(\mat A)$
+				\end{itemize}
+			\end{itemize}
+			\item \textbf{Step 3: Implementation}
+			\begin{itemize}
+				\setlength{\itemsep}{0.25cm}
+				\item Choose tuning curve parameters
+				\item Compute decoders
+			\end{itemize}
+		\end{itemize}
+	\end{multicols}
+\end{frame}
+
+\begin{frame}{Example: Higher Dimensional Representation}
+	\begin{columns}[b]
+		\column{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/ear_internal_anatomy_numbered.pdf}
+		\column{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/eliasmith_et_al_2003_axis_aligned.pdf}%
+	\end{columns}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Vestibular system senses head acceleration in 3D
+			\item Axis aligned, must choose $\vec e_i \in$
+			$\big\{ [1, 0, 0], [-1, 0, 0], \textellipsis, [0, 0, -1] \big\}$
+			\columnbreak
+			\item Same as three 1D populations
+			\item Slightly lower precision
+			\item<2-> \hl{Encoders affect accuracy}
+		\end{itemize}
+	\end{multicols}
 \end{frame}
 
 \backupbegin
