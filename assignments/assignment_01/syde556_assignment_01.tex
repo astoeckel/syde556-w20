@@ -115,12 +115,12 @@
 In the scalar case, to sample the input space, you used $x$ values between $-1$ and $1$, with $\Delta x=0.05$. In this case, you can regularly tile the 2D $\vec x$ values $([1, 1], [1, 0.95], ... [-1, -0.95], [-1, 1])$. Alternatively, you can just randomly choose $1600$ different $\vec x$ values to sample.
 		\end{itemize}
 		\item \Marks{0.5} \textit{Discussion.} How do these decoding vectors compare to the encoding vectors?
-		\item \Marks{1} \textit{Testing the decoder.} Generate 20 random $\vec x$ values throughout the unit circle (i.e.,~with different directions and radiuses). For each $\vec x$ value, determine the neural activity $a_i$ for each of the 100 neurons. Now decode these values (i.e.,~compute $\hat{x} = \mat D \vec a$) using the decoders from part b). Plot the original and decoded values on the same graph in different colours, and compute the RMSE.
+		\item \Marks{1} \textit{Testing the decoder.} Generate 20 random $\vec x$ values throughout the unit circle (i.e.,~with different directions and radiuses). For each $\vec x$ value, determine the neural activity $a_i$ for each of the 100 neurons. Now decode these values (i.e.,~compute $\hat{\vec x} = \mat D \vec a$) using the decoders from part b). Plot the original and decoded values on the same graph in different colours, and compute the RMSE.
 		\begin{itemize}
-			\item[{\symbolfont 🖈}] Technically, the RMSE is not well-defined for non-scalar data. The usual convention is to \enquote{flatten} the series, i.e.,~treat the extra dimensions as scalar datapoints. For $n$ $d$-dimensional datapoints
+			\item[{\symbolfont 🖈}] Technically, the RMSE is not well-defined for non-scalar data. The usual convention is to \enquote{flatten} the series, i.e.,~treat the extra dimensions as scalar datapoints. For $N$ $d$-dimensional datapoints
 			\begin{align*}
-				\mathit{RMSE}(\hat{\vec x}_1, \ldots, \hat{\vec x}_n; \vec x_1, \ldots, \vec x_n)
-					&= \sqrt{ \frac{1}{nd} \sum_{i=1}^n \sum_{j=1}^d \big({\hat x}_{i j} - x_{ij}\big)^2 } \,.
+				\mathit{RMSE}(\hat{\vec x}_1, \ldots, \hat{\vec x}_N; \vec x_1, \ldots, \vec x_N)
+					&= \sqrt{ \frac{1}{Nd} \sum_{i=1}^N \sum_{j=1}^d \big({\hat x}_{i j} - x_{ij}\big)^2 } \,.
 			\end{align*}
 			\item[{\symbolfont 🐍}] Per default, the \texttt{np.mean} function computes the mean on a \enquote{flattened} array.
 		\end{itemize}
