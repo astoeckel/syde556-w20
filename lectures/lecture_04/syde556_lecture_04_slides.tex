@@ -1,0 +1,138 @@
+% !TeX spellcheck = en_GB
+\ifcsname SlidesDistr\endcsname%
+	\documentclass[handout,aspectratio=169]{beamer}
+\else%
+	\documentclass[aspectratio=169]{beamer}
+\fi%
+\input{../syde556_lecture_slides_preamble}
+
+\date{January 22 \& 28, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 4: Temporal Representations}
+
+\begin{document}
+
+\begin{frame}{}
+	\vspace{0.5cm}
+	\begin{columns}[c]
+		\column{0.6\textwidth}
+		\MakeTitle
+		\column{0.4\textwidth}
+		\includegraphics[width=\textwidth]{media/camille_gravis_captive_balloon_with_clock_face_small.jpg}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Reminder: The LIF Neuron}
+	\begin{columns}[c]
+		\column{0.6\textwidth}
+		\includegraphics[width=\textwidth]{media/lif_neuron_ramp.pdf}
+		\column{0.4\textwidth}
+		\includegraphics[width=\textwidth]{media/lif_circuit.pdf}
+	\end{columns}
+	\begin{align*}
+		\frac{\mathrm{d}}{\mathrm{d}t} v(t) &= -\frac{1}{\tau_\mathrm{RC}} \big( v(t) - J \big) \big) \,, \quad &\text{if } v(t) &< 1\,, \\
+		v(t) &\gets \delta(t - t_\mathrm{th}) \,, &\text{if } t &= t_\mathrm{th} \,,\\
+		v(t) &\gets 0 \,, &\text{if } t &> t_\mathrm{th} \text{ and } t \geq t_\mathrm{th} + \tau_\mathrm{ref} \,,
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Temporal Decoding of Two Neurons}
+	\includegraphics[width=0.4\textwidth]{media/two_neurons_tuning_curves.pdf}%
+	\includegraphics[width=0.6\textwidth]{media/two_neurons_spike_train.pdf}
+\end{frame}
+
+\begin{frame}{Temporal Decoding of One Hundred Neurons}
+	\includegraphics[width=0.4\textwidth]{media/hundred_neurons_tuning_curves.pdf}%
+	\includegraphics[width=0.6\textwidth]{media/hundred_neurons_spike_train.pdf}
+\end{frame}
+
+\begin{frame}{Filtering by Convolution}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/gaussian_filters.pdf}
+		\column{0.5\textwidth}
+		\begin{block}{Gaussian Filter}
+			\begin{align*}
+				h(t) &= c \exp \left( \frac{-t^2}{\sigma^2} \right) \\
+				\text{where }  &~c \text{ chosen s.t. } {\textstyle \int_{-\infty}^\infty h(t) \,\mathrm{d}t = 1}
+			\end{align*}
+		\end{block}
+		\begin{block}{Convolution}
+			\begin{align*}
+				\big( f \ast g \big)(t) &= \int_{-\infty}^{\infty} f(t - \tau) g(\tau) \,\mathrm{d}t'
+			\end{align*}
+		\end{block}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Filtering a Spike Train}
+	\includegraphics[width=\textwidth]{media/two_neurons_filtered.pdf}
+\end{frame}
+
+\begin{frame}{Random Signals}
+	\begin{overlayarea}{\textwidth}{0.9\textheight}
+		\begin{columns}
+			\column{0.75\textwidth}
+			\includegraphics[width=\textwidth]{media/white_noise.pdf}
+			\column{0.25\textwidth}
+			\hl{White Noise}\\
+			(zero mean)
+		\end{columns}
+		\only<2>{\begin{columns}
+			\column{0.75\textwidth}
+			\includegraphics[width=\textwidth]{media/white_noise_5hz.pdf}
+			\column{0.25\textwidth}
+			\hl{Bandlimited}\\White Noise\\
+			(zero mean,\\\SI{5}{\hertz} bandwidth)
+		\end{columns}}
+		\only<3>{\begin{columns}
+			\column{0.75\textwidth}
+			\includegraphics[width=\textwidth]{media/white_noise_10hz.pdf}
+			\column{0.25\textwidth}
+			\hl{Bandlimited}\\White Noise\\
+			(zero mean,\\\SI{10}{\hertz} bandwidth)
+			\end{columns}}
+	\end{overlayarea}
+\end{frame}
+
+\begin{frame}{Filtering a Spike Train for a Random Signal}
+	\includegraphics[width=\textwidth]{media/two_neurons_filtered_white_noise.pdf}
+\end{frame}
+
+\begin{frame}{Optimal Filter}
+	\centering
+	\includegraphics[width=\textwidth]{media/optimal_filter.pdf}\\
+	$$H(\omega) = {{X(\omega) \overline{R}(\omega)} \over {|R(\omega)|^2}}$$
+\end{frame}
+
+\begin{frame}{Filtering a Spike Train for a Random Signal (Optimal Filter)}
+	\includegraphics<1>[width=\textwidth]{media/two_neurons_filtered_white_noise.pdf}
+	\includegraphics<2>[width=\textwidth]{media/two_neurons_filtered_optimal_simple.pdf}
+	\includegraphics<3>[width=\textwidth]{media/two_neurons_filtered_optimal_simple_2.pdf}
+	\includegraphics<4>[width=\textwidth]{media/two_neurons_filtered_optimal_simple_3.pdf}
+\end{frame}
+
+\begin{frame}{Optimal Filter (Improved)}
+	\centering
+	\includegraphics[width=\textwidth]{media/optimal_filter_improved.pdf}\\
+	$$H(\omega) = {{X(\omega) \overline{R}(\omega)} \ast W(\omega) \over {|R(\omega)|^2} \ast W(\omega)} $$
+\end{frame}
+
+\begin{frame}{Filtering a Spike Train for a Random Signal (Improved Optimal Filter)}
+	\includegraphics<1>[width=\textwidth]{media/two_neurons_filtered_optimal_simple.pdf}
+	\includegraphics<2>[width=\textwidth]{media/two_neurons_filtered_optimal.pdf}
+	\includegraphics<3>[width=\textwidth]{media/two_neurons_filtered_optimal_2.pdf}
+	\includegraphics<4>[width=\textwidth]{media/two_neurons_filtered_optimal_3.pdf}
+\end{frame}
+
+
+\backupbegin
+
+\begin{frame}[noframenumbering]{Image sources}
+	\small
+	\textbf{Title slide}\\\enquote{Captive balloon with clock face and bell, floating above the Eiffel Tower, Paris, France.}\\Author: Camille Grávis, between 1889 and 1900.\\From \href{https://commons.wikimedia.org/wiki/File:Camille_Gr\%C3\%A1vis,_Captive_balloon_with_clock_face_and_bell,_floating_above_the_Eiffel_Tower,_Paris,_France.jpg}{Wikimedia}.
+\end{frame}
+
+
+\backupend
+
+\end{document}
