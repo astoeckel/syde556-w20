@@ -36,6 +36,13 @@
 			a^\mathrm{max} &= G[\alpha + J^\mathrm{bias}] \,, & 0 &= G[\alpha \xi + J^\mathrm{bias}] \,.
 		\end{align*}
 		Now, simplify these equations for the specific case $G[J] = \max(J, 0)$.
+		\begin{itemize}
+			\item[{\symbolfont 🖈}] The $x$-intercept $\xi$ is the value of $\langle \vec x, \vec e_i \rangle$ for which the neuron just starts to have a non-zero firing rate. Mathematically, we must inject a current of magnitude $J_\mathrm{th}$ into the neuron at the $x$-intercept, where $J_\mathrm{th}$ is defined as
+			\begin{align*}
+				J_\mathrm{th} = \lim_{\varepsilon \to 0} G^{-1}[\varepsilon] \,.
+			\end{align*}
+			This threshold current $J_\mathrm{th}$ is the maximum current that results in a zero output rate -- currents above the threshold will result in output spikes. In your equations, you can use $J_\mathrm{th}$ in place of $G^{-1}[0]$, which is not well-defined for most neuron models.
+		\end{itemize}
 		\item \Marks{0.5} \textit{Neuron tuning curves.} Plot the neuron tuning curves $a_i(x)$ for 16 randomly generated neurons following the intercept and maximum rate distributions described above.
 		\begin{itemize}
 			\item[{\symbolfont 📖}] See Figure 2.4 in the book for an example, but with a different neuron model and a different range of maximum firing rates.
@@ -50,6 +57,9 @@
 			\item[{\symbolfont 📖}] See Figure 2.7 for an example.
 		\end{itemize}
 		\item \Marks{1} \textit{Decoding under noise.} Now try decoding under noise. Add random normally distributed noise to $\mat A$ and decode again. The noise is a random variable with mean $\mu=0$ and standard deviation of $\sigma=0.2 \max(\mat A)$ (where $\max(\mat A)$ is the maximum firing rate of all the neurons). Resample this variable for every different $x$ value for every different neuron. Create all the same plots as in part d). Report the RMSE.
+		\begin{itemize}
+			 \item[{\symbolfont 🖈}] For this, and all other questions, do \textit{not} add noise to the $\mat A$ you use for \emph{computing} the decoders $\mat D$. Instead, appropriately account for noise through regularization when computing the decoders, as we discussed in class. Use the noisy version of $\mat A$ to test what impact noise has on the quality of the decoded values.
+		\end{itemize}
 		\item \Marks{1} \textit{Accounting for decoder noise.} Recompute the decoder $\vec d$ taking noise into account (i.e.,~apply the appropriate regularization, as shown in class). Show how these decoders behave when decoding both with and without noise added to $a$ by making the same plots as in c) and d). Report the RMSE for all cases.
 		\begin{itemize}
 			\item[{\symbolfont 🖈}] As in the previous question, $\sigma = 0.2 \max(\mat A)$.
@@ -64,7 +74,7 @@
 	\begin{enumerate}[a)]
 		\item \Marks{2} \textit{Exploring error due to distortion and noise.} Plot the error due to distortion $E_\mathrm{dist}$ and the error due to noise $E_\mathrm{noise}$ as a function of $N$, the number of neurons. Generate two different loglog plots (one for each type of error) with $N$ values of at least $[4, 8, 16, 32, 64, 128, 256, 512]$. For each $N$ value, do at least $5$ runs and average the results. For each run, different $\alpha$, $J^\mathrm{bias}$, and $e$ values should be generated for each neuron. Compute $d$ under noise, with $\sigma = 0.1 \max(\mat A)$. Show visually that the errors are proportional to $1/N$ or $1/N^2$.
 		\begin{itemize}
-			\item[{\symbolfont 🖈}] Do \textit{not} add noise to $\mat A$ when computing the decoders in this question. Instead, appropriately account for noise when computing the decoders.
+			\item[{\symbolfont 🖈}] Again, do \textit{not} add noise to $\mat A$ when computing the decoders (see note above).
 			\item[{\symbolfont 📖}] See Equation 2.9 and Figure 2.6 in the book.
 		\end{itemize}
 		\item \Marks{1} \textit{Adapting the noise level.} Repeat part a) with $\sigma = 0.01 \max(\mat A)$.
@@ -115,12 +125,12 @@
 In the scalar case, to sample the input space, you used $x$ values between $-1$ and $1$, with $\Delta x=0.05$. In this case, you can regularly tile the 2D $\vec x$ values $([1, 1], [1, 0.95], ... [-1, -0.95], [-1, 1])$. Alternatively, you can just randomly choose $1600$ different $\vec x$ values to sample.
 		\end{itemize}
 		\item \Marks{0.5} \textit{Discussion.} How do these decoding vectors compare to the encoding vectors?
-		\item \Marks{1} \textit{Testing the decoder.} Generate 20 random $\vec x$ values throughout the unit circle (i.e.,~with different directions and radiuses). For each $\vec x$ value, determine the neural activity $a_i$ for each of the 100 neurons. Now decode these values (i.e.,~compute $\hat{x} = \mat D \vec a$) using the decoders from part b). Plot the original and decoded values on the same graph in different colours, and compute the RMSE.
+		\item \Marks{1} \textit{Testing the decoder.} Generate 20 random $\vec x$ values throughout the unit circle (i.e.,~with different directions and radiuses). For each $\vec x$ value, determine the neural activity $a_i$ for each of the 100 neurons. Now decode these values (i.e.,~compute $\hat{\vec x} = \mat D \vec a$) using the decoders from part b). Plot the original and decoded values on the same graph in different colours, and compute the RMSE.
 		\begin{itemize}
-			\item[{\symbolfont 🖈}] Technically, the RMSE is not well-defined for non-scalar data. The usual convention is to \enquote{flatten} the series, i.e.,~treat the extra dimensions as scalar datapoints. For $n$ $d$-dimensional datapoints
+			\item[{\symbolfont 🖈}] Technically, the RMSE is not well-defined for non-scalar data. The usual convention is to \enquote{flatten} the series, i.e.,~treat the extra dimensions as scalar datapoints. For $N$ $d$-dimensional datapoints
 			\begin{align*}
-				\mathit{RMSE}(\hat{\vec x}_1, \ldots, \hat{\vec x}_n; \vec x_1, \ldots, \vec x_n)
-					&= \sqrt{ \frac{1}{nd} \sum_{i=1}^n \sum_{j=1}^d \big({\hat x}_{i j} - x_{ij}\big)^2 } \,.
+				\mathit{RMSE}(\hat{\vec x}_1, \ldots, \hat{\vec x}_N; \vec x_1, \ldots, \vec x_N)
+					&= \sqrt{ \frac{1}{Nd} \sum_{i=1}^N \sum_{j=1}^d \big({\hat x}_{i j} - x_{ij}\big)^2 } \,.
 			\end{align*}
 			\item[{\symbolfont 🐍}] Per default, the \texttt{np.mean} function computes the mean on a \enquote{flattened} array.
 		\end{itemize}
