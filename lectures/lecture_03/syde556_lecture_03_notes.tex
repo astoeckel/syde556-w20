@@ -677,7 +677,7 @@ Again, we can model this system using the NEF Principle 1. A single tuning curve
 			\item Amount of noise
 			\begin{itemize}
 				\item About $20\%$ of the maximum firing rate
-			\end{itemize}¨
+			\end{itemize}
 		\end{itemize}
 		\item \textbf{Step 3: Implementation}
 		\begin{itemize}
@@ -709,7 +709,7 @@ While we assumed in the previous example that encoders are randomly distributed,
 \begin{align*}
 	\vec e_i \in \big\{ [1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1] \big\} \,.
 \end{align*}
-This is equivalent to just using three independent one-dimensional neuron populations. In general, the choice of the encoders affects the representation accuracy: axis-aligned encoders result in a lower accuracy compared to encoders uniformly sampled from the unit sphere. (\cref{fig:eliasmith_et_al_2003_axis_aligned}).
+This is equivalent to just using three independent one-dimensional neuron populations. In general, the choice of the encoders affects the representation accuracy: axis-aligned encoders may result in a higher accuracy compared to encoders uniformly sampled from the unit sphere (\cref{fig:eliasmith_et_al_2003_axis_aligned}). However, the choice of encoding vectors also affects how values represented by a population can be transformed (we will talk about this in lectures 5 and 7).
 
 
 \printbibliography
