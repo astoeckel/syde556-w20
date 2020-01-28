@@ -101,6 +101,7 @@
 	\begin{enumerate}[a)]
 		\item \Marks{1} \emph{Plotting 2D tuning curves.} Plot the tuning curve of an LIF neuron whose 2D preferred direction vector is at an angle of $\theta=-\pi/4$, has an $x$-intercept at the origin $(0,0)$, and has a maximum firing rate of \SI{100}{\hertz}.
 		\begin{itemize}
+			\item[{\symbolfont 🖈}] Use the parameters $\tau_\mathrm{ref}=\SI{2}{\milli\second}$ and $\tau_{RC}=\SI{20}{\milli\second}$ from the previous question.
 			\item[{\symbolfont 🖈}] Remember that $J=\alpha \langle \vec e, \vec x \rangle + J^\mathrm{bias}$, and both $\vec x$ and $\vec e$ are 2D vectors.
 			\item[{\symbolfont 🖈}] In general, the maximum firing rate of a neuron is defined to occur when the input is of unit length along its preferred direction, i.e.,~$\langle \vec e, \vec x \rangle = 1$, which, for unit-length $\vec e$ is equivalent to $\vec e = \vec x$. Of course, if we increase the magnitude of the input vector beyond unit length, neurons would start firing faster than their maximum firing rate. Similarly, here the \enquote{maximum firing rate} means the firing rate when $\vec x = \vec e$. This should allow you to reuse your equations from 1.3a) to compute $\alpha$ and $J^\mathrm{bias}$ for a desired maximum firing rate and $x$-intercept.
 			\item[{\symbolfont 🐍}] To generate 3D plots in Python, see \href{http://matplotlib.org/mpl_toolkits/mplot3d/tutorial.html}{here}.
