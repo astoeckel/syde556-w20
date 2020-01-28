@@ -12,6 +12,9 @@ all: \
 	lecture_03/syde556_lecture_03_notes.pdf \
 	lecture_03/syde556_lecture_03_slides.pdf \
 	lecture_03/syde556_lecture_03_slides_distr.pdf \
+	lecture_04/syde556_lecture_04_notes.pdf \
+	lecture_04/syde556_lecture_04_slides.pdf \
+	lecture_04/syde556_lecture_04_slides_distr.pdf \
 
 
 lecture_00/syde556_lecture_00_notes.pdf: \
@@ -93,6 +96,26 @@ lecture_03/syde556_lecture_03_slides_distr.pdf: \
 		lecture_03/syde556_lecture_03_slides.tex \
 		lecture_03/syde556_lecture_03_slides_distr.tex
 	cd lecture_03; latexmk syde556_lecture_03_slides_distr
+
+lecture_04/syde556_lecture_04_notes.pdf: \
+		bibliography.bib \
+		syde556_lecture_notes_preamble.tex \
+		lecture_04/syde556_lecture_04_notes.tex
+	cd lecture_04; latexmk syde556_lecture_04_notes
+
+lecture_04/syde556_lecture_04_slides.pdf: \
+		bibliography.bib \
+		syde556_lecture_slides_preamble.tex \
+		lecture_04/syde556_lecture_04_slides.tex
+	cd lecture_04; latexmk syde556_lecture_04_slides
+
+lecture_04/syde556_lecture_04_slides_distr.pdf: \
+		bibliography.bib \
+		syde556_lecture_slides_preamble.tex \
+		lecture_04/syde556_lecture_04_slides.tex \
+		lecture_04/syde556_lecture_04_slides_distr.tex
+	cd lecture_04; latexmk syde556_lecture_04_slides_distr
+
 
 clean:
 	rm -f lecture_??/*.aux

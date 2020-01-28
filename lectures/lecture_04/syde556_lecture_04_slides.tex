@@ -29,7 +29,7 @@
 		\includegraphics[width=\textwidth]{media/lif_circuit.pdf}
 	\end{columns}
 	\begin{align*}
-		\frac{\mathrm{d}}{\mathrm{d}t} v(t) &= -\frac{1}{\tau_\mathrm{RC}} \big( v(t) - J \big) \big) \,, \quad &\text{if } v(t) &< 1\,, \\
+		\frac{\mathrm{d}}{\mathrm{d}t} v(t) &= -\frac{1}{\tau_\mathrm{RC}} \big( v(t) - J \big) \,, \quad &\text{if } v(t) &< 1\,, \\
 		v(t) &\gets \delta(t - t_\mathrm{th}) \,, &\text{if } t &= t_\mathrm{th} \,,\\
 		v(t) &\gets 0 \,, &\text{if } t &> t_\mathrm{th} \text{ and } t \geq t_\mathrm{th} + \tau_\mathrm{ref} \,,
 	\end{align*}
@@ -58,7 +58,7 @@
 		\end{block}
 		\begin{block}{Convolution}
 			\begin{align*}
-				\big( f \ast g \big)(t) &= \int_{-\infty}^{\infty} f(t - \tau) g(\tau) \,\mathrm{d}t'
+				\big( f \ast g \big)(t) &= \int_{-\infty}^{\infty} f(t - \tau) g(\tau) \,\mathrm{d}\tau
 			\end{align*}
 		\end{block}
 	\end{columns}
@@ -124,6 +124,69 @@
 	\includegraphics<4>[width=\textwidth]{media/two_neurons_filtered_optimal_3.pdf}
 \end{frame}
 
+\begin{frame}{Pros and Cons of the Optimal Filter}
+	\includegraphics[width=\textwidth]{media/filter_magnification.pdf}
+	\begin{columns}[t]
+		\column{0.5\textwidth}
+		\begin{itemize}
+			\item<2->[\OPlus] \textbf{Precise}\\Good for analysing data after the fact
+		\end{itemize}
+		\column{0.5\textwidth}
+		\begin{itemize}
+			\item<3->[\OMinus] \hl{Non-causal}\\Does not describe a biological process
+		\end{itemize}
+	\end{columns}
+	\vspace{0.5cm}
+	\begin{overlayarea}{\textwidth}{0.5cm}
+		\centering
+		\quotefont\large
+		\only<4->{We need to find a mechanism that low-pass filters spikes over time!}
+	\end{overlayarea}
+\end{frame}
+
+\begin{frame}{Synapses as Filters}
+	\centering
+	\includegraphics[width=0.375\textwidth]{media/synapse_schematic.pdf}~~%
+	\includegraphics[width=0.55\textwidth]{media/burke_1967_epsp.png}\\[0.5cm]
+	\centering
+	\begin{overlayarea}{\textwidth}{0.5cm}
+		\centering
+		\only<2->{\quotefont\large
+		\hl{Post-synaptic currents (EPSPs, IPSPs) are low-pass filtered spike trains!}}
+	\end{overlayarea}
+\end{frame}
+
+\begin{frame}{Exponential Low-Pass Filter (I)}
+	\includegraphics[width=\textwidth]{media/synaptic_filters.pdf}
+	\begin{align*}
+			h(t) &= \begin{cases}
+		c^{-1} t^n \exp^{-t / \tau} & \text{if } t \geq 0 \,,\\
+		0 & \text{otherwise}\,,
+		\end{cases}
+		&& \text{where } c = \int_{0}^\infty t^n \exp^{-t / \tau} \,\mathrm{d}t \,.
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Exponential Low-Pass Filter (II)}
+	\includegraphics[width=\textwidth]{media/synaptic_filters_freq.pdf}
+	\begin{align*}
+	h(t) &= \begin{cases}
+	c^{-1} t^n \exp^{-t / \tau} & \text{if } t \geq 0 \,,\\
+	0 & \text{otherwise}\,,
+	\end{cases}
+	&& \text{where } c = \int_{0}^\infty t^n \exp^{-t / \tau} \,\mathrm{d}t \,.
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Example: Synaptic Filter for Two Neurons}
+	\includegraphics[width=\textwidth]{media/two_neurons_synaptic_filter.pdf}\\
+	\centering $\tau = \SI{5}{\milli\second}, n = 1$
+\end{frame}
+
+\begin{frame}{Example: Synaptic Filter for One Hundred Neurons}
+	\includegraphics[width=\textwidth]{media/n_neurons_synaptic_filter.pdf}
+	\centering $\tau = \SI{5}{\milli\second}, n = 1$
+\end{frame}
 
 \backupbegin
 
