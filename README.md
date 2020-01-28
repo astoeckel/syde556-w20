@@ -66,7 +66,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_04/syde556_lecture_04_slides_distr.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_04/syde556_lecture_04_slides_distr.pdf)]
 
--   **Notes (Highly incomplete as of now)**  
+-   **Notes**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_04/syde556_lecture_04_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_04/syde556_lecture_04_notes.pdf)]
 
