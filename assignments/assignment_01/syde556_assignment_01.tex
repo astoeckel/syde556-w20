@@ -57,12 +57,10 @@
 			\item[{\symbolfont 📖}] See Figure 2.7 for an example.
 		\end{itemize}
 		\item \Marks{1} \textit{Decoding under noise.} Now try decoding under noise. Add random normally distributed noise to $\mat A$ and decode again. The noise is a random variable with mean $\mu=0$ and standard deviation of $\sigma=0.2 \max(\mat A)$ (where $\max(\mat A)$ is the maximum firing rate of all the neurons). Resample this variable for every different $x$ value for every different neuron. Create all the same plots as in part d). Report the RMSE.
-		\begin{itemize}
-			 \item[{\symbolfont 🖈}] For this, and all other questions, do \textit{not} add noise to the $\mat A$ you use for \emph{computing} the decoders $\mat D$. Instead, appropriately account for noise through regularization when computing the decoders, as we discussed in class. Use the noisy version of $\mat A$ to test what impact noise has on the quality of the decoded values.
-		\end{itemize}
 		\item \Marks{1} \textit{Accounting for decoder noise.} Recompute the decoder $\vec d$ taking noise into account (i.e.,~apply the appropriate regularization, as shown in class). Show how these decoders behave when decoding both with and without noise added to $a$ by making the same plots as in d) and e). Report the RMSE for all cases.
 		\begin{itemize}
 			\item[{\symbolfont 🖈}] As in the previous question, $\sigma = 0.2 \max(\mat A)$.
+			\item[{\symbolfont 🖈}] For this, and all other questions, do \textit{not} add noise to the $\mat A$ you use for \emph{computing} the decoders $\mat D$. Instead, appropriately account for noise through regularization when computing the decoders, as we discussed in class. Use the noisy version of $\mat A$ to test what impact noise has on the quality of the decoded values.
 		\end{itemize}
 		\item \Marks{1} \textit{Interpretation.} Show a 2x2 table of the four RMSE values reported in parts d), e), and f). This should show the effects of adding noise and whether the decoders $d$ are computed taking noise into account. Write a few sentences commenting on what the table shows, i.e.,~what the effect of adding noise to the activities is with respect to the measured error and why accounting for noise when computing the decoders increases/decreases/does not change the measured RMSE.
 	\end{enumerate}
