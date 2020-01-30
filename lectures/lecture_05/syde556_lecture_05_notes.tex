@@ -45,7 +45,8 @@ For the first method, we generated a random set of samples arranged in a matrix 
 Of course, just describing an individual population of neurons is not really useful when building large-scale brain models. We ultimately would like to describe how information is \emph{transformed} while it is sent from one population of neurons to another. In the Neural Engineering Framework, connections between neural populations are theorised to perform these transformations.
 \begin{mdframed}
 	\textbf{NEF Principle 2 -- Transformation}\\
-	Connections between populations describe transformations of neural representations. These transformations are functions of the variables that are representedby neural populations.
+	Connections between populations describe transformations of neural representations. These transformations are functions of the variables that are represented
+by neural populations.
 \end{mdframed}
 
 When looking at transformations from the perspective of large-scale modelling, researchers are usually confronted with two very different questions.
@@ -63,19 +64,96 @@ We will talk about \emph{learning}, i.e.,~building a system that learns connecti
 
 The simplest possible transformation is the identity function. Given to neural populations $A$ and $B$, $A$ representing $\vec x$, and $B$ representing $\vec y$, we would like to send the value $\vec x$ from $A$ to $B$, such that when simulating the network $\vec x$ and $\vec y$ are approximately the same. This type of transformation is also called a \emph{communication channel}, since we are merely sending information from one point in the system to another point in the system without altering it.
 
-\subsection{Sequential Decoding and Encoding}
+\newpage
 
-\subsection{Biological Correlates}
+\ConstructionSite
 
-\subsection{Computing a Weight Matrix}
+\paragraph{1. Review}
+\begin{itemize}
+	\item So far: Representation in individual populations
+	\item Encoding process:
+	\begin{align*}
+		J_i(t) &= \alpha_i \langle \vec e_i, \vec x(t) \rangle + J_i^\mathrm{bias} \\
+		a_i(t) &= \sum_k^\ell \delta(t - t_i^k) && \text{(Spiking neuron model)} \\
+		a_i(t) &= G[J_i(t)] && \text{(Rate approximation)}
+	\end{align*}
+	\item Decoding process:
+	\begin{align*}
+		\hat{\vec x}(t) &= \big( (\mat D \vec a) \ast h \big)
+	\end{align*}
+	\item Can use either rate approximation or spike data to compute $\mat D$ (approximately the same result for both methods)
+	\item Open question: how do we connect multiple populations of neurons?
+\end{itemize}
 
-\section{Approximating Functions}
+\paragraph{2. Communication Channels}
+\begin{itemize}
+	\item NEF Principle 2: Connections between populations transform represented values
+	\item Same input for two populations results in approximately the same output
+	\item How to send represented value $\vec x$ from population $A$ to $B$?
+	\item \textbf{Idea:} Decode, rencode!
+	\item Works, but biologically implausible
+	\item We only have synaptic weights $w_{ij}$ ($i$ post-neuron index, $j$ pre-neuron index; $W \in \mathbb{R}^{m \times n}$)
+	\begin{itemize}
+		\item $w_{ij} > 0$: excitatory
+		\item $w_{ij} < 0$: inhibitory
+		\item $w_{ij} \approx 0$: no connection
+	\end{itemize}
+	\item Biological correlates of synaptic weights
+	\begin{itemize}
+		\item Presence of a connection between $i$ and $j$
+		\item \# of neurotransmitter per vesicle
+		\item \# of ion-channels in the post-synapse
+		\item \# of recepters in the post-synapse
+	\end{itemize}
+	\item Can we compute what $\mat W$ are for a communication channel?
+	\begin{align*}
+		J_i &= \alpha_i \langle \vec e_i, \mat D \vec a(\vec x) \rangle + J^\mathrm{bias}_i \\
+		    &= \alpha_i \sum_{k=1}^d e_{ik} \sum_{\ell=1}^n d_{k\ell} a_\ell(\vec x) + J^\mathrm{bias}_i \\
+		    &= \alpha_i \sum_{k=1}^d \sum_{\ell=1}^n e_{ik}  d_{k\ell} a_\ell(\vec x) + J^\mathrm{bias}_i \\
+		    &= \alpha_i \sum_{\ell=1}^n w_{i\ell} a_\ell(\vec x) + J^\mathrm{bias}_i
+	\end{align*}
+	\item $\mat W = \mat E \mat D$
+	\item $\mat W$ is of rank $d$. Computationally \emph{much} more efficient to decode and reencode!
+\end{itemize}
 
-\subsection{Computing Function Decoders}
+\paragraph{3. Computing Functions}
 
-\subsection{Linear Multivariate Functions}
+\begin{itemize}
+	\item Special case: Linear transformations $F \in \mathbb{R}^{d' \times d}$:
+	\begin{align*}
+		\mat D^F &= F D
+	\end{align*}
+	\item Non-linear functions: Compute \emph{function decoder} instead of \emph{identity decoder}:
+	\begin{align*}
+		\mat D^f = \arg\min_{\mat D^f} \int_{\mathbb{X}} \| f(\vec x) - \mat D^f \vec a(\vec x) \|^2 \,\mathrm{d}\vec x
+	\end{align*}
+	\item Regularised least squares solution:
+	\begin{align*}
+		\mat D^f = \left( (\mat A \mat A^\T + N \sigma^2 \mat I) \mat A \mat Y^\T \right)^\T \,, \quad
+		\text{where } \big ( \mat Y \big )_{ik} = \big( f(\vec x_k) \big)_i 
+	\end{align*}
+	\item $\mat W^f = \mat E \mat D^f$
+	\item Not all functions can be computed well! Depends on
+	\begin{itemize}
+		\item Number of neurons
+		\item Tuning curve shape: $G[J]$, encoders
+	\end{itemize}
+\end{itemize}
 
-\subsection{Non-linear Multivariate Functions}
+
+%\subsection{Sequential Decoding and Encoding}
+
+%\subsection{Biological Correlates}
+
+%\subsection{Computing a Weight Matrix}
+
+%\section{Approximating Functions}
+
+%\subsection{Computing Function Decoders}
+
+%\subsection{Linear Multivariate Functions}
+
+%\subsection{Non-linear Multivariate Functions}
 
 \printbibliography
 

@@ -1352,7 +1352,7 @@
      inkscape:groupmode="layer"
      id="layer14"
      inkscape:label="in_b"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <g
        style="display:inline"
@@ -1409,7 +1409,7 @@
      inkscape:groupmode="layer"
      id="layer15"
      inkscape:label="out_a"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <text
        transform="translate(0,-242)"
@@ -1819,7 +1819,7 @@
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="base_annot"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <g
        id="g6004-9"
@@ -1906,7 +1906,7 @@
      inkscape:groupmode="layer"
      id="layer9"
      inkscape:label="base_annot_b"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <g
        style="display:inline"
@@ -1997,7 +1997,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="detailed_encoders"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <path
        transform="translate(0,-242)"
@@ -2613,7 +2613,7 @@
      inkscape:groupmode="layer"
      id="layer7"
      inkscape:label="detailed_encoders_b"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <text
        transform="translate(0,-242)"
@@ -4771,10 +4771,11 @@
     </g>
   </g>
   <g
-     style="display:inline"
+     style="display:none"
      inkscape:label="encoder_matrix_4"
      id="g1279"
-     inkscape:groupmode="layer">
+     inkscape:groupmode="layer"
+     sodipodi:insensitive="true">
     <g
        id="g1123"
        transform="translate(2.6588945,-241.41155)"
@@ -5249,7 +5250,7 @@
      inkscape:groupmode="layer"
      id="layer11"
      inkscape:label="base_ident_trafo"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <g
        style="display:inline"

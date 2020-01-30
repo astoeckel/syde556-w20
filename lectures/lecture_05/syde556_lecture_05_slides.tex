@@ -74,7 +74,7 @@
 		\includegraphics<3>[width=1.175\textwidth]{media/transformation_09.pdf}
 		\begin{overlayarea}{\textwidth}{1cm}
 			\only<3->{\hl{Function Decoder} $
-				\quad \mat D^f = \left( (\mat A \mat A^\T + N \sigma^2 \mat I) \mat A \mat Y^\T \right)^\T \,, \quad
+				\mat D^f = \left( (\mat A \mat A^\T + N \sigma^2 \mat I) \mat A \mat Y^\T \right)^\T \,, \quad
 				\text{where } \big ( \mat Y \big )_{ik} = \big( f(\vec x_k) \big)_i 
 			$}
 		\end{overlayarea}
@@ -106,7 +106,7 @@
 			\column{0.33\textwidth}
 			\centering
 			\hl{Linear Superposition}\\[0.25cm]
-			$W^{f_1} \vec a_1(\vec x) + W^{f_2} \vec a_2 (\vec x)$
+			$W^{f_1} \vec a_1(\vec x) + W^{f_2} \vec a_2 (\vec y)$
 			\includegraphics{media/network_a.pdf}
 			\pause
 			\column{0.33\textwidth}
@@ -122,6 +122,40 @@
 			\includegraphics{media/network_d.pdf}
 		\end{columns}
 	\end{frame}
+
+	\begin{frame}{Computing Multivariate Functions -- Linear Superposition}
+		\begin{columns}[c]
+			\column{0.33\textwidth}
+			\centering
+			\hl{Linear Superposition}\\[0.25cm]
+			\includegraphics{media/network_a.pdf}
+			\column{0.66\textwidth}
+			\includegraphics[width=\textwidth]{media/multivariate_addition.pdf}
+		\end{columns}
+ 	\end{frame}
+
+
+	\begin{frame}{Computing Multivariate Functions -- Multiplication}
+		\begin{columns}[c]
+			\column{0.33\textwidth}
+			\centering
+			\hl{Nonlinear Functions}\\[0.25cm]
+			Multi-dimensional $\vec z$
+			\includegraphics{media/network_c.pdf}\\[0.25cm]
+			\begin{overlayarea}{\textwidth}{2.75cm}
+				\only<2->{Multiplication is useful...
+				\begin{itemize}
+					\item Gating of signals
+					\item Attention effects
+					\item Binding
+					\item Statistical inference				
+				\end{itemize}}
+			\end{overlayarea}
+			\column{0.66\textwidth}
+			\includegraphics[width=\textwidth]{media/multivariate_multiplication.pdf}
+		\end{columns}
+	\end{frame}
+
 
 	\backupbegin
 	
