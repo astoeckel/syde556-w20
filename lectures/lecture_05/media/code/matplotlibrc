@@ -1,0 +1,16 @@
+font.family: DejaVu Sans
+font.size: 8.0
+legend.fontsize: 8.0
+legend.frameon: False
+#mathtext.fontset: custom
+#mathtext.rm: Bitstream Vera Sans
+#mathtext.it: Bitstream Vera Sans:italic
+#mathtext.bf: Bitstream Vera Sans:bold
+axes.linewidth: 0.25
+axes.labelsize: 8.0
+axes.titlesize: 8.0
+axes.titleweight: bold
+xtick.labelsize: 8.0
+ytick.labelsize: 8.0
+hatch.linewidth: 0.5
+hatch.color: (0.5, 0.5, 0.5)

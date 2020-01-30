@@ -1,0 +1,136 @@
+% !TeX spellcheck = en_GB
+\ifcsname SlidesDistr\endcsname%
+\documentclass[handout,aspectratio=169]{beamer}
+\else%
+\documentclass[aspectratio=169]{beamer}
+\fi%
+\input{../syde556_lecture_slides_preamble}
+
+\date{January 30, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 5: Feed-Forward Transformation}
+
+\begin{document}
+	
+	\begin{frame}{}
+		\vspace{0.5cm}
+		\begin{columns}[c]
+			\column{0.6\textwidth}
+			\MakeTitle
+			\column{0.4\textwidth}
+			\includegraphics[width=\textwidth]{media/yellow_butterfly_by_albert_bierstadt_small.jpg}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{NEF Principle 2: Transformation}
+		\centering
+		\includegraphics[scale=1.175]{media/transformation_fully_connected.pdf}
+		\begin{mdframed}
+			\textbf{NEF Principle 2 -- Transformation}\\
+			Connections between populations describe \emph{transformations} of neural representations. Transformations are functions of the variables represented by neural populations.
+		\end{mdframed}
+	\end{frame}
+	
+	\begin{frame}{A Tale of Two Populations (I)}
+		\hspace*{-1.2cm}%
+		\includegraphics<1>[width=1.175\textwidth]{media/transformation_01.pdf}%
+		\includegraphics<2>[width=1.175\textwidth]{media/transformation_02.pdf}%
+	\end{frame}
+
+	\begin{frame}{Communication Channel Experiment: Same input signal}
+		\includegraphics[width=\textwidth]{media/two_populations_decoding.pdf}
+	\end{frame}
+
+	\begin{frame}{A Tale of Two Populations (II)}
+		\hspace*{-1.2cm}%
+		\includegraphics<1>[width=1.175\textwidth]{media/transformation_03.pdf}%
+		\includegraphics<2>[width=1.175\textwidth]{media/transformation_04.pdf}%
+	\end{frame}
+
+	\begin{frame}{Communication Channel Experiment: Populations in series}
+		\includegraphics<1>[width=\textwidth]{media/two_populations_decoding.pdf}
+		\includegraphics<2>[width=\textwidth]{media/two_populations_decoding_series.pdf}
+	\end{frame}
+
+	\begin{frame}{Computing Synaptic Weights: Step 1 -- Encoding Matrix}
+		\hspace*{-1.2cm}%
+		\includegraphics<1>[width=1.175\textwidth]{media/transformation_04.pdf}%
+		\includegraphics<2>[width=1.175\textwidth]{media/transformation_05.pdf}%
+	\end{frame}
+
+	\begin{frame}{Computing Synaptic Weights: Step 2 -- Scaled Encoding Matrix}
+		\hspace*{-1.2cm}%
+		\includegraphics<1>[width=1.175\textwidth]{media/transformation_06.pdf}%
+	\end{frame}
+
+	\begin{frame}{Computing Synaptic Weights: Step 3 -- $\mat W = \mat E \mat D$}
+		\hspace*{-1.2cm}%
+		\includegraphics<1>[width=1.175\textwidth]{media/transformation_07.pdf}%
+	\end{frame}
+
+	\begin{frame}{Computing Functions}
+		\hspace*{-1.2cm}%
+		\includegraphics<1>[width=1.175\textwidth]{media/transformation_02.pdf}%
+		\includegraphics<2>[width=1.175\textwidth]{media/transformation_08.pdf}%
+		\includegraphics<3>[width=1.175\textwidth]{media/transformation_09.pdf}
+		\begin{overlayarea}{\textwidth}{1cm}
+			\only<3->{\hl{Function Decoder} $
+				\quad \mat D^f = \left( (\mat A \mat A^\T + N \sigma^2 \mat I) \mat A \mat Y^\T \right)^\T \,, \quad
+				\text{where } \big ( \mat Y \big )_{ik} = \big( f(\vec x_k) \big)_i 
+			$}
+		\end{overlayarea}
+	\end{frame}
+
+	\begin{frame}{Decoding Functions -- Using a Few Neurons}
+		\includegraphics<1>[width=\textwidth]{media/function_decodings_10.pdf}%
+	\end{frame}
+
+	\begin{frame}{Decoding Functions -- Using More Neurons}
+		\includegraphics<1>[width=\textwidth]{media/function_decodings_20.pdf}%
+		\includegraphics<2>[width=\textwidth]{media/function_decodings_50.pdf}%
+		\includegraphics<3>[width=\textwidth]{media/function_decodings_100.pdf}%
+	\end{frame}
+	
+	\begin{frame}{Computing Functions -- Weight Matrix}
+		\hspace*{-1.2cm}%
+		\includegraphics<1>[width=1.175\textwidth]{media/transformation_10.pdf}
+		\begin{overlayarea}{\textwidth}{1cm}
+			\centering
+			$\mat W^f = \mat E \mat D^f$
+		\end{overlayarea}
+	\end{frame}
+
+	\begin{frame}{Computing Multivariate Functions}
+		\centering
+		\includegraphics{media/network_legend_3.pdf}\\[0.5cm]
+		\begin{columns}[t]
+			\column{0.33\textwidth}
+			\centering
+			\hl{Linear Superposition}\\[0.25cm]
+			$W^{f_1} \vec a_1(\vec x) + W^{f_2} \vec a_2 (\vec x)$
+			\includegraphics{media/network_a.pdf}
+			\pause
+			\column{0.33\textwidth}
+			\centering
+			\hl{Nonlinear Functions}\\[0.25cm]
+			Multi-dimensional $\vec z$
+			\includegraphics{media/network_c.pdf}
+			\pause
+			\column{0.33\textwidth}
+			\centering
+			\textbf{(Dendritic Computation)}\\[0.25cm]
+			Exploit dendritic nonlinearity
+			\includegraphics{media/network_d.pdf}
+		\end{columns}
+	\end{frame}
+
+	\backupbegin
+	
+	\begin{frame}[noframenumbering]{Image sources}
+		\small
+		\textbf{Title slide}\\\enquote{Yellow Butterfly}\\Author: Albert Bierstadt, circa 1890.\\From \href{https://commons.wikimedia.org/wiki/File:Yellow_Butterfly_by_Albert_Bierstadt.jpeg}{Wikimedia}.
+	\end{frame}
+
+
+	\backupend
+	
+\end{document}

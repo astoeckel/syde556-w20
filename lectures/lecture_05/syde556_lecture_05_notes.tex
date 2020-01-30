@@ -1,0 +1,82 @@
+% !TeX spellcheck = en_GB
+\documentclass[10pt,letterpaper,oneside]{article}
+\input{../syde556_lecture_notes_preamble}
+
+\date{January 30, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 5: Feed-Forward Transformation}
+
+
+\begin{document}
+
+\MakeTitle{\textbf{Accompanying Readings: Chapter 6 of Neural Engineering}}
+
+\section{Introduction}
+
+\Note{Until now, we have been concerned with \emph{representation} in individual populations of neurons. However, we ultimately want to be able to build neural \emph{networks}. This means that we have to find a systematic way of connecting neural populations. Optimally, the connections should be chosen in such a way that information represented in the populations is \emph{transformed} in a useful way.}
+
+We postulated that groups of neurons represent $d$-dimensional quantities $\vec x$ using nonlinear encoding. In particular, the current $J_i$ that is being injected into the $i$-th neuron of a population is defined as
+\begin{align*}
+	J_i &= \alpha_i \langle \vec e_i, \vec x \rangle + J^\mathrm{bias}_i \,.
+\end{align*}
+For rate neurons, this input current is translated into a spike rate $a_i = G[J_i]$. In the context of spiking neurons, the input current is translated into a spike train $a_i(t)$, a sum of Dirac-$\delta$ pulses.
+
+We then went on to postulate that the value that is represented by a population $\hat{\vec x}$ can be estimated using a linear decoder $\mat D$. For spiking neurons, we furthermore added a filtering step using a filter $h$
+\begin{align*}
+	\hat{\vec x} &= \mat D \vec a \quad \text{ for rate neurons,} & 
+	\hat{\vec x}(t) &= \big( (\mat D \vec a(t)) \ast h \big)(t) \quad \text{ for spiking neurons.}
+\end{align*}
+
+\Note{\emph{Review: Decoder computation methods.} We described two methods for the computation of the decoder matrix $\mat D$.
+	
+For the first method, we generated a random set of samples arranged in a matrix $\mat X$. Using the spike rate approximation $G[J]$, we computed an activity matrix $\mat A$. We then obtained $\mat D$ using the solution to the $L_2$-regularised least-squares problem
+	\begin{align*}
+	\mat D^T = (\mat A \mat A^T + \sigma^2 \mat I)^{-1} \mat A \mat X^T \,,
+	\end{align*}
+	where we estimate $\sigma$ to match the amount of (Gaussian) noise that is present on top of the spike rate estimates.
+	
+	The second solution was to use a random input function $\vec x(t)$, and the recorded population spike trains $\vec a(t)$. We  discretised these functions into matrices $\mat A$ and $\mat X$ and used the unregularised solution to the least-squares problem to obtain $\mat D$
+	\begin{align*}
+	\mat D^T = (\mat A \mat A^T)^{-1} \mat A \mat X^T \,.
+	\end{align*}
+	
+	As mentioned in the last lecture, these two methods should result in approximately the same decoders. While the second method is technically superior, as it accurately characterises the noise present in the neural population, the first method is computationally much cheaper. This is why -- from now on -- we will use the first method to compute the decoders. We will then use these decoding matrices in conjunction with spiking neurons.}
+
+
+Of course, just describing an individual population of neurons is not really useful when building large-scale brain models. We ultimately would like to describe how information is \emph{transformed} while it is sent from one population of neurons to another. In the Neural Engineering Framework, connections between neural populations are theorised to perform these transformations.
+\begin{mdframed}
+	\textbf{NEF Principle 2 -- Transformation}\\
+	Connections between populations describe transformations of neural representations. These transformations are functions of the variables that are representedby neural populations.
+\end{mdframed}
+
+When looking at transformations from the perspective of large-scale modelling, researchers are usually confronted with two very different questions.
+\begin{itemize}
+	\item \textbf{How do brains \emph{learn} transformations?}
+	In other words, how are the connections weights between neuron populations formed in such a way that they implement a desired task.
+	\item \textbf{What are the \emph{optimal} set of connection weights that computes a certain transformation?}
+	Here, we assume that a brain has already learned to optimally perform a certain task. In that case, we would just like to know what the corresponding connection weights that the system could have learned are. We would then like to use these weights in our model -- essentially, we are building a model of a system that is already an expert at solving a certain task.
+\end{itemize}
+For now, we will mostly concern ourselves with the second question, i.e.,~we are trying to build models of \enquote{adult} or \enquote{expert} systems already capable of solving a certain task. We postulate what the transformation may be that the system has learned and compute the optimal weights that implement this transformation.
+
+We will talk about \emph{learning}, i.e.,~building a system that learns connection weights while it is being executed in a later lecture.
+
+\section{Building a Communication Channel}
+
+The simplest possible transformation is the identity function. Given to neural populations $A$ and $B$, $A$ representing $\vec x$, and $B$ representing $\vec y$, we would like to send the value $\vec x$ from $A$ to $B$, such that when simulating the network $\vec x$ and $\vec y$ are approximately the same. This type of transformation is also called a \emph{communication channel}, since we are merely sending information from one point in the system to another point in the system without altering it.
+
+\subsection{Sequential Decoding and Encoding}
+
+\subsection{Biological Correlates}
+
+\subsection{Computing a Weight Matrix}
+
+\section{Approximating Functions}
+
+\subsection{Computing Function Decoders}
+
+\subsection{Linear Multivariate Functions}
+
+\subsection{Non-linear Multivariate Functions}
+
+\printbibliography
+
+\end{document}

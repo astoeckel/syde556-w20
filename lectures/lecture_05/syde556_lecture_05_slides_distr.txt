@@ -1,0 +1,417 @@
+SYDE 556/750
+Simulating Neurobiological Systems
+Lecture 5: Feed-Forward Transformation
+Andreas Stöckel
+January 30, 2020
+
+1/6
+
+NEF Principle 2: Transformation
+Population A
+
+W ∈ ℝm×n
+
+Population B
+
+n
+neurons
+
+m
+neurons
+
+...
+
+...
+
+NEF Principle 2 – Transformation
+Connections between populations describe transformations of neural representations.
+Transformations are functions of the variables represented by neural populations.
+2/6
+
+A Tale of Two Populations (I)
+Population A
+
+e1
+1
+
+d
+
+e2
+
+d
+
+1
+
+1
+
+1
+
+1
+
+Jbias
+3
+
+α3
+1
+
+d
+
+1
+
+Jbias
+2
+
+α2
+
+e3
+
+x(t)
+
+1
+
+1
+
+d
+
+Jbias
+1
+
+α1
+
+1
+
+D
+1
+
+1
+
+1
+
+^
+x(t)
+
+...
+
+1
+
+d
+
+en
+d
+
+Jbias
+n
+
+αn
+1
+
+1
+
+3/6
+
+Decoded value x(t)
+
+100
+80
+60
+40
+20
+0
+
+Population A Tuning Curves (n = 21)
+Firing rates ai(x) (s 1)
+
+Firing rates ai(x) (s 1)
+
+Communication Channel Experiment: Same input signal
+
+1.0
+
+0.5
+0.0
+0.5
+Represented value x
+Population A
+
+1
+0
+1
+0.0
+
+1.0
+
+100
+80
+60
+40
+20
+0
+
+Population B Tuning Curves (m = 22)
+
+1.0
+
+Decoded values
+
+0.5
+0.0
+0.5
+Represented value x
+
+1.0
+
+Population B
+
+0.2
+
+0.4
+
+Time t (s)
+
+0.6
+
+0.8
+
+1.0
+4/6
+
+A Tale of Two Populations (II)
+Population A
+
+e1
+
+e2
+
+d
+
+1
+
+1
+
+1
+
+1
+
+d'
+
+1
+
+D
+1
+
+1
+
+d
+
+^
+x(t)
+
+f(x)
+
+d'
+
+1
+
+1
+
+1
+
+1
+
+1
+
+D
+1
+
+1
+
+1
+
+1
+
+d'
+
+^
+y(t)
+
+...
+
+d
+
+Jbias
+n
+
+αn
+
+1
+
+Jbias
+3
+
+α3
+
+...
+en
+
+1
+
+1
+
+d'
+
+1
+
+Jbias
+2
+
+α2
+
+e3
+
+y(t)
+
+1
+
+1
+
+d'
+
+Jbias
+1
+
+α1
+
+e2
+
+Jbias
+3
+
+α3
+1
+
+d
+
+1
+
+Jbias
+2
+
+α2
+
+e3
+
+x(t)
+
+e1
+1
+
+1
+
+1
+
+d
+
+Jbias
+1
+
+α1
+1
+
+d
+
+Population B
+
+1
+
+1
+
+d'
+
+Jbias
+m
+
+αm
+
+em
+1
+
+1
+
+5/6
+
+Decoded value x(t)
+
+100
+80
+60
+40
+20
+0
+
+Population A Tuning Curves (n = 21)
+Firing rates ai(x) (s 1)
+
+Firing rates ai(x) (s 1)
+
+Communication Channel Experiment: Populations in series
+
+1.0
+
+0.5
+0.0
+0.5
+Represented value x
+Population A
+
+1
+0
+1
+0.0
+
+1.0
+
+100
+80
+60
+40
+20
+0
+
+Population B Tuning Curves (m = 22)
+
+1.0
+
+Decoded values
+
+0.5
+0.0
+0.5
+Represented value x
+
+1.0
+
+Population B
+
+0.2
+
+0.4
+
+Time t (s)
+
+0.6
+
+0.8
+
+1.0
+6/6
+
+Image sources
+
+Title slide
+“Yellow Butterﬂy”
+Author: Albert Bierstadt, circa 1890.
+From Wikimedia.
+
+6/6
+
+
