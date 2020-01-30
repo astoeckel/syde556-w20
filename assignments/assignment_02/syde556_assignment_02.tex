@@ -72,7 +72,7 @@
 	\end{align*}
 	where $\tau_\mathrm{RC}$ is the membrane time constant, $J$ is the input current and $v$ is the current membrane potential. To simplify life, this is normalized so that the resting voltage is $0$ and the thereshold voltage is $v_\mathrm{th} = 1$. This equation can be simulated numerically by taking small time steps (Euler's method). When the voltage reaches the threshold $v_\mathrm{th}$, the neuron will \enquote{spike}. It's voltage is reset to $0$ and stays there for the refractory period $\tau_\mathrm{ref}$ (to plot individual spike, place a dot or line at that time). Also, if the voltage goes below zero at any time, reset it back to zero. For this question, $\tau_\mathrm{RC}=\SI{20}{\milli\second}$ and $\tau_\mathrm{ref}=\SI{2}{\milli\second}$.
 
-	Since we want to have inputs in terms of represented values $\vec x$, we need to compute $J = \alpha \langle \vec e, \vec x \rangle + J^\mathrm{bias}$. For this neuron, set $\vec e$ to $1$ and find $\alpha$ and $J^{bias}$ such that the firing rate when $\vec x=0$ is \SI{40}{\hertz} and when $\vec x=1$ it is \SI{40}{\hertz}. To find these $\alpha$ and $J^\mathrm{bias}$ values, use the LIF rate approximation (see Assignment 1, Question 1.3):
+	Since we want to have inputs in terms of represented values $\vec x$, we need to compute $J = \alpha \langle \vec e, \vec x \rangle + J^\mathrm{bias}$. For this neuron, set $\vec e$ to $1$ and find $\alpha$ and $J^\mathrm{bias}$ such that the firing rate when $\vec x=0$ is \SI{40}{\hertz} and when $\vec x=1$ it is \SI{40}{\hertz}. To find these $\alpha$ and $J^\mathrm{bias}$ values, use the LIF rate approximation (see Assignment 1, Question 1.3):
 	\begin{align*}
 		G[J] &= \frac{1}{\tau_\mathrm{ref} - \tau_\mathrm{RC} \ln \big( 1 - \frac{1}J \big)}
 	\end{align*}
@@ -123,23 +123,23 @@
 	Instead of using the optimal filter from the previous question, now we will use the post-synaptic current instead. This is of the form
 	\begin{align*}
 		h(t)= \begin{cases}
-			\alpha^{-1} t^n e^{-\frac{t}\tau} & \text{if } t \geq 0 \,, \\
+			c^{-1} t^n e^{-\frac{t}\tau} & \text{if } t \geq 0 \,, \\
 			0 & \text{otherwise} \,.
 		\end{cases}
 	\end{align*}
-	where $n$ is a non-negative integer, and $\alpha$ normalizes the filter to area one, i.e.
+	where $n$ is a non-negative integer, and $c$ normalizes the filter to area one to preserve energy, i.e.,
 	\begin{align*}
-		\alpha = \int_0^\infty t^n e^{-\frac{t}\tau} \,\mathrm{d}t \,.
+		c = \int_0^\infty t^n e^{-\frac{t}\tau} \,\mathrm{d}t \,.
 	\end{align*}
 	\begin{enumerate}[a)]
 		\item \Marks{0.5} \textit{Plotting the filter for different $n$.} Plot the normalized $h(t)$ for $n=0$, $1$, and $2$, with $\tau=\SI{7}{\milli\second}$.
 		\begin{itemize}
-			\item[\symbolfont 🖈] You should evaluate the above integral numerically to compute $\alpha$. There is no \href{http://mathworld.wolfram.com/Closed-FormSolution.html}{closed-form solution}.
+			\item[\symbolfont 🖈] You must evaluate the above integral numerically to compute $c$. There is no \href{http://mathworld.wolfram.com/Closed-FormSolution.html}{closed-form solution}.
 		\end{itemize}
 		\item \Marks{0.5} \textit{Discussion.} What two things do you expect increasing $n$ will do to $\hat{x}(t)$?
 		\item \Marks{0.5} \textit{Plotting the filter for different $\tau$.} Plot the normalized $h(t)$ for $\tau=\SI{2}{\milli\second}$, $\tau=\SI{5}{\milli\second}$, $\tau=\SI{10}{\milli\second}$, $\tau=\SI{20}{\milli\second}$ with $n = 0$.
 		\item \Marks{0.5} \textit{Discussion.} What two things do you expect increasing $\tau$ will do to $\hat{x}(t)$?
-		\item \Marks{1} \textit{Decoding a spike-train using the post-synaptic current filter.} Decode $\hat{x}(t)$ from the spikes generated in question 3c) using an $h(t)$ with $n=0$ and $\tau=\SI{7}{\milli\second}$. Do this by generating the spikes, filtering them with $h(t)$, and using that as your activity matrix $A$ to compute your decoders. Plot the time and frequency plots for this $h(t)$. Plot the $x(t)$ signal, the spikes, and the decoded $\hat{x}(t)$ value.
+		\item \Marks{1} \textit{Decoding a spike-train using the post-synaptic current filter.} Decode $\hat{x}(t)$ from the spikes generated in question 3c) using an $h(t)$ with $n=0$ and $\tau=\SI{7}{\milli\second}$. Do this by generating the spikes, filtering them with $h(t)$, and using that as your activity matrix $\mat A$ to compute your decoders. Plot the time and frequency plots for this $h(t)$. Plot the $x(t)$ signal, the spikes, and the decoded $\hat{x}(t)$ value.
 		\begin{itemize}
 			\item[\symbolfont 🖈] Do not use in-built convolution functions for any question in part 5. Instead, implement convolution this in the time domain by placing the filter when spikes occur, and then summing. This simulates a post-synaptic current occuring on the arrival of a spike from the pre-synaptic neuron.
 		\end{itemize}
