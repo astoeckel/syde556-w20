@@ -22,7 +22,7 @@ sed -i 's/\\begin{Verbatim}\[\(.*\)\]/\\begin{Verbatim}[\1,fontsize=\\small]/' "
 sed -i 's/\\geometry{.*$/\\geometry{a4paper,top=3cm,bottom=2cm,left=2.5cm,right=2.5cm}\n    \\usepackage{fancyhdr}\n    \\pagestyle{fancy}\n    \\fancyhf{}\n    \\lhead{Student ID: '"$ID"'}\n    \\rhead{\\thepage}\n/' "$1.tex"
 
 # Execute xelatex on the file
-xelatex "$1"
+xelatex -interaction=nonstopmode "$1" || true
 
 # Copy the resulting PDF back and delete the temporary directory
 cd -
