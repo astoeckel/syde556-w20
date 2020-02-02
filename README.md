@@ -62,13 +62,25 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
 
 ### Lecture 4 ― Temporal Representation ― January 23, 28
 
- -   **Slides**  
+-   **Slides**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_04/syde556_lecture_04_slides_distr.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_04/syde556_lecture_04_slides_distr.pdf)]
 
 -   **Notes**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_04/syde556_lecture_04_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_04/syde556_lecture_04_notes.pdf)]
+
+
+### Lecture 5 ― Feed-Forward Transformation ― January 30
+
+-   **Slides**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_05/syde556_lecture_05_slides_distr.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_05/syde556_lecture_05_slides_distr.pdf)]
+
+-   **Notes (highly unfinished)**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_05/syde556_lecture_05_notes.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_05/syde556_lecture_05_notes.pdf)]
+
 
 
 ## 📝 Assignments
