@@ -1,0 +1,87 @@
+% !TeX spellcheck = en_GB
+\ifcsname SlidesDistr\endcsname%
+\documentclass[handout,aspectratio=169]{beamer}
+\else%
+\documentclass[aspectratio=169]{beamer}
+\fi%
+\input{../syde556_lecture_slides_preamble}
+
+\date{February 3 \& 5, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 6: Recurrent Dynamics}
+
+\begin{document}
+	
+	\begin{frame}{}
+		\vspace{0.5cm}
+		\begin{columns}[c]
+			\column{0.6\textwidth}
+			\MakeTitle
+			\column{0.4\textwidth}
+			\includegraphics[width=\textwidth]{media/canada_150_mosaic_engine_small.jpg}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Feed Forward vs. Recurrent Connections}
+		\centering
+		\includegraphics{media/feed_forward_recurrent.pdf}
+	\end{frame}
+
+	\begin{frame}{Recurrence Experiments (I)}
+		\centering
+		\includegraphics[width=\textwidth]{media/fxp1_example.pdf}
+	\end{frame}
+
+	\begin{frame}{Recurrence Experiments (II)}
+		\centering
+		\includegraphics[width=\textwidth]{media/fmx_example.pdf}
+	\end{frame}
+
+	\begin{frame}{Recurrence Experiments (III)}
+		\centering
+		\includegraphics[width=\textwidth]{media/fxs_example.pdf}
+	\end{frame}
+
+	\begin{frame}{NEF Principle 3: Dynamics}
+		\begin{columns}[b]
+			\column{0.5\textwidth}
+				\centering
+				\hl{Time-Invariant Dynamical System}\\
+				\begin{align*}
+					\frac{\mathrm{d}\vec x(t)}{\mathrm{t}} &= f(\vec x(t), \vec u(t))
+				\end{align*}
+			\column{0.5\textwidth}
+				\centering
+				\hl{Linear Time-Invariant (LTI)}
+				\hl{Dynamical System}
+				\begin{align*}
+					\frac{\mathrm{d}\vec x(t)}{\mathrm{t}} &= \mat A \vec x + \mat B \vec u
+				\end{align*}
+		\end{columns}
+		\vspace{0.75cm}
+		\begin{mdframed}
+			\textbf{NEF Principle 3 -- Dynamics}\\
+			Neural dynamics are characterized by considering neural representations as control theoretic state variables. We can use control theory (and dynamical systems theory) to analyse and construct these systems.
+		\end{mdframed}
+	\end{frame}
+
+	\begin{frame}{Making Sense of Dynamics}
+		\centering
+		\includegraphics[width=\textwidth]{media/synaptic_filter.pdf} 		
+	\end{frame}
+
+	\begin{frame}{Implementing Dynamics using a Neural Ensemble}
+		\centering
+		\includegraphics[width=\textwidth]{media/lti_integrator_vs_neural.pdf} 
+	\end{frame}
+
+	\backupbegin
+	
+	\begin{frame}[noframenumbering]{Image sources}
+		\small
+		\textbf{Title slide}\\\enquote{The Canada 150 Mosaic Mural}\\Author: Mosaic Canada Murals.\\From \href{https://commons.wikimedia.org/wiki/File:Canada_150_Mosaic_Engine.jpg}{Wikimedia}.
+	\end{frame}
+
+
+	\backupend
+	
+\end{document}
