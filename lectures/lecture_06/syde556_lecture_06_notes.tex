@@ -1,0 +1,359 @@
+% !TeX spellcheck = en_GB
+\documentclass[10pt,letterpaper,oneside]{article}
+\input{../syde556_lecture_notes_preamble}
+
+\date{February 4 \& 6, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 6: Recurrent Dynamics}
+
+
+\begin{document}
+
+\MakeTitle{\textbf{Accompanying Readings: Chapter 8 of Neural Engineering}}
+
+\section{Introduction}
+
+\Note{We have now discussed the first two principles of the Neural Engineering Framework: Representation and Transformation. These two principles allow us to build feed-forward networks, i.e.,~networks that can -- mathematically speaking -- be described as acyclic directed graphs.}
+
+Biological neural networks are dynamical systems -- that is, they perform computation over time. The state of the network at a previous time influences the outcome of a computation.
+
+So far, we have discussed two sources of dynamics: neuron models and synaptic filters. However, these dynamics usually possess relatively short time constants, that is, the system \enquote{forgets} its previous state quite quickly. For example, LIF neuron are reset to their initial state whenever they emit a spike, and synaptic time constants are usually in a range between \SIrange{1}{100}{\milli\second}. In turn, that means that each population in a feed-forward will eventually \enquote{forget} events that happened more than a fraction of a second ago.
+
+This is of course not what we observe in biological systems. Most animals appear to have memories of events in the past spanning seconds to years. In theory, there are three ways to implement such \enquote{memory}:
+\begin{itemize}
+	\item \textbf{More complex neuron models.} Biological neurons, and correspondingly more complex neuron models, typically posses more complex dynamics, such as \emph{firing rate adaptation}. However, the effects of firing rate adaptation typically only last for a few seconds and are thus not sufficient to explain \enquote{memory} in biological systems.
+	\item \textbf{Changing connection weights over time.} Another form of \enquote{memory} can be implemented by changing synaptic weights over time. In the context of the NEF we refer to this process as \enquote{learning}.
+	\item \textbf{Recurrent connections.} The feed-forward nature of the networks we've built so far is the primary reason why they quickly \enquote{forget} about their previous state. However, we could introduce \enquote{backwards} (or \enquote{recurrent}) connections that \enquote{remind} the network their previous states.
+\end{itemize}
+
+Ultimately, both learning and recurrent connections are valid solutions to the problem of our networks \enquote{forgetting} the history of their input. Typically, synaptic weight changes are regarded as evoking longer term changes (minutes to years), whereas recurrent connections are a model of shorter term changes in dynamics (seconds to minutes). In this lecture we focus on recurrence. We will discuss \emph{learning} at a later point in time. In the Neural Engineering Framework, recurrent connections are used to realize the third principle:
+
+\begin{mdframed}
+	\textbf{NEF Principle 3 -- Dynamics}\\
+	Neural dynamics are characterized by considering neural representations as control theoretic state variables. We can use control theory (and dynamical systems theory) to analyse and construct these systems.
+\end{mdframed}
+
+\section{Exploring Recurrent Connections}
+
+Before we take a deeper dive into the mathematics of neural dynamics, we first discuss how we can implement recurrent connections in the context of an NEF network, followed by some experiments in which we explore what happens for certain functions that are being computed in the feedback function.
+
+\subsection{Implementing Recurrent Connections}
+
+\begin{figure}[h]
+	\begin{subfigure}[b]{0.6\textwidth}
+		\centering
+		\includegraphics{media/sum_vs_recurrent_a.pdf}
+		\caption{Feed forward network}
+		\label{fig:feed_forward_recurrent_a}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics{media/sum_vs_recurrent_b.pdf}
+		\caption{Recurrent network}
+		\label{fig:feed_forward_recurrent_b}
+	\end{subfigure}
+	\caption{Comparing a feed-forward and a recurrent neural network.}
+	\label{fig:feed_forward_recurrent}
+\end{figure}
+
+\Note{When we talk about recurrent connections in the context of the Neural Engineering Framework, we typically refer to a neuron population that is connected back to itself. While this might seem a little strange, we are trying to point out that recurrent connections change virtually nothing in terms of the math that we have used so far.}
+
+\paragraph{Revisiting a neural population receiving input from two pre-populations}
+As we discussed in the last lecture, \cref{fig:feed_forward_recurrent_a} depicts an ensemble $C$ receiving input from to pre-ensembles $A$ and $B$. Mathematically, each neuron $i$ in the post-population $C$ receives an input current $J^C_i(t)$
+\begin{align*}
+	J^C_i(t) &= \big\langle \vec w_i^A , \big ( \vec a^{A}_\mathrm{pre} \ast h \big)(t) \big\rangle
+	        + \big\langle \vec w_i^B , \big ( \vec a^{B}_\mathrm{pre} \ast h \big)(t) \big\rangle
+	        + J^\mathrm{bias}_i \,,
+	       & \text{where } \vec w^A_i = \big( \mat E \mat D^{g_1} \big)_i \text{ and } \vec w^B_i = \big( \mat E \mat D^{g_2} \big)_i \,,
+\end{align*}
+where $\vec a^{A}_\mathrm{pre}$ and $\vec a^{B}_\mathrm{pre}$ are the activities of the pre-populations $A$, $B$, respectively. The function $h$ is the synaptic filter, $\mat E$ is a matrix of post-population encoders, $\mat D^{g_1}$ is the decoding the function $g_1(\vec x)$ from population $A$, $\mat D^{g_2}$ is decoding the function ${g_2}(\vec y)$ from the pre-population population $B$. Then, the value $\vec z$ represented by the population is approximately $\vec z = f(\vec x) + f(\vec y)$.
+
+\paragraph{Recurrent populations}
+We can use the same setup as above to implement the simple recurrent connection depicted in figure \cref{fig:feed_forward_recurrent_b}. Here, a population $B$ represents a value $\vec x$ and receives input from both a pre-population $A$ representing a value $\vec u$ and itself. That is, each neuron $i$ in $B$ receives the current
+\begin{align*}
+	J^B_i(t) &= \big\langle \vec w_i^A , \big ( \vec a^{A}_\mathrm{pre} \ast h \big)(t) \big\rangle
+			+ \big\langle \vec w_i^B , \big ( \vec a^{B}_\mathrm{pre} \ast h \big)(t) \big\rangle
+			+ J^\mathrm{bias}_i \,,
+			& \text{where } \vec w^A_i = \big( \mat E \mat D^{g} \big)_i \text{ and } \vec w^B_i = \big( \mat E \mat D^{f} \big)_i \,.
+\end{align*}
+Notice that apart from names, there is virtually no difference between the previous two equations. The population $B$ approximately represents the value $\vec x = g(\vec u) + f(\vec x)$. In terms of control theory, the variable $\vec u$ is the \emph{input} to our system, whereas the variable $\vec x$ is the represented value. The function $g(\vec x)$ is a function transforming our input, the function $f(\vec x)$ is the \emph{feedback function}.
+
+\Note{When implementing a computer simulation that contains recurrent connections, each occurrence of a population pre-activity $\vec a_\mathrm{pre}$ should be interpreted as the pre-population activity from the last timestep.
+
+Note that this will introduce a delay of one timestep each time a new set of populations is connected. While not much of an issue in general, note that this delay is not part of the continuous equations that are being simulated. The implementation of the Neural Engineering Framework in \emph{Nengo} is thus a little more clever and will only introduce delays if it has to; it will not introduce a delay on pure feed-forward connections.}
+
+\subsection{Experimenting with Recurrent Connections}
+
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics{media/fxp1_example_small.pdf}\\[-0.25cm]
+		\caption{Exploring the feedback function $f(\vec x) = x + 1$}
+		\label{fig:dynamics_example_a}\vspace{0.25cm}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics{media/fmx_example_small.pdf}\\[-0.25cm]
+		\caption{Exploring the feedback function $f(\vec x) = -x$}
+		\label{fig:dynamics_example_b}\vspace{0.25cm}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics{media/fxs_example_small.pdf}\\[-0.25cm]
+		\caption{Exploring the feedback function $f(\vec x) = x^2s$}
+		\label{fig:dynamics_example_c}\vspace{0.25cm}
+	\end{subfigure}
+	\caption{Exploring the effect of different feedback functions $f(\vec x)$, input signals $u(t)$, and synaptic time constants $\tau$ on the dynamics of a single-population network. $100$ LIF neurons, decoded data are filtered with a \SI{10}{\milli\second} time-constant exponential low-pass}
+	\label{fig:dynamics_example}
+\end{figure}
+
+The above equations illustrate how recurrent connections are implemented and what the represented value of the recurrently connection is. To get some intuition for the dynamics of such a system, we can try test different feedback functions $f(\vec x)$. \Cref{fig:dynamics_example} depicts the behaviour of a population of LIF neurons representing a one-dimensional value along with various feedback functions and various synaptic filter time constants.
+
+\Note{The synaptic filter $h(t)$ we are using here is the exponential low pass
+\begin{align}
+	h(t) &= \begin{cases}
+		\frac{1}\tau e^{-t / \tau} & \text{if } t \geq 0 \,,\\
+		0 & \text{if } t < 0 \,.\\
+	\end{cases}
+	\label{eqn:filter}
+\end{align}
+This a version of the general synaptic filter discussed in lecture four (in particular $n=0$). For this specific case, we can compute the normalisation factor $c$ in closed form. It holds $c = \frac{1}{\tau}$. To see that this factor is correct, we can compute the integral
+\begin{align*}
+	\int_{0}^\infty h(t) \,\mathrm{d}t &= \int_{0}^\infty \frac{1}\tau e^{-t / \tau} \,\mathrm{d}t = \frac{1}{\tau} \big[  -\tau e^{-t / \tau}  \big]_0^\infty = \frac{1}{\tau} \big[  0 + \tau  \big] = 1 \,.
+\end{align*}}
+
+\paragraph{Feedback $f(x) = x + 1$}
+The dynamics of the system for a feedback function $f(x) = x + 1$ are depicted in \cref{fig:dynamics_example_a}. The resulting system converges to a value slightly above one. The rate of convergence is determined by the time constant $\tau$ and the scaling of the feedback function; an increase of the time constant by a factor $c$ seems to result in similar dynamics as dividing the feedback function $f$ by $c$.
+
+\Note{This system only converges to a fixed value due to saturation of the neural responses. For example, if we replace the LIF neurons with rectified linear units, the state $x$ will diverge monotonically towards infinity.}
+
+\paragraph{Feedback $f(x) = -x$}
+The dynamics of a system with the feedback function $f(x) = -x$ are depicted in \cref{fig:dynamics_example_b}. The system converges to exactly $\frac{1}2$ of the input $u(t)$. Rearranging the function describing the represented value $x$ yields
+\begin{align*}
+	x = g(u) + f(x) = u - x \Leftrightarrow x = \frac{u}2 \,.
+\end{align*}
+This explains why the function converges to a steady state of $\frac{u}2$; however, this analysis does not help us to understand the dynamics of the system (bottom half of \cref{fig:dynamics_example_b}).
+
+\paragraph{Feedback $f(x) = x^2$}
+The dynamics for a feedback function $f(x) = x^2$ are depicted in \cref{fig:dynamics_example_c}. The system converges to $u(t)$ for inputs $u(t) \lessapprox 0.4$ but diverges for larger values. Interestingly, once the system is in a state with $x > 0.4$, it will not converge back to $u(t)$ for values of $u(t)$ between approximately $0.2$ and $0.4$. For negative inputs $u(t)$ the system approximately converges to $\frac{1}2 u(t)$.
+
+\section*{Mathematical Analysis}
+
+\begin{figure}
+	\centering
+	\includegraphics{media/synaptic_filter.pdf}\\[-0.5cm]
+	\caption{Dynamics of a feed-forward system for varying synaptic time constants $\tau$. $1000$ LIF neurons, decoded data are filtered with a \SI{1}{\milli\second} time-constant exponential low-pass.}
+	\label{fig:synaptic_filter}
+\end{figure}
+
+\Note{While the above examples give us a feeling for what the dynamics of a neural system with recurrent connection might look like, these systems remain quite mysterious. We need to perform some mathematical analysis in order to truly understand these networks.}
+
+In order to gain a better understanding of recurrent dynamics, let's first revisit a simple feed-forward network. \Cref{fig:synaptic_filter} shows a single neuron population with varying synaptic filter time-constants $\tau$. As we can see, the dynamics of the system almost exclusively depend on the filter time constant. Furthermore, as we have already discussed, it does not matter whether we apply the filter before or after the encoding process. Correspondingly, it is sufficient to analyse dynamics in terms of represented values and to ignore individual neurons.
+
+\Note{\emph{Assumptions.} As so often, we will ignore the fact that we are dealing with vectorial quantities in the following subsection and instead assume that $d = 1$. That being said, all equations are also holding for higher-dimensional representations.
+
+Furthermore, we will assume that the synaptic filter is the same for both the synapses from the pre-populations, as well as the synapses filtering the recurrent connections. Often, we will find that the recurrent connections have a longer time constant than the input connections. However, the math we derive will still work reasonably well.}
+
+\subsection*{Analysing Neural Network Dynamics}
+
+The equation detailing the recurrence relationship $x = g(u) + f(x)$ did not include the synaptic filter. Assuming that both the input and the recurrent connections are filtered by the same filter we get the following dynamical system:
+\begin{align*}
+	x(t) &= \big( h \ast \big( g(u) + f(x) \big) \big) (t) = \int_{-\infty}^{\infty} h(t') \big( g(u(t - t')) + f(x(t - t')) \big) \mathrm{d}t' \,.
+\end{align*}
+
+Unfortunately, and as we have seen in previous lectures, the convolution operator is a little unwieldy. We could eliminate the convolution by switching to the Fourier Domain, however, there is an alternative, more powerful alternative: the Laplace transformation $\mathcal{L}\{f\} = F(s)$.
+
+\Note{The Laplace transformation is a more general version of the Fourier transformation. 
+\begin{align*}
+	\mathcal{L}\{f\} = F(s) &= \int_{0}^\infty f(t) e^{-st} \,\mathrm{d}t \,,
+\end{align*}
+where $s$ is a complex-valued parameter $s = \sigma + i \omega$. Notice that the Laplace and Fourier transformation are almost the same if we let $\sigma = 0$; the major remaining difference are the integration boundaries. Since the lower integration boundary of the Laplace transform is zero (instead of $-\infty$ in the case of the Fourier transformation), the Laplace transformation will ensure causality.
+
+The Laplace and Fourier transformation share many commonalities, including linearity, and the fact that convolution becomes multiplication. However, it also holds
+\begin{align*}
+	\mathcal{L}\left\{ \frac{\mathrm{d}f}{\mathrm{d}t} \right\} &= \mathcal{L}\{f'\} = sF(s) \,,
+\end{align*}
+that is, a time-differental just turns into multiplication with the variable $s$. This makes the Laplace transformation an important tool for dealing with differential equations -- differentiation is just turned into multiplication with a variable.}
+
+The Laplace-transform of the first-order exponential low-pass filter in \cref{eqn:filter} becomes:
+\begin{align*}
+	\mathcal{L}\{h\}
+	    &=  \int_{0}^\infty h(t) e^{-st} \,\mathrm{d}t
+		 =  \int_{0}^{\infty} \frac{1}{\tau} e^{-t'/\tau} e^{-st'} \mathrm{d}t' 
+		 =  \int_{0}^{\infty} \frac{1}{\tau} e^{-t'(1/\tau + s)} \mathrm{d}t' \\
+		&=  \left[ -\frac{1}{\tau \left( \frac{1}{\tau} + s \right)} \right]_0^\infty
+		 =  \frac{1}{1 + s\tau}
+		 =  H(s) \,.
+\end{align*}
+Hence, we can rewrite the dynamical system we were looking at in the Laplace domain
+\begin{align*}
+	X(s) &= H(s) \big(G(s) + F(s) \big)  \\
+	\Leftrightarrow X(s) (1 + s \tau) &= G(s) + F(s) \\
+	\Leftrightarrow s X(s) &= \frac{1}{\tau} \big(G(s) + F(s) - X(s)\big) \,.
+\end{align*}
+Converting back to the time domain we get the following differential equation.
+\begin{align*}
+	\frac{\mathrm{d}}{\mathrm{d}t} x(t) &= \frac{1}{\tau} \big(g(u(t)) + f(x(t)) - x(t) \big) \,.
+\end{align*}
+\Note{\emph{Canonical dynamical system and phase portrait.} The canonical form of time-independent a dynamical system
+\begin{align*}
+	\frac{\mathrm{d}}{\mathrm{d}t} x(t) &= \phi(u(t), x(t)) \,
+\end{align*}
+where $\phi(u, x)$ is an arbitrary function mapping an input $u$ and the state $x$ onto a state differential. We can draw the function $\phi(u, x)$ as a so called \emph{phase portraits} by drawing an arrow corresponding to the state update in an $x$-$u$ coordinate system.}
+
+\begin{figure}
+	\centering
+	\includegraphics{media/phase_portraits.pdf}
+	\caption{Phase portraits(see note) for the dynamical systems corresponding to the three feedback functions we experimented with.}
+	\label{fig:phase_portraits}
+\end{figure}
+
+\subsection{Analysis of the Previous Experiments}
+
+\paragraph{Analysing $f(x) = x + 1$}
+For this particular feedback function, our dynamical system becomes
+\begin{align*}
+	\frac{\mathrm{d}}{\mathrm{d}t} x(t) &= \frac{\mathrm{d}}{\mathrm{d}t} \phi(x(t), u(t)) = \frac{1}{\tau} \big(u(t) + x(t) + 1 - x(t) \big) = \frac{1}{\tau} \big(u(t) + 1 \big) \,.
+\end{align*}
+Looking at the phase portrait for $f(u, x) = u - 2 x$ in \cref{fig:phase_portraits}, we can see that this function will diverge for inputs $u(t) \neq -1$.
+
+\paragraph{Analysing $f(x) = -x$}
+For this feedback function, our dynamical system becomes
+\begin{align*}
+	\frac{\mathrm{d}}{\mathrm{d}t} x(t) &= \frac{\mathrm{d}}{\mathrm{d}t} \phi(x(t), u(t)) = \frac{1}{\tau} \big(u(t) - 2 x(t) \big) \,,
+\end{align*}
+which can be re-written as
+\begin{align*}
+	\frac{\mathrm{d}}{\mathrm{d}t} x(t) &= \frac{\mathrm{d}}{\mathrm{d}t} \phi(x(t), u(t)) = \frac{2}{\tau} \left(\frac{u(t)}{2} - x(t) \right) \,,
+\end{align*}
+Looking at the phase portrait for $f(u, x) = u - 2x$ in \cref{fig:phase_portraits}, we can see that this system has an line-attractor at $x = \frac{u}{2}$.
+
+\paragraph{Analysing $f(x) = x^2$}
+For this feedback function, our dynamical system becomes
+\begin{align*}
+	\frac{\mathrm{d}}{\mathrm{d}t} x(t) &= \frac{\mathrm{d}}{\mathrm{d}t} \phi(x(t), u(t)) = \frac{1}{\tau} \big(u(t) + x(t)^2 - x(t) \big) \,.	
+\end{align*}
+This system can be re-written as a dynamical system with two attractors
+\begin{align*}
+	\frac{\mathrm{d}}{\mathrm{d}t} x(t) &=\frac{1}{\tau} \left( x(t) - 1 + \frac{\sqrt{1 - 4u(t)}}{2} \right) \left( x(t) - 1 - \frac{\sqrt{1 - 4u(t)}}{2} \right) \,.
+\end{align*}
+These two attractors are visible in the phase portrait for $\phi(u, x) = u + x^2 - x$ (\cref{fig:phase_portraits}); however, we can see that one attractor (on the left side of the portrait) is stable, whereas the other attractor is unstable (right side).
+
+\subsection{Implementing Arbitrary Time-Invariant Dynamical Systems}
+
+\begin{figure}
+	\centering%
+	\begin{subfigure}{0.5\textwidth}%
+		\centering%
+		\includegraphics{media/lti_integrator_vs_neural_a.pdf}%
+		\caption{Canonical LTI system}%
+		\label{fig:lti_integrator_vs_neural_a}%
+	\end{subfigure}%
+	\begin{subfigure}{0.5\textwidth}%
+		\centering%
+		\includegraphics{media/lti_integrator_vs_neural_b.pdf}%
+		\caption{Neural LTI system}%
+		\label{fig:lti_integrator_vs_neural_b}%
+	\end{subfigure}
+	\caption{Comparison between an LTI system being evaluated using an integrator, compared to the corresponding neural implementation. Our goal is to find matrices $\mat A'$ and $\mat B'$ such that the two systems are equivalent.}
+\end{figure}
+
+We have now seen how we can analyse the dynamics emerging from a certain input and feedback function pair $g(\vec u)$, $f(\vec x)$. In other words, given a feedback function $f(\vec x)$ we can find the corresponding dynamical system $\phi(\vec u, \vec x)$. This raises the question whether we can also inverse this process, i.e.,~given a dynamical system $\phi(\vec u, \vec x)$ find the correct feedback and input function $f(\vec x)$, $g(\vec u)$ that implement this dynamical system in a neural context.
+
+\paragraph{Transforming a linear time-invariant system}
+We will first look at a special case, a linear time-invariant dynamical system (LTI). This is a dynamical system of the form
+\begin{align*}
+	\phi(\vec u, \vec x) = \mat A \vec x + \mat B \vec u \,,
+\end{align*}
+where $\mat A$ is a matrix describing the feedback and $\mat B$ is a matrix describing a mapping from the input onto the state differential.
+
+Normally, we would implement such a system using a perfect integrator, that is we compute the sum $\mat A \vec x + \mat B \vec u$ giving us a state differential. Integration of the differential gives us a new state, which is fed back for the computation of the next state differential (\cref{fig:lti_integrator_vs_neural_a}).
+
+However, when building neural networks, we do not have access to a perfect integrator. Instead, we have the synaptic filter $h$, which can be seen as a \enquote{leaky integrator}. Rephrasing the general question we were asking above, we are looking for a way to rewrite the dynamical system $\phi(\vec u, \vec x)$ into a new dynamical system $\phi'(\vec u, \vec x)$, such that $\phi'$ is equivalent to $\phi$ in the context of a leaky integrator (\cref{fig:lti_integrator_vs_neural_b}). In particular, we would like to find another LTI system
+\begin{align*}
+	\phi'(\vec u, \vec x) = \mat A' \vec x + \mat B' \vec u \,.
+\end{align*}
+
+Writing the canonical dynamical system and the neural dynamical system in the time domain we get
+\begin{align*}
+	\frac{\mathrm{d}}{\mathrm{d}t} \vec x(t) &= \mat A \vec x(t) + \mat B \vec u(t) \,,&
+	\vec x(t) &= \big( h \ast \left( \mat A' \vec x + \mat B' \vec u \right) \big) (t) \,.
+\end{align*}
+We would like to find $\mat A'$ and $\mat B'$ such that the two systems behave in the same way. Converting to the Laplace to eliminate the convolution we get
+\begin{align*}
+	sX(s) &= \mat A X(s) + \mat B U(s) \,, &
+	X(s) &= H(s) (\mat A' X(s) +  \mat B' U(s))  \,. \\
+\end{align*}
+Let's expand the right equation and bring it into the same form as the left equation:
+\begin{align*}
+	X(s) &= \frac{1}{1 + s \tau} (\mat A' X(s) +  \mat B' U(s)) \\
+	\Leftrightarrow X(s) (s \tau + 1) &= \mat A' X(s) +  \mat B' U(s) \\
+	\Leftrightarrow s \tau X(s) &= \mat A' X(s) +  \mat B' U(s) - X(s) \\
+						   &= (\mat A' - \mat I) X(s) + \mat B' \\
+	\Leftrightarrow s X(s) &= \frac{1}\tau (\mat A' - \mat I)  X(s) + \frac{1}{\tau} \mat B' \,.
+\end{align*}
+Comparing to our target equation we get
+\begin{align*}
+	\mat A &= \frac{1}{\tau} \left( \mat A' - \mat I \right) \,, & \mat B &= \frac{1}{\tau} \mat ¸B' \,.
+\end{align*}
+Rearranging yields
+\begin{ImportantEqn}{Neural Engineering Framework LTI}
+\mat A' &= \tau \mat A + \mat I \,, & \mat B' &= \tau \mat B \,.
+\end{ImportantEqn}
+
+
+\paragraph{Transforming an additive time-invariant dynamical system}
+We can apply the same math to a time-invariant dynamical system $\phi$ that can be decomposed into an addition between $g(\vec u)$ and $f(\vec x)$, that is $\phi(\vec u, \vec x) = g(\vec u) + f(\vec x)$, with the target system $\phi '(\vec u, \vec x) = g'(\vec u) + f'(\vec x)$.
+\begin{align*}
+	X(s) &= H(s) \big(G(U(s)) + F(X(s))\big) \\
+	\Leftrightarrow s X(s) &= \frac{1}{\tau} \big( F(X(s)) - X(s) \big) + \frac{1}{\tau} G(X(s))  \,.
+\end{align*}
+Transforming back to the time domain, comparing to the target system and rearranging yields
+\begin{align*}
+	f'(\vec x) &= \tau f(\vec x) + \vec x \,,& g'(\vec u) &= \tau \vec u \,.
+\end{align*}
+
+\ConstructionSite
+
+
+\subsection{Examples}
+
+\ConstructionSite
+
+\paragraph{Integrator}
+
+\begin{align*}
+	\mat A &= 0 && \mat B &= \mat I \\
+	\Leftrightarrow \mat A' &= \mat I  & \mat B &= \tau \mat I
+\end{align*}
+
+\paragraph{Oscillator}
+
+\begin{align*}
+	\mat A &= \begin{pmatrix}0 & -\omega \\ \omega & 0\end{pmatrix} && \mat B &= 0 \\
+	\Leftrightarrow \mat A' &= \begin{pmatrix}1 & -\tau\omega \\ \tau \omega & 1\end{pmatrix}  && \mat B &= 0
+\end{align*}
+
+\paragraph{Gated Integrator}
+
+\begin{align*}
+	f(\vec x) &= 0 & g(\vec u) &= \alpha \vec u \\
+	f'(\vec x) &= \mat I & g(\vec u) &= \tau \alpha \vec u
+\end{align*}
+
+\paragraph{Controlled Oscillator}
+
+\begin{align*}
+	\mat A &= \begin{pmatrix}0 & -\alpha\omega \\ \alpha\omega & 0\end{pmatrix} && \mat B &= 0 \\
+	\Leftrightarrow \mat A' &= \begin{pmatrix}1 & -\alpha\tau\omega \\ \alpha\tau \omega & 1\end{pmatrix}  && \mat B &= 0
+\end{align*}
+
+\section{Examples of Dynamics in Biological Systems}
+
+\ConstructionSite
+
+\printbibliography
+
+\end{document}
+
