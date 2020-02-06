@@ -324,29 +324,29 @@ Transforming back to the time domain, comparing to the target system and rearran
 \paragraph{Integrator}
 
 \begin{align*}
-	\mat A &= 0 && \mat B &= \mat I \\
-	\Leftrightarrow \mat A' &= \mat I  & \mat B &= \tau \mat I
+	\mat A &= 0 & \mat B &= \mat I \\
+	\Leftrightarrow \mat A' &= \mat I  & \Leftrightarrow \mat B' &= \tau \mat I
 \end{align*}
 
 \paragraph{Oscillator}
 
 \begin{align*}
-	\mat A &= \begin{pmatrix}0 & -\omega \\ \omega & 0\end{pmatrix} && \mat B &= 0 \\
-	\Leftrightarrow \mat A' &= \begin{pmatrix}1 & -\tau\omega \\ \tau \omega & 1\end{pmatrix}  && \mat B &= 0
+	\mat A &= \begin{pmatrix}0 & -\omega \\ \omega & 0\end{pmatrix} & \mat B &= 0 \\
+	\Leftrightarrow \mat A' &= \begin{pmatrix}1 & -\tau\omega \\ \tau \omega & 1\end{pmatrix}  & \Leftrightarrow \mat B' &= 0
 \end{align*}
 
 \paragraph{Gated Integrator}
 
 \begin{align*}
 	f(\vec x) &= 0 & g(\vec u) &= \alpha \vec u \\
-	f'(\vec x) &= \mat I & g(\vec u) &= \tau \alpha \vec u
+	f'(\vec x) &= \mat I & \Leftrightarrow g(\vec u) &= \tau \alpha \vec u
 \end{align*}
 
 \paragraph{Controlled Oscillator}
 
 \begin{align*}
-	\mat A &= \begin{pmatrix}0 & -\alpha\omega \\ \alpha\omega & 0\end{pmatrix} && \mat B &= 0 \\
-	\Leftrightarrow \mat A' &= \begin{pmatrix}1 & -\alpha\tau\omega \\ \alpha\tau \omega & 1\end{pmatrix}  && \mat B &= 0
+	\mat A &= \begin{pmatrix}0 & -\alpha\omega \\ \alpha\omega & 0\end{pmatrix} & \mat B &= 0 \\
+	\Leftrightarrow \mat A' &= \begin{pmatrix}1 & -\alpha\tau\omega \\ \alpha\tau \omega & 1\end{pmatrix}  & \Leftrightarrow \mat B' &= 0
 \end{align*}
 
 \section{Examples of Dynamics in Biological Systems}
