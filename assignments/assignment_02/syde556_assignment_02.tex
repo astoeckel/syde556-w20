@@ -44,7 +44,7 @@
 
 	\begin{enumerate}[a)]
 		\item \Marks{1} \textit{Time-domain signals.} Plot $x(t)$ for three randomly generated signals with \texttt{limit} at $5$, $10$, and $\SI{20}{\hertz}$. For each of these, $\mathtt{T}=\SI{1}{\second}$, $\mathtt{dt}=\SI{1}{\milli\second}$ and $\mathtt{rms}=0.5$.
-		\item \Marks{1} \textit{Average power spectrum.} Plot the average $|X(\omega)|$ (the norm of the Fourier coefficients, or \enquote{power spectrum}) over $100$ signals generated with $\mathtt{T}=\SI{1}{\second}$, $\mathtt{dt}=\SI{1}{\milli\second}$, $\mathtt{rms}=0.5$, and $\mathtt{limit}=0.5$ (of course, each of these 100 signals should have a different \texttt{seed}). The plot should have the $x$-axis labeled \enquote{$\omega$ in radians} and the average $|X|$ value for that $\omega$ on the $y$-axis.
+		\item \Marks{1} \textit{Average power spectrum.} Plot the average $|X(\omega)|$ (the norm of the Fourier coefficients, or \enquote{power spectrum}) over $100$ signals generated with $\mathtt{T}=\SI{1}{\second}$, $\mathtt{dt}=\SI{1}{\milli\second}$, $\mathtt{rms}=0.5$, and $\mathtt{limit}=\SI{10}{\hertz}$ (of course, each of these 100 signals should have a different \texttt{seed}). The plot should have the $x$-axis labeled \enquote{$\omega$ in radians} and the average $|X|$ value for that $\omega$ on the $y$-axis.
 		\begin{itemize}
 			\item[{\symbolfont 🐍}] For more information on how to do Fourier transformations in Python, see \href{http://docs.scipy.org/doc/numpy/reference/routines.fft.html}{here}.
 			\item[{\symbolfont 🖈}] The transformation takes you from $t$ to $\omega$ (or back the other way). Importantly, $\omega$ is frequency in radians, not in Hz. $\Delta \omega$ (i.e., the difference in frequency between two samples) will be $\frac{2\pi}T$.
