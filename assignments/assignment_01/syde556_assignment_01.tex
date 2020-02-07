@@ -134,6 +134,9 @@ In the scalar case, to sample the input space, you used $x$ values between $-1$ 
 			\item[{\symbolfont 🐍}] Per default, the \texttt{np.mean} function computes the mean on a \enquote{flattened} array.
 		\end{itemize}
 		\item \Marks{1} \textit{Using encoders as decoders.} Repeat part d) but use the \textit{encoders} as decoders. This is what Georgopoulos used in his original approach to decoding information from populations of neurons. Plot the decoded values and compute the RMSE. In addition, recompute the RMSE in both cases, but ignore the magnitude of the decoded vectors by normalizing before computing the RMSE.
+		\begin{itemize}
+			\item[{\symbolfont 🖈}] To rephrase the above, we are only interested in the angular error, not the error in the magnitude of the decoded vectors. To compute the angular error, you have to normalize both the decoded vectors \emph{and} the target vectors you are comparing to.
+		\end{itemize}
 		\item \Marks{1} \textit{Discussion.} When computing the RMSE on the normalized vectors, using the encoders as decoders should result in a larger, yet still surprisingly small error. Thinking about random unit vectors in high dimensional spaces, why is this the case? What are the relative merits of these two approaches to decoding?
 	\end{enumerate}
 
