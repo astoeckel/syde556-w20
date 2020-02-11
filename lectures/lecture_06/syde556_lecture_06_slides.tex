@@ -47,14 +47,14 @@
 				\centering
 				\hl{Time-Invariant Dynamical System}\\
 				\begin{align*}
-					\frac{\mathrm{d}\vec x(t)}{\mathrm{t}} &= f(\vec x(t), \vec u(t))
+					\frac{\mathrm{d}\vec x(t)}{\mathrm{d}t} &= f(\vec x(t), \vec u(t))
 				\end{align*}
 			\column{0.5\textwidth}
 				\centering
 				\hl{Linear Time-Invariant (LTI)}
 				\hl{Dynamical System}
 				\begin{align*}
-					\frac{\mathrm{d}\vec x(t)}{\mathrm{t}} &= \mat A \vec x + \mat B \vec u
+					\frac{\mathrm{d}\vec x(t)}{\mathrm{d}t} &= \mat A \vec x + \mat B \vec u
 				\end{align*}
 		\end{columns}
 		\vspace{0.75cm}
@@ -77,6 +77,73 @@
 	\begin{frame}{Implementing Dynamics using a Neural Ensemble}
 		\centering
 		\includegraphics[width=\textwidth]{media/lti_integrator_vs_neural.pdf} 
+	\end{frame}
+
+	\begin{frame}{Implementing Dynamical Systems as a Neural Ensemble}
+		\begin{columns}[t]
+			\column{0.5\textwidth}
+			\centering
+			\hl{LTI System}
+			\begin{align*}
+				\phi(\vec u, \vec x) &= \mat A \vec x + \mat B \vec u \\
+				\phi'(\vec u, \vec x) &= \mat A' \vec x + \mat B' \vec u \\
+				\mat A' &= \tau \mat A + \mat I \\ \mat B' &= \tau \mat B \,.
+			\end{align*}
+			\column{0.5\textwidth}
+			\centering
+			\hl{Additive Time-Invariant System}
+			\begin{align*}
+				\phi(\vec u, \vec x) &= f(\vec x) + g(\vec u) \\
+				\phi'(\vec u, \vec x) &= f'(\vec x) + g'(\vec u) \\
+				f'(\vec x) &= \tau f(\vec x) + \vec x \\
+				g'(\vec u) &= \tau g(\vec u)
+			\end{align*}
+		\end{columns}
+		\vspace{1cm}
+		\centering \hl{\enquote{General} Recipe}\\[0.25cm]
+		Scale the original dynamics by $\tau$, add feedback $\vec x$
+	\end{frame}
+
+	\begin{frame}{Integrator Example (I)}
+		\centering
+		\includegraphics[width=\textwidth]{media/example_integrator.pdf}
+	\end{frame}
+
+	\begin{frame}{Integrator Example (II)}
+		\centering
+		\includegraphics[width=\textwidth]{media/example_integrator_phases.pdf}
+	\end{frame}
+
+	\begin{frame}{Oscillator Example (I)}
+		\centering
+		\includegraphics[width=\textwidth]{media/example_oscillator.pdf}
+	\end{frame}
+
+	\begin{frame}{Oscillator Example (II)}
+		\centering
+		\includegraphics[width=\textwidth]{media/example_oscillator_phases.pdf}
+	\end{frame}
+
+	\begin{frame}{Lorentz Attractor}
+		\centering
+		\includegraphics[width=\textwidth]{media/example_lorentz.pdf}
+		\begin{align*}
+			\frac{\mathrm{d}\vec x(t)}{\mathrm{d}t} &= \begin{pmatrix}
+			10 x_2(t)-10x_1(t) \\
+			-x_1(t) x_3(t)-x_2(t) \\
+			x_1(t) x_2(t) - \frac{8}{3}(x_3(t)+28)-28
+			\end{pmatrix}
+		\end{align*}
+	\end{frame}
+
+	\begin{frame}{Heart Shape}
+		\centering
+		\includegraphics[width=\textwidth]{media/example_heart.pdf}
+	\end{frame}
+
+	\begin{frame}{Horizontal Eye Control}
+		\centering
+		\includegraphics[width=\textwidth]{media/example_eye_control.pdf}
 	\end{frame}
 
 	\backupbegin
