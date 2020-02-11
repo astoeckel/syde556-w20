@@ -81,6 +81,16 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_05/syde556_lecture_05_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_05/syde556_lecture_05_notes.pdf)]
 
+### Lecture 6 ― Recurrent Dynamics ― February 4, 6, 11
+
+-   **Slides**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_06/syde556_lecture_06_slides_distr.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_06/syde556_lecture_06_slides_distr.pdf)]
+
+-   **Notes**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_06/syde556_lecture_06_notes.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_06/syde556_lecture_06_notes.pdf)]
+
 
 
 ## 📝 Assignments
