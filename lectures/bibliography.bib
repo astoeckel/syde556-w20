@@ -513,3 +513,37 @@ Each chapter begins with clear objectives and a clinical case for a practical in
   number = {5}
 }
 
+@article{voelker2018improving,
+  title = {Improving {{Spiking Dynamical Networks}}: {{Accurate Delays}}, {{Higher}}-{{Order Synapses}}, and {{Time Cells}}},
+  author = {Voelker, Aaron R. and Eliasmith, Chris},
+  date = {2018-03},
+  journaltitle = {Neural Computation},
+  volume = {30},
+  pages = {569--609},
+  publisher = {MIT Press},
+  doi = {10.1162/neco_a_01046},
+  url = {https://www.mitpressjournals.org/doi/abs/10.1162/neco_a_01046},
+  abstract = {Researchers building spiking neural networks face the challenge of improving the biological plausibility of their model networks while maintaining the ability to quantitatively characterize network behavior. In this work, we extend the theory behind the neural engineering framework (NEF), a method of building spiking dynamical networks, to permit the use of a broad class of synapse models while maintaining prescribed dynamics up to a given order. This theory improves our understanding of how low-level synaptic properties alter the accuracy of high-level computations in spiking dynamical networks. For completeness, we provide characterizations for both continuous-time (i.e., analog) and discrete-time (i.e., digital) simulations. We demonstrate the utility of these extensions by mapping an optimal delay line onto various spiking dynamical networks using higher-order models of the synapse. We show that these networks nonlinearly encode rolling windows of input history, using a scale invariant representation, with accuracy depending on the frequency content of the input signal. Finally, we reveal that these methods provide a novel explanation of time cell responses during a delay task, which have been observed throughout hippocampus, striatum, and cortex.},
+  number = {3}
+}
+
+
+@inproceedings{voelker2019lmu,
+  title = {Legendre Memory Units: Continuous-Time Representation in Recurrent Neural Networks},
+  booktitle = {Advances in Neural Information Processing Systems},
+  author = {Voelker, Aaron R. and Kaji{\'{c}}, Ivana and Eliasmith, Chris},
+  date = {2019},
+  abstract = {We propose a novel memory cell for recurrent neural networks that dynamically maintains information across long windows of time using relatively few resources. The Legendre Memory Unit (LMU) is mathematically derived to orthogonalize its continuous-time history – doing so by solving d coupled ordinary differential equations (ODEs), whose phase space linearly maps onto sliding windows of time via the Legendre polynomials up to degree d - 1. Backpropagation across LMUs outperforms equivalently-sized LSTMs on a chaotic time-series prediction task, improves memory capacity by two orders of magnitude, and significantly reduces training and inference times. LMUs can efficiently handle temporal dependencies spanning 100000 time-steps, converge rapidly, and use few internal state-variables to learn complex functions spanning long windows of time – exceeding state-of-the-art performance among RNNs on permuted sequential MNIST. These results are due to the network's disposition to learn scale-invariant features independently of step size. Backpropagation through the ODE solver allows each layer to adapt its internal time-step, enabling the network to learn task-relevant time-scales. We demonstrate that LMU memory cells can be implemented using m recurrently-connected Poisson spiking neurons, ( m ) time and memory, with error scaling as ( d /  ). We discuss implementations of LMUs on analog and digital neuromorphic hardware.},
+}
+
+@thesis{voelker2019thesis,
+  title = {Dynamical Systems in Spiking Neuromorphic Hardware},
+  author = {Voelker, Aaron R.},
+  date = {2019},
+  institution = {{University of Waterloo}},
+  location = {{Waterloo, ON}},
+  url = {http://hdl.handle.net/10012/14625},
+  abstract = {Dynamical systems are universal computers. They can perceive stimuli, remember, learn from feedback, plan sequences of actions, and coordinate complex behavioural responses. The Neural Engineering Framework (NEF) provides a general recipe to formulate models of such systems as coupled sets of nonlinear differential equations and compile them onto recurrently connected spiking neural networks – akin to a programming language for spiking models of computation. The Nengo software ecosystem supports the NEF and compiles such models onto neuromorphic hardware. In this thesis, we analyze the theory driving the success of the NEF, and expose several core principles underpinning its correctness, scalability, completeness, robustness, and extensibility. We also derive novel theoretical extensions to the framework that enable it to far more effectively leverage a wide variety of dynamics in digital hardware, and to exploit the device-level physics in analog hardware. At the same time, we propose a novel set of spiking algorithms that recruit an optimal nonlinear encoding of time, which we call the Delay Network (DN). Backpropagation across stacked layers of DNs dramatically outperforms stacked Long Short-Term Memory (LSTM) networks—a state-of-the-art deep recurrent architecture—in accuracy and training time, on a continuous-time memory task, and a chaotic time-series prediction benchmark. The basic component of this network is shown to function on state-of-the-art spiking neuromorphic hardware including Braindrop and Loihi. This implementation approaches the energy-efficiency of the human brain in the former case, and the precision of conventional computation in the latter case.},
+  pdf = {https://uwspace.uwaterloo.ca/bitstream/handle/10012/14625/Voelker\textsubscript{A}aron.pdf},
+  type = {PhD thesis}
+}

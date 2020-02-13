@@ -21,6 +21,9 @@ all: \
 	lecture_06/syde556_lecture_06_notes.pdf \
 	lecture_06/syde556_lecture_06_slides.pdf \
 	lecture_06/syde556_lecture_06_slides_distr.pdf \
+	lecture_07/syde556_lecture_07_notes.pdf \
+	lecture_07/syde556_lecture_07_slides.pdf \
+	lecture_07/syde556_lecture_07_slides_distr.pdf \
 
 
 lecture_00/syde556_lecture_00_notes.pdf: \
@@ -147,6 +150,22 @@ lecture_06/syde556_lecture_06_slides_distr.pdf: \
 		make_distr_slides.py
 	./make_distr_slides.py $<
 
+lecture_07/syde556_lecture_07_notes.pdf: \
+		bibliography.bib \
+		syde556_lecture_notes_preamble.tex \
+		lecture_07/syde556_lecture_07_notes.tex
+	cd lecture_07; latexmk syde556_lecture_07_notes
+
+lecture_07/syde556_lecture_07_slides.pdf: \
+		bibliography.bib \
+		syde556_lecture_slides_preamble.tex \
+		lecture_07/syde556_lecture_07_slides.tex
+	cd lecture_07; latexmk syde556_lecture_07_slides
+
+lecture_07/syde556_lecture_07_slides_distr.pdf: \
+		lecture_07/syde556_lecture_07_slides.pdf \
+		make_distr_slides.py
+	./make_distr_slides.py $<
 
 
 clean:

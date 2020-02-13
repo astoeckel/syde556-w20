@@ -1,0 +1,136 @@
+% !TeX spellcheck = en_GB
+\ifcsname SlidesDistr\endcsname%
+\documentclass[handout,aspectratio=169]{beamer}
+\else%
+\documentclass[aspectratio=169]{beamer}
+\fi%
+\input{../syde556_lecture_slides_preamble}
+
+\date{February 13, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 7: Temporal Basis Functions}
+
+\begin{document}
+	
+	\begin{frame}{}
+		\vspace{0.5cm}
+		\begin{columns}[c]
+			\column{0.6\textwidth}
+			\MakeTitle
+			\column{0.4\textwidth}
+			\includegraphics[width=\textwidth]{media/a22_2007_06_einsteinturm_sonnenuhr_p6070062.jpg}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Representing Stimulus Histories}
+		\centering%
+		\includegraphics[width=\textwidth]{media/delay_network_decoding.pdf}%
+	\end{frame}
+
+	\begin{frame}{Representing Functions: Sampling}
+		\centering%
+		\includegraphics<1>[width=\textwidth]{media/fun_1_q4_1.pdf}%
+		\includegraphics<2>[width=\textwidth]{media/fun_1_q4_2.pdf}%
+		\includegraphics<3>[width=\textwidth]{media/fun_1_q4_3.pdf}%
+		\includegraphics<4>[width=\textwidth]{media/fun_1_q4_4.pdf}%
+		\includegraphics<5>[width=\textwidth]{media/fun_1_q4_5.pdf}%
+		\includegraphics<6>[width=\textwidth]{media/fun_1_q4_6.pdf}%
+%		\includegraphics<7>[width=\textwidth]{media/fun_1_q6_1.pdf}%
+		\includegraphics<7>[width=\textwidth]{media/fun_1_q6_2.pdf}%
+		\includegraphics<8>[width=\textwidth]{media/fun_1_q6_3.pdf}%
+		\includegraphics<9>[width=\textwidth]{media/fun_1_q6_4.pdf}%
+		\includegraphics<10>[width=\textwidth]{media/fun_1_q6_5.pdf}%
+		\includegraphics<11>[width=\textwidth]{media/fun_1_q6_6.pdf}%
+		\includegraphics<12>[width=\textwidth]{media/fun_2_q6_1.pdf}%
+		\includegraphics<13>[width=\textwidth]{media/fun_2_q6_2.pdf}%
+		\includegraphics<14>[width=\textwidth]{media/fun_2_q6_3.pdf}%
+		\includegraphics<15>[width=\textwidth]{media/fun_2_q6_4.pdf}%
+		\includegraphics<16>[width=\textwidth]{media/fun_2_q6_5.pdf}%
+		\includegraphics<17>[width=\textwidth]{media/fun_2_q6_6.pdf}%
+		\includegraphics<18>[width=\textwidth]{media/fun_2_q6_small.pdf}%
+	\end{frame}
+
+	\begin{frame}{Representing Functions: Fourier Basis}
+		\includegraphics<1>[width=\textwidth]{media/fourier_q1.pdf}%
+		\includegraphics<2>[width=\textwidth]{media/fourier_q2.pdf}%
+		\includegraphics<3>[width=\textwidth]{media/fourier_q3.pdf}%
+		\includegraphics<4>[width=\textwidth]{media/fourier_q4.pdf}%
+		\includegraphics<5>[width=\textwidth]{media/fourier_q5.pdf}%
+		\includegraphics<6>[width=\textwidth]{media/fourier_q6.pdf}%
+	\end{frame}
+
+	\begin{frame}{Representing Functions: Cosine Basis}
+		\includegraphics<1>[width=\textwidth]{media/cosine_q1.pdf}%
+		\includegraphics<2>[width=\textwidth]{media/cosine_q2.pdf}%
+		\includegraphics<3>[width=\textwidth]{media/cosine_q3.pdf}%
+		\includegraphics<4>[width=\textwidth]{media/cosine_q4.pdf}%
+		\includegraphics<5>[width=\textwidth]{media/cosine_q5.pdf}%
+		\includegraphics<6>[width=\textwidth]{media/cosine_q6.pdf}%
+	\end{frame}
+
+	\begin{frame}{Representing Functions: ReLU Basis}
+		\includegraphics<1>[width=\textwidth]{media/neural_q1.pdf}%
+		\includegraphics<2>[width=\textwidth]{media/neural_q2.pdf}%
+		\includegraphics<3>[width=\textwidth]{media/neural_q3.pdf}%
+		\includegraphics<4>[width=\textwidth]{media/neural_q4.pdf}%
+		\includegraphics<5>[width=\textwidth]{media/neural_q5.pdf}%
+		\includegraphics<6>[width=\textwidth]{media/neural_q6.pdf}%
+	\end{frame}
+
+	\begin{frame}{Representing Functions: Legendre Basis}
+		\includegraphics<1>[width=\textwidth]{media/legendre_q1.pdf}%
+		\includegraphics<2>[width=\textwidth]{media/legendre_q2.pdf}%
+		\includegraphics<3>[width=\textwidth]{media/legendre_q3.pdf}%
+		\includegraphics<4>[width=\textwidth]{media/legendre_q4.pdf}%
+		\includegraphics<5>[width=\textwidth]{media/legendre_q5.pdf}%
+		\includegraphics<6>[width=\textwidth]{media/legendre_q6.pdf}%
+	\end{frame}
+
+	\begin{frame}{Implementing the Delay Network}
+		\centering%
+		\begin{columns}
+			\column{0.5\textwidth}
+			\centering
+			\includegraphics{media/lti_integrator_vs_neural_a.pdf}%
+			\column{0.5\textwidth}
+			\centering
+			\includegraphics{media/lti_integrator_vs_neural_b.pdf}%
+		\end{columns}
+		\begin{align*}
+			\theta \mat{A} &= a_{ij} \in \mathbb{R}^{q \times q} \,, & \kern-0.5em a_{ij} &= \begin{cases}
+			(2i + 1)(-1) & \kern-0.5em i < j \,,\\
+			(2i + 1)(-1)^{i - j + 1} & \kern-0.5em i \geq j
+			\end{cases}\\
+			\theta \mat{B} &= b_i \in \mathbb{R}^{q} \,, & \kern-0.5em b_i &= (2i + 1)(-1)^i \\
+			\mat A' &= \tau \mat A + \mat I & \mat B' &= \tau \mat B
+		\end{align*}
+	\end{frame}
+
+	\begin{frame}{Delay Network: Step Function}
+		\centering%
+		\includegraphics<1>[width=\textwidth]{media/delay_network_step_q1.pdf}%
+		\includegraphics<2>[width=\textwidth]{media/delay_network_step_q2.pdf}%
+		\includegraphics<3>[width=\textwidth]{media/delay_network_step_q3.pdf}%
+		\includegraphics<4>[width=\textwidth]{media/delay_network_step_q4.pdf}%
+		\includegraphics<5>[width=\textwidth]{media/delay_network_step_q5.pdf}%
+		\includegraphics<6>[width=\textwidth]{media/delay_network_step_q6.pdf}%
+		\includegraphics<7>[width=\textwidth]{media/delay_network_step_q11.pdf}%
+	\end{frame}
+
+	\begin{frame}{Delay Network: Windowed Sine Function}
+		\centering%
+		\includegraphics<1>[width=\textwidth]{media/delay_network_sine_i0_q6.pdf}%
+		\includegraphics<2>[width=\textwidth]{media/delay_network_sine_i1_q6.pdf}%
+		\includegraphics<3>[width=\textwidth]{media/delay_network_sine_i2_q6.pdf}%
+	\end{frame}
+
+	\backupbegin
+
+	\begin{frame}[noframenumbering]{Image sources}
+		\small
+		\textbf{Title slide}\\Infrared Photograph of a Sundial Near the Einstein Tower in Potsdam, Germany\\Author: DrNRNowaczyk, 2007.\\From \href{https://commons.wikimedia.org/wiki/File:A22_2007-06_Einsteinturm_Sonnenuhr_p6070062.jpg}{Wikimedia}.
+	\end{frame}
+
+
+	\backupend
+	
+\end{document}

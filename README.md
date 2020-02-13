@@ -91,6 +91,15 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_06/syde556_lecture_06_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_06/syde556_lecture_06_notes.pdf)]
 
+### Lecture 7 ― Temporal Basis Functions ― February 13
+
+-   **Slides**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_07/syde556_lecture_07_slides_distr.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_07/syde556_lecture_07_slides_distr.pdf)]
+
+-   **Notes**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_07/syde556_lecture_07_notes.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_07/syde556_lecture_07_notes.pdf)]
 
 
 ## 📝 Assignments
