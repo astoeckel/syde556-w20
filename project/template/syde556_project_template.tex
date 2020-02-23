@@ -116,11 +116,11 @@
 	\section{Introduction}
 	\label{sec:introduction}
 
-	This project template is supposed to give you an idea of what a project report might look like. You do not have to follow this template in case you think that it is not well suited for your particular project. In particular, feel free to add more section headers or to skip some.
+	This project template is supposed to give you an idea of what a project report might look like. You do not have to follow this template in case you think that it is not well suited for your particular project. In particular, feel free to add more section headers or to skip some. Parts of this document are also meant as a quick \LaTeX tutorial.
 
-	To get started quickly, you can, for example, upload this \href{https://github.com/astoeckel/syde556-w20/raw/master/project/template.zip}{ZIP file} to an online service such as \href{https://www.overleaf.com/}{Overleaf}, which lets you edit \LaTeX documents without having to worry about installing the right tools on your computer. Of course, feel free to use any word processing tool you feel comfortable with.
+	To get started quickly, you can, for example, upload the \enquote{\texttt{template.zip}} \href{https://github.com/astoeckel/syde556-w20/raw/master/project/template.zip}{ZIP file} located in the \texttt{project} folder in the course GitHub repository to an online service such as \href{https://www.overleaf.com/}{Overleaf}, which lets you edit \LaTeX documents without having to worry about installing the right tools on your computer. Of course, feel free to use any word processing tool you feel comfortable with.
 
-	However, please make sure that you use similar formatting (a 12pt font, preferably Palatino/URW Palladio, with 125\% line spacing, letter paper with 1 inch border). Your final report should \emph{be between (at least) ten and (at the very most) twenty content pages} (not counting the title page, table of contents, references; but counting figures and tables).
+	However, please make sure that you use similar formatting (12pt, preferably \enquote{Palatino} or \enquote{URW Palladio}, with 125\% line spacing, letter paper with 1 inch border). Your final report should \emph{be between (at least) ten and (at the very most) twenty content pages} (not counting the title page, table of contents, references; but counting figures and tables).
 
 	You should use the introduction of your project report to introduce the reader to the problem domain and to motivate your project. Optimally, a reader reading your introduction should have the answers to the following questions in mind:
 	\begin{itemize}
@@ -160,7 +160,7 @@
 
 	Here you can describe how you turned the system description and design specification into an actual model -- and depending on your project, it might be worthwhile to split \enquote{implementation} into its own section. You may show excerpts from your code, or a network diagram, or talk about the kind of software you used.
 
-	If there are any, talk about the challenges that had to be overcome. Did you have to solve any interesting mathematical problems? If yes, you might want to write down some equations, such as \cref{eqn:example}, which is as follows
+	If there are any, talk about the challenges that had to be overcome. Did you have to solve any interesting mathematical problems? If yes, you might want to write down some equations, such as \cref{eqn:example} below, which is as follows
 	\begin{align}
 		\big(\mat D^f\big)^\T &=  \arg\min_{\mat D^f} \frac{1}{|\mathbb{X}|} \int_{\mathbb{X}}  \| f(\vec x) - \mat D^f \vec a(\vec x)\|^2 \, \mathrm{d}\vec x \notag \\
 			&= \big(\mat A \mat A^\T + N \sigma^2 \mat I \big)^{-1} \mat A \mat Y^\T
