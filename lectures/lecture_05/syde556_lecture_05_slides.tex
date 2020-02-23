@@ -74,7 +74,7 @@
 		\includegraphics<3>[width=1.175\textwidth]{media/transformation_09.pdf}
 		\begin{overlayarea}{\textwidth}{1cm}
 			\only<3->{\hl{Function Decoder} $
-				\mat D^f = \left( (\mat A \mat A^\T + N \sigma^2 \mat I) \mat A \mat Y^\T \right)^\T \,, \quad
+				\mat D^f = \left( (\mat A \mat A^\T + N \sigma^2 \mat I)^{-1} \mat A \mat Y^\T \right)^\T \,, \quad
 				\text{where } \big ( \mat Y \big )_{ik} = \big( f(\vec x_k) \big)_i 
 			$}
 		\end{overlayarea}
