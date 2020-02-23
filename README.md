@@ -124,7 +124,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/assignments/assignment_02/syde556_assignment_02_template.ipynb)]
     [[Download Jupyter Notebook](https://github.com/astoeckel/syde556-w20/raw/master/assignments/assignment_02/syde556_assignment_02_template.ipynb)]
 
-### Assignment 3 ― due Tuesday, March 3
+### Assignment 3 ― due Tuesday, March 6
 
 -   **Instructions**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/assignments/assignment_03/syde556_assignment_03.pdf)]
