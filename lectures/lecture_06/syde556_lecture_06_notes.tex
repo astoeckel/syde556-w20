@@ -454,22 +454,25 @@ we can use \cref{eqn:nef_additive_dyn} to implement this system as a neural ense
 
 \section{Dynamics in Biological Systems: Eye Control}
 
-\ConstructionSite
-
 \begin{figure}
 	\centering
 	\includegraphics{media/example_eye_control.pdf}
 	\caption{Simple horizontal eye control model}
 \end{figure}
 
-\begin{itemize}
-	\item Part of the brainstem called the nuclei prepositus hypoglossi
-	\item Input $u(t)$ is eye velocity $v$
-	\item Output $x(t)$ is eye position $x$
-	\item Eyes aren't perfect integrators: If we get someone to fixate a point, then turn off the lights and tell them to keep looking in the same direction, their eye will drift back to centre (with about 70s time constant)
-	\item Model: $\dot x(t) = - \frac{1}{\tau_\mathrm{eye}} x + v$
-	\item NEF model: $\mat A' = \tau - \frac{1}{\tau_\mathrm{eye}} + 1$, $\mat B' = \tau$.
-\end{itemize}
+As an example of a dynamical system in biology, we can have a look at horizontal eye control. We know that horizontal eye position is controlled within a part of the brainstem called \enquote{Nuclei Prepositus Hypoglossi}. In particular, we know that this part of the brain receives an eye velocity $v$ as an input $u(t)$ and outputs an eye position $x(t)$, which in turn is translated into corresponding muscle tensions.
+
+The optimal dynamical system that turns a velocity signal into a position is an integrator. We know from above how to implement a perfect integrator. However, further experiments reveal that the neural circuit in the Nuclei Prepositus Hypoglossi is not a perfect integrator. If a person is told to fixate a point, and we afterwards turn the light off while telling the person to still look into the same direction, their eye will drift back to the centre. This is not due to some mechanical effect in the motor system, but due to the representation produced by the Nuclei Prepositus Hypoglossi converging back to zero. This \enquote{drift to the centre} can be modelled as a leaky integrator with an exponential decay with a time constant $\tau_\mathrm{eye}$ of approximately \SI{70}{\second}.
+
+Correspondingly, we get the following differential equation describing the dynamics of the horizontal eye control system
+\begin{align*}
+	\dot x(t) &= - \frac{1}{\tau_\mathrm{eye}} x + v \,.
+\end{align*}
+This is an LTI system. The corresponding NEF model would thus be
+\begin{align*}
+	\mat A' &= \tau - \frac{1}{\tau_\mathrm{eye}} + 1 \,,´&
+	\mat B' &= \tau \,.
+\end{align*}
 
 \printbibliography
 
