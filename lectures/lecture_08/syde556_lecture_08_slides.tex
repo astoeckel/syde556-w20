@@ -1,0 +1,112 @@
+% !TeX spellcheck = en_GB
+\ifcsname SlidesDistr\endcsname%
+\documentclass[handout,aspectratio=169]{beamer}
+\else%
+\documentclass[aspectratio=169]{beamer}
+\fi%
+\input{../syde556_lecture_slides_preamble}
+
+\date{February 25 \& 27, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 8: Learning}
+
+\begin{document}
+	
+	\begin{frame}{}
+		\vspace{0.5cm}
+		\begin{columns}[c]
+			\column{0.6\textwidth}
+			\MakeTitle
+			\column{0.4\textwidth}
+			\includegraphics[width=\textwidth]{media/laurentius_de_voltolina_001_small.jpg}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Supervised Learning}
+		\centering
+		\includegraphics[scale=0.95]{media/learning_example_supervised.pdf}
+	\end{frame}
+
+	\begin{frame}{Supervised Learning -- Training}
+		\centering
+		\includegraphics[scale=0.95]{media/learning_example_supervised_2.pdf}
+	\end{frame}
+
+	\begin{frame}{Supervised Learning -- Inference}
+		\centering
+		\includegraphics[scale=0.95]{media/learning_example_supervised_3.pdf}
+	\end{frame}
+
+	\begin{frame}{Unsupervised Learning}
+		\centering
+		\includegraphics[scale=0.95]{media/learning_example_unsupervised.pdf}
+	\end{frame}
+
+	\begin{frame}{Unsupervised Learning -- Training}
+		\centering
+		\includegraphics[scale=0.95]{media/learning_example_unsupervised_2.pdf}
+	\end{frame}
+
+	\begin{frame}{Unsupervised Learning -- Inference}
+		\centering
+		\includegraphics[scale=0.95]{media/learning_example_unsupervised_3.pdf}
+	\end{frame}
+
+
+	\begin{frame}{Gradient Descent -- Example}
+		\centering%
+		\includegraphics<1>[width=\textwidth]{media/gradient_descent_poly_example_00.pdf}%
+		\includegraphics<2>[width=\textwidth]{media/gradient_descent_poly_example_01.pdf}%
+		\includegraphics<3>[width=\textwidth]{media/gradient_descent_poly_example_02.pdf}%
+		\includegraphics<4>[width=\textwidth]{media/gradient_descent_poly_example_03.pdf}%
+		\includegraphics<5>[width=\textwidth]{media/gradient_descent_poly_example_04.pdf}%
+		\includegraphics<6>[width=\textwidth]{media/gradient_descent_poly_example_05.pdf}%
+		\includegraphics<7>[width=\textwidth]{media/gradient_descent_poly_example_06.pdf}%
+		\includegraphics<8>[width=\textwidth]{media/gradient_descent_poly_example_07.pdf}%
+		\includegraphics<9>[width=\textwidth]{media/gradient_descent_poly_example_08.pdf}%
+		\includegraphics<10>[width=\textwidth]{media/gradient_descent_poly_example_09.pdf}%
+		\includegraphics<11>[width=\textwidth]{media/gradient_descent_poly_example_10.pdf}%
+	\end{frame}
+
+	\begin{frame}{Supervised Learning -- Generalisation}
+		\centering%
+		\includegraphics<1>[width=\textwidth]{media/gradient_descent_poly_example_gt.pdf}%
+	\end{frame}
+
+	\begin{frame}{Learning Decoders and Learning Weights}
+		\begin{columns}[T]
+			\column{0.5\textwidth}
+			\centering			
+			\hl{Learning Decoders} (Delta Rule)\\[0.25cm]
+			\includegraphics{media/pes_network_a.pdf}\\[-0.5cm]
+			$$\Delta d_i = - \eta a_i(\vec x) \underbrace{\big(y(t) - y^\mathrm{d}(t)\big)}_{\epsilon(t)}$$
+			\column{0.5\textwidth}
+			\centering			
+			\hl{Learning Weights} (PES Rule)\\[0.25cm]
+			\includegraphics{media/pes_network_b.pdf}\\[-0.5cm]
+			$$\Delta w_{ij} = - \eta a_i(\vec x) \Big(\alpha_j \langle \vec e_j, \vec \epsilon(t) \rangle \Big)$$
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Example: Learning a Communication Channel}
+		\includegraphics[width=\textwidth]{media/pes_communication_channel_example.pdf}
+	\end{frame}
+
+	\begin{frame}{Example: Learning $f(x) = x^2$}
+		\includegraphics[width=\textwidth]{media/pes_square_example.pdf}
+	\end{frame}
+
+	\begin{frame}{Example: Adaptive Controller}
+		\centering
+		\includegraphics[height=7cm]{media/adaptive_controller.pdf}
+	\end{frame}
+
+	\backupbegin
+
+	\begin{frame}[noframenumbering]{Image sources}
+		\small
+		\textbf{Title slide}\\Page from \enquote{Liber ethicorum des Henricus de Alemannia}. Title: \enquote{Henricus de Alemannia con i suoi studenti} (Henricus of Germany with his students), second half of 14th century.\\From \href{https://commons.wikimedia.org/wiki/File:Laurentius_de_Voltolina_001.jpg}{Wikimedia}.
+	\end{frame}
+
+	\backupend
+	
+\end{document}

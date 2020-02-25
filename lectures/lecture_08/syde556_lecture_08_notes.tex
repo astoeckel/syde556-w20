@@ -1,0 +1,196 @@
+% !TeX spellcheck = en_GB
+\documentclass[10pt,letterpaper,oneside]{article}
+\input{../syde556_lecture_notes_preamble}
+
+\date{February 25 \& 27, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 8: Learning}
+
+
+\begin{document}
+
+\MakeTitle{\textbf{Accompanying Readings: Chapter 9 of Neural Engineering}}
+
+\section{Introduction}
+
+\Note{As mentioned several times in previous lectures, we so far assumed that the connection weights between individual neuron populations are constant. This is of course not the case in biology, where animals change their behaviour in response to experiences sometimes years in the past.}
+
+When talking about \emph{learning}, we should first define this term a little more rigorously. A very broad definition of learning from a neuroscientist's perspective (psychologists will have different definitions) could be \enquote{any process within a neural system that allows past stimuli to influence future behaviours}. Unfortunately, this definition would also include dynamical systems that we have already talked about, such as integrators or the Delay Network.
+
+In this course we will stick to a much more simple definition of learning:
+\begin{mdframed}
+	\emph{Learning} is a directed change in synaptic weights $\mat W$ while the network is active.
+\end{mdframed}
+We refer to anything that fits into the category of \enquote{past-affecting-the-future} phenomena as \emph{adaptation}. Adaptation thus encompasses learning sense defined above, as well as dynamical systems, and short-term neural firing-rate adaptation.
+
+Of course, now that we have defined what \enquote{learning} is, we should briefly discuss why this is a useful concept to talk about, especially within the Neural Engineering Framework. After all, we can already compute the \enquote{optimal} connection weights, so why would we want to change those after the fact?
+
+\begin{enumerate}[1.]
+	\item \textbf{We might not know the function we want to compute at the beginning of a task.}\\
+	Consider a simulated creature that explores its environment in search for food. Some food (the \enquote{green food}) is nutritious and should be eaten, whereas other food (the \enquote{red food}) is slightly poisonous and should be avoided.
+	
+	A priori, as modellers of this system, we might not know what awaits our creature in its environment. Hence, we have no chance to pre-compute the \enquote{correct} transformation that maps colour onto \enquote{edibility} of the foot. In fact, we might not even know which sensory modalities are important for this kind of decision (smell, colour, shape, taste\textellipsis).
+
+	If instead we were able to build a system that was able to learn a mapping from sensory stimuli onto \enquote{edibility}, that might make our lives as modellers much easier.
+
+	\item \textbf{The desired function might change over time.}\\
+	Consider a dynamical system that controls joint muscle tensions for a given target position. While we may be able to build a system that performs this control efficiently when the system is first deployed, there may be several factors that change the required controller over time.
+
+	For example, injury and ageing might cause wear in joints, growth (in a biological system) will change the lengths of the limbs, or the system may be required to handle loads that are much lighter or heavier than what was originally considered when designing the controller.
+
+	\item \textbf{The \enquote{optimal weights} we are solving for are not optimal.}\\
+	Remember that the synaptic weights $\mat W$ are defined as $\mat W = \mat E \mat D$ in a Neural Engineering Framework network. While the decoders $\mat D$ we are computing are optimal, this does not mean that the entire weight matrix $\mat W = \mat E \mat D$ is optimal! If we optimize the full weight matrix directly, this allows us to fit individual functions in a better way.
+	
+	Furthermore, at least when computing $\mat D$ using the rate-approximation $G[J]$, we are not taking the dynamics of the neurons into account. Remember that we derived $G[J]$ under the assumption of a constant, or static, input current $J$. Hence, the decoders $\mat D$ that are optimal in the \enquote{static} case are not necessarily optimal for the dynamics encountered in the neural network.
+
+	\item \textbf{Answering scientific questions about learning in nervous systems.}\\
+	As discussed in the lecture about transformations, our goal so far has been to build models of \enquote{expert systems}. We are trying to answer the question whether a system that has already learned to accomplish a certain task can be modelled by implementing certain mathematical transformations under optimal circumstances.
+
+	Incorporating learning into our models allows us to answer a slightly different question. Could a nervous system with a certain overall connectivity potentially learn certain transformations with the stimuli that are available to it during its lifetime or during its growth (ontogenesis).
+\end{enumerate}
+
+These points should be enough motivation to start thinking about learning within NEF networks. In order to do so, we will first take a short excursion to the field of Machine Learning, and the types of \enquote{learning} usually employed by computer scientists. We then apply some of these concepts, including supervised and unsupervised learning to biologically plausible neural networks.
+
+\section{An Excursion to Machine Learning}
+
+\begin{figure}
+	\centering
+	\includegraphics{media/learning_example_supervised.pdf}
+	\caption{A supervised learning task. Given a set of $N$ examples mapping an image $\vec x_k$ onto a one-hot encoded category vector $\vec t_k$, we would like the computer to learn a mapping from unseen images $\vec x$ onto categories $\vec t$.}
+	\label{fig:learning_example_supervised}
+\end{figure}
+
+
+Inspired by the learning abilities of biological systems, computer scientists have been working on \enquote{learning machines} since the early 1960s, giving rise to the field of machine learning. The main goal of this field is to apply computers to problems that have a less well-defined relationship between input and output.
+
+\Example{Consider the following \enquote{image recognition} problem. A system receives an image encoded as a high-dimensional vector $\vec x$ (where each vector component corresponds to the intensity of one colour channel of a pixel in the image), and has to decide whether the image contains a dog, a cat, or a parrot (cf.~\cref{fig:learning_example_supervised}). It would be quite hard to write such a program \enquote{by hand}. After all, what are the rules by which we would categorize a set of pixels into these categories? The goal of machine learning is to be able to \enquote{program by example}. Instead of specifying an algorithm, we just specify examples, and the computer \enquote{figures out} (learns) on its own how to solve the problem in general.}
+
+Within this field, computer scientists typically distinguish between three types of learning:
+\begin{itemize}
+	\item \textbf{Supervised Learning}\\
+	Given $N$ training samples $(\vec x_k, \vec t_k)$ and a parametrized function $f(\vec x; \vec w)$, find weights/parameters $\vec w$ such that $f(\vec x_k) \approx \vec t_k$. Hope that after training $f(\vec x; \vec w)$ also works for unseen $\vec x$. In other words, we assume that there is an unknown ground truth function $f_\mathrm{GT}(\vec x) = \vec t$ that would like to approximate by tuning the parameters of our model function $f(\vec x; \vec w)$.\\
+	\emph{Examples:} Polynomial fitting, Perceptrons, generalised linear models (GLMs), Support Vector Machines (SVMs), Gaussian Processes, Multi-Layer Perceptrons (MLPs).
+	\item \textbf{Unsupervised Learning}\\
+	We are just given a set of $N$ samples $\vec x_k$ and would like to discover some inherent order within this dataset. Sometimes, we would like to map each $\vec x_k$ onto a lower-dimensional \enquote{latent} space $\vec \lambda$, where conceptually similar $\vec x$ are being assigned to similar $\vec \lambda$.\\
+	\emph{Examples:} Clustering, autoencoders, dimensionality-reduction methods (PCA, tSNE, \textellipsis).
+	\item \textbf{Semi-supervised (or Reinforcement) Learning}\\
+	A system receives state information $\vec x$ and a low-dimensional reward signal $r$. Goal is to learn a policy $\pi(\vec x)$ that produces actions $\vec t$ maximizing the cumulative reward.
+\end{itemize}
+
+Furthermore, there are additional constraints on the learning process place that are orthogonal to these concepts, such as \enquote{offline} (training happens while the system is not being used), \enquote{online} (the system learns on a stream of data), or \enquote{life-long} (the system is constantly learning whenever it is active) learning.
+
+In the following sections, we have a closer look at these concepts. Maybe we can borrow some insights from Machine Learning and apply them to our models!
+
+\section{Supervised Learning}
+
+As summarized above, the goal of supervised learning is to find parameters $\vec w$ for a model function $f(\vec x; \vec w)$, such that the function closely maps a set of $N$ training data points~$\vec x_k$ onto a set of desired target points~$\vec t_k$. The quality of the match is defined according to some loss function $E(\vec w)$. For example, if we assume a quadratic loss function, a supervised machine learning problem could be phrased as
+\begin{align}
+	\vec w &= \arg \min_{\vec w} E(\vec w) = \arg \min_{\vec w} \frac{1}{N} \sum_{k = 1}^N \big\| f(\vec x_k ; \vec w) - \vec t_k \big\|^2 \,.
+	\label{eqn:supervised_learning}
+\end{align}
+While equation \cref{eqn:supervised_learning} looks quite innocuous, this problem is generally difficult because of the function~$f$. There is no constraint whatsoever on what $f$ should look like, except for the very general notion of $f$ being a function mapping from a $d$-dimensional input space $\mathbb{X} \subseteq \mathbb{R}^d$ onto some $d'$-dimensional target space $\mathbb{R}^{d'}$).  Some commonly used examples of model functions $f$ include
+\begin{itemize}
+	\item Polynomial of degree $n$: $f(\vec x; \vec w) = \sum_{i = 0}^n w_i x^i$.
+	\item Linear models: $f(\vec x; \vec w) = \sum_{i = 0}^n w_i \phi_i(x)$.
+	\item Perceptron: $f(\vec x; \mat W) = \phi\big(\langle \vec w, \vec x \rangle \big)$.
+	\item Multi-layer perceptrons/\enquote{deep} neural networks.
+\end{itemize}
+
+The overall goal of this endeavour is \emph{generalisation}. While our training tuples $(\vec x_k, \vec t_k)$ may only cover a small portion of the space $\mathbb{X}$ we are interested in, the general hope is that once we find the right parameters $\vec w$, our function $f(\vec x; \vec w)$ will also work for tuples $(\vec x_k, \vec t_k)$ we have seen before. Underpinning this hope is the assumption that there exists a systematic mapping between $f_{\mathrm{GT}}(\vec x; \vec w)$ that is unknown to the engineer building the system, and that $f$ will approximate this $f_{\mathrm{GT}}$ after training.
+
+Unfortunately, in general, there are not guarantees that this will actually work. To the contrary, we can guarantee that an algorithm solving for $\vec w$ that generalises well within one particular application domain will not be able to generalise will in another application domain. This is known as the so-called \enquote{No Free Lunch Theorem}.
+
+\Note{\emph{Solving for decoders is a supervised learning problem.}
+The problem we solve when computing identity or function decoders fits exactly into this framework. In this case, our function $f(\vec x; \vec w)$ is just a linear model given as
+\begin{align*}
+	f(\vec x; \vec w) &= \langle \vec w, \vec a(\vec x) \rangle \,,
+\end{align*}
+where $\vec w$ are our decoders, and $\vec a(\vec x)$ is the function mapping from an input $\vec x$ onto the neural activities. As we saw, we can just solve for the optimal $\vec w$ using the $L_2$-regularised Moore-Penrose pseudo inverse.}
+
+\subsection{Using Gradient Descent to Solve for $\vec w$}
+
+\begin{figure}
+	\centering
+	\includegraphics{media/gradient_descent_poly_example_10.pdf}
+	\caption{Gradient descent in action. We are trying to find parameters for the polynomial model function $f(x; \vec w) = w_0 x^2 + w_1 x$ given a set of samples $(x_k, t_k)$. \emph{Left:} Loss function over the parameters $\vec w$, as well as the trajectory of the paramters $\vec w$ as part of the gradient descent algorithm. Arrows indicate the gradient $\Delta \vec w$. Brighter colours correspond to larger errors. \emph{Right:} Samples and parametrised model functions corresponding to the parameters highlighted in the left picture.}
+	\label{fig:gradient_descent_poly_example_10}
+\end{figure}
+
+In general, it is impossible to solve for $\vec w$ in closed form. Instead, computer scientists often fall back onto a heuristic known as \enquote{gradient descent}.
+
+In a nutshell, we analyse how infinitesimally small changes to one of the weights $w_i$ would affect our loss function $E(\vec w)$. We use this information in order to apply a small change $- \eta \Delta \vec w$ to our weights, such that the error is being reduced. In particular, this change is given as
+\begin{align*}
+	\Delta w_i &= \frac{\partial E(\vec w)}{\partial w_i} = \frac{\partial}{\partial w_i} \frac{1}{N} \sum_{k = 1}^N \big\| f(\vec x_k ; \vec w) - \vec t_k \big\|^2 \,, & \text{weight update step } \vec w &\gets \vec w - \eta \Delta \vec w \,,
+\end{align*}
+where $\eta$ is the so called \emph{learning rate}. This process is then repeated until $\vec w$ converges. See \cref{fig:gradient_descent_poly_example_10} for a simple example, yet keep in mind that depending on $f(\vec x; \vec w)$ -- the loss function will not have a clear global minimum and the number of parameters can go into the thousands (and not just two as in the example).
+
+We can either compute the partial differential $\frac{\partial}{\partial w_i}$ numerically (i.e., by evaluating $E$ for slightly different $\vec w$ and computing). For some model functions $f$ the differential can be evaluated efficiently using the chain-rule, leading to a simple algorithm called \emph{error back-propagation}. There are libraries such as Autograd or Tensorflow that conveniently compute these gradients.
+
+In practice, the loss function $E$ is often not evaluated for all $N$ training samples at once, but for a random subset of $N' \ll N$ samples, where $N'$ is the so called \enquote{batch size}. Not only does this increase the efficiency of the gradient descent algorithm, it also prevents the algorithm from \enquote{getting stuck} in local minima. This variant of gradient descent is called \enquote{stochastic gradient descent} (stochastic because of the random selection of samples).
+
+\subsection{The Delta Learning Rule}
+
+As noted above, we are solving a supervised learning problem (in the machine learning sense) when computing function or identity decoders $\mat D$. However, so far we have been using what is known as an \emph{offline} method -- we compute $\mat D$ at once for all $N$ using the $L_2$-regularised Moore-Penrose pseudo inverse. That is, we have a training phase during which we compute $\mat D$, followed by the actual \enquote{inference} phase during which we use $\mat D$ within our neural network.
+
+In order to \emph{learn} synaptic weights $\mat W$ in the sense defined in the introduction, we need a so called \emph{online} learning rule. That is, we would like to find a learning rule that allows us to update the weights for a stream of input data while the network is active.
+
+Luckily, we can easily derive such an algorithm in two stages. First, we will implement a decoder learning rule by implementing gradient descent for an input-target pair $(\vec x(t), \vec y^\mathrm{d}(t))$. This is somewhat comparable to stochastic gradient descent with a batch size of $N' = 1$, although we do not randomly sample from a pool of $N$ available samples, but always use the information that is currently (i.e., at time $t$) available in our network.
+
+Second, we will extend this decoder learning rule to a biologically plausible synaptic weight learning rule that updates individual entries of the weight matrix $w_{ij}$.
+
+For simplicity, let's assume that $d = 1$, i.e., we are representing a scalar value. Now, our setup is as follows. We have a neuron population representing the input value $x$ and would like to decode an unknown function $f(x)$. In other words, we would like to continuously update our decoders $\vec d$, such that $f(x(t)) \approx y^\mathrm{d}(t)$. This means that we have the following loss function
+\begin{align*}
+	E(\vec d) &= \frac{1}2 \left(\left(\sum_{i = 1}^n d_i a_i\big(x(t)\big) \right) - y^\mathrm{d}(t) \right)^2 \\
+	\Rightarrow \Delta d_i = \frac{\partial E(\vec d)}{\partial d_i} &= \underbrace{\left(\left(\sum_{i = 1}^n d_i a_i\big(x(t)\big) \right) - y^\mathrm{d}(t)\right)}_{\epsilon(t)} a_i\big(x(t)\big) \\
+		&= \epsilon(t) a_i\big(x(t)\big) \,,
+\end{align*}
+where $\epsilon(t)$ is the error we are making at the current point in time. This is the so called \enquote{Delta Learning Rule} originally derived by Rosenblatt used in Perceptrons. In the next subsection we will extend this rule to individual synaptic weights $w_{ij}$.
+
+\Note{Since we are not stochastically sampling from a large pool of $N$ samples, this method has a problem often referred to a \emph{catastrophic forgetting}. By not looking at older samples, we are temporarily over-fitting our system to the current region of the input-target space.}
+
+\Aside{Stochastically sampling $(\vec x(t'), \vec y^\mathrm{d}(t'))$ pairs over a longer history $t' \in [t - \theta, t]$ using the Delay Network with the goal to increase the convergence rate and to somewhat mitigate the problem of catastrophic forgetting would be an interesting course project!}
+
+\subsection{The Prescribed Error Sensitivity Learning Rule}
+
+\begin{figure}
+	\centering%
+	\begin{subfigure}{0.5\textwidth}%
+		\centering%
+		\includegraphics{media/pes_network_a.pdf}%
+		\caption{Learning decoders}%
+	\end{subfigure}%
+	\begin{subfigure}{0.5\textwidth}%
+		\centering%
+		\includegraphics{media/pes_network_b.pdf}%
+		\caption{Delta learning rule}%
+	\end{subfigure}%
+	\caption{Learning decoders $d_i$ \textbf{(a)} and synaptic weights \textbf{(b)} in an NEF network. In both cases, we would like to learn an unknown function $\vec y = f(\vec x)$ encoded in the connections between either in the decoding weights $d_i$ or in the weights between two neural populations. The weights are updated according to an error signal $\epsilon(t) = \vec y^\mathrm{d}(t) - y(t)$.}
+\end{figure}
+
+We now have a simple learning rule that allows us to learn decoders online -- essentially, we just multiply the neural activity $a_i(x(t))$ with the error $\epsilon(t)$ and then update individual decoder values according to the gradient descent update equation
+\begin{align*}
+	d_i \gets -\eta \Delta d_i = -\eta \epsilon(t) a_i(t) \,.
+\end{align*}
+This equation can be interpreted as follows: if a neuron is active while there is some (positive) error $\epsilon(t)$, we decrease its influence on the decoding. If there is a (negative) error $\epsilon(t)$, we increase its influence.
+
+The problem with this equation is that it is not biologically plausible. There are no decoders in the brain, so we somehow need to find a way to update synaptic weights $w_{ij}$ instead of decoder values $d_i$.
+
+However, this problem can be easily fixed. Remember that the synaptic weights are given as
+\begin{align*}
+	w_{ij} &= \big((\vec \alpha \circ \mat E) \mat D\big)_{ij} = \alpha_j \langle \vec e_j, \vec d_i \rangle \,.
+\end{align*}
+Substituting the decoder update $\Delta d_i$ into this equation (for the scalar case) gives us
+\begin{align*}
+	\Delta w_{ij} &= \alpha_j e_j \Delta d_i = - \eta \big( \alpha_j \epsilon(t) e_j \big) a_i(t) \,.
+\end{align*}
+For vectorial quantities $\vec x$ (i.e., $d > 1$) this just turns out to be
+\begin{ImportantEqn}{Prescribed Error Sensitivity (PES) Learning Rule}
+\Delta w_{ij} &= \alpha_j e_j \Delta d_i = -\eta \big( \alpha_j \langle \vec \epsilon(t), \vec e_j \rangle \big) a_i(t) \,.
+\end{ImportantEqn}
+Note that the term $\big( \alpha_j \langle \vec \epsilon(t), \vec e_j \rangle \big)$ looks very much like the linear part of the current-translation function in the NEF encoding equation. In particular, we are treating the error $\epsilon(t)$ as if it was an input $\vec x(t)$ -- and in a sense it is exactly that -- a so called \enquote{modulatory} input.
+
+As it turns out, such modulatory inputs exist in the brain in the form of dopaminergic synapses, which enable synaptic plasticity in the post-synapse.
+
+\printbibliography
+
+\end{document}
+
