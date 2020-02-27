@@ -36,22 +36,6 @@
 		\includegraphics[scale=0.95]{media/learning_example_supervised_3.pdf}
 	\end{frame}
 
-	\begin{frame}{Unsupervised Learning}
-		\centering
-		\includegraphics[scale=0.95]{media/learning_example_unsupervised.pdf}
-	\end{frame}
-
-	\begin{frame}{Unsupervised Learning -- Training}
-		\centering
-		\includegraphics[scale=0.95]{media/learning_example_unsupervised_2.pdf}
-	\end{frame}
-
-	\begin{frame}{Unsupervised Learning -- Inference}
-		\centering
-		\includegraphics[scale=0.95]{media/learning_example_unsupervised_3.pdf}
-	\end{frame}
-
-
 	\begin{frame}{Gradient Descent -- Example}
 		\centering%
 		\includegraphics<1>[width=\textwidth]{media/gradient_descent_poly_example_00.pdf}%
@@ -87,17 +71,134 @@
 		\end{columns}
 	\end{frame}
 
-	\begin{frame}{Example: Learning a Communication Channel}
-		\includegraphics[width=\textwidth]{media/pes_communication_channel_example.pdf}
+	\begin{frame}{Example: Learning Functions (I)}
+		\centering
+		\includegraphics[scale=1.0]{media/learning_network.pdf}
 	\end{frame}
 
-	\begin{frame}{Example: Learning $f(x) = x^2$}
-		\includegraphics[width=\textwidth]{media/pes_square_example.pdf}
+	\begin{frame}{Example: Learning Functions (II)}
+		\centering
+		Communication Channel $f(x) = x$\\[0.125cm]
+		\includegraphics[width=\textwidth]{media/pes_communication_channel_example.pdf}\\[0.125cm]
+		\begin{overlayarea}{\textwidth}{0.5cm}
+			\centering
+		\end{overlayarea}
+	\end{frame}
+
+	\begin{frame}{Example: Learning Functions (III)}
+		\centering
+		Square $f(x) = x^2$\\[0.125cm]
+		\includegraphics[width=\textwidth]{media/pes_square_example.pdf}\\[0.125cm]
+		\begin{overlayarea}{\textwidth}{0.5cm}
+			\centering
+			\only<2->{\hl{Works, but learns more slowly!$\vphantom{\epsilon(t)}$}}
+			\only<2->{\hl{Where is the error signal $\epsilon(t)$ coming from?}}
+		\end{overlayarea}
+	\end{frame}
+
+	\begin{frame}{Example: Classical Conditioning (I)}
+		\centering
+		Before conditioning:\\[0.125cm]
+		\includegraphics{media/classical_conditioning_a.pdf}\\[0.5cm]
+		After conditioning:\\[0.125cm]
+		\includegraphics{media/classical_conditioning_b.pdf}\\[0.5cm]
+		\ImageSources{Images adapted from \href{https://commons.wikimedia.org/wiki/File:Classical_conditioning_-_extinction.svg}{Wikimedia}.}
+	\end{frame}
+
+	\begin{frame}{Example: Classical Conditioning (II)}
+		\centering
+		\vspace{0.25cm}
+		\includegraphics{media/conditioning_network.pdf}
+	\end{frame}
+
+	\begin{frame}{Example: Classical Conditioning (III)}
+		\centering
+		\includegraphics[width=\textwidth]{media/classical_conditioning_experiment.pdf}
 	\end{frame}
 
 	\begin{frame}{Example: Adaptive Controller}
 		\centering
 		\includegraphics[height=7cm]{media/adaptive_controller.pdf}
+	\end{frame}
+
+	\begin{frame}{Unsupervised Learning}
+		\centering
+		\includegraphics[scale=0.95]{media/learning_example_unsupervised.pdf}
+	\end{frame}
+	
+	\begin{frame}{Unsupervised Learning -- Training}
+		\centering
+		\includegraphics[scale=0.95]{media/learning_example_unsupervised_2.pdf}
+	\end{frame}
+	
+	\begin{frame}{Unsupervised Learning -- Inference}
+		\centering
+		\includegraphics[scale=0.95]{media/learning_example_unsupervised_3.pdf}
+	\end{frame}
+
+	\begin{frame}{PCA Example: Source Images}
+		\centering
+		\begin{columns}[c]
+			\column{0.4\textwidth}
+			\hl{Face Database}
+			\begin{itemize}
+				\item 84 images of 12 women\\with 7 different expressions
+				\item Normalised eye location
+				\item $45 \times 60$ pixels\\(2700 dimensions)
+				\item Greyscale
+			\end{itemize}
+			\column{0.4\textwidth}
+			\includegraphics[width=\textwidth]{media/face_database.pdf}
+		\end{columns}
+		\ImageSources{\enquote{Pain Expression Subset;} \url{http://pics.stir.ac.uk/2D_face_sets.htm}}
+	\end{frame}
+
+	\begin{frame}{PCA Example: Eigenfaces}
+		\begin{columns}
+			\column{0.4\textwidth}
+			\centering
+			\hl{Identity Basis}\\
+			\includegraphics[width=0.95\textwidth]{media/eigenfaces_normal_basis.pdf}
+			\column{0.4\textwidth}
+			\centering
+			\hl{Principal Components}\\
+			\includegraphics[width=0.95\textwidth]{media/eigenfaces.pdf}
+		\end{columns}		
+	\end{frame}
+
+	\begin{frame}{PCA Example: Face Spaces}
+		\begin{columns}
+			\column{0.5\textwidth}
+			\centering
+			\includegraphics[height=7.5cm]{media/eigenfaces_dim_0_1.pdf}
+			\column{0.5\textwidth}
+			\centering
+			\includegraphics[height=7.5cm]{media/eigenfaces_dim_2_3.pdf}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{PCA Example: Sparse Vectors}
+		\centering
+		\includegraphics[width=\textwidth]{media/face_sparse.pdf}
+	\end{frame}
+
+	\begin{frame}{PCA Example: Modifying the Latent Space}
+		\centering
+		\rotatebox[origin=c]{270}{\hspace*{-6.75cm}$\leftarrow$ Smaller $\lambda_6$ \hspace{1.5cm} Larger $\lambda_6 \rightarrow$}
+		\includegraphics[height=7cm]{media/face_manipulation.pdf}\\
+		\hspace{0.33cm} $\leftarrow$ Smaller $\lambda_7$ \hspace{0.75cm} Larger $\lambda_7 \rightarrow$
+	\end{frame}
+
+	\begin{frame}{Limitations of PCA: Classifying Two Groups}
+		\centering
+		\includegraphics[width=\textwidth]{media/pca_limitations_plots.pdf}
+	\end{frame}
+
+	\begin{frame}{Limitations of PCA: Metaphorical Illustration}
+		\centering
+		\vspace{0.25cm}
+		\includegraphics{media/pca_limitations.png}\\[0.25cm]
+		\ImageSources{Barbara Hammer, \enquote{Maschinelles Lernen im Web}, Universität Bielefeld, WS 2014/15}
 	\end{frame}
 
 	\backupbegin
