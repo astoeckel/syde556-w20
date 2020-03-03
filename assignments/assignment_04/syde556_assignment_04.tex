@@ -26,7 +26,7 @@
 
 	\section{Building an ensemble of neurons}
 
-	Make a new model with a single ensemble of neurons. It should have $100$ neurons, and represent a $1$-dimensional space. The intercepts should be between $-1$ and $1$, and the maximum firing rates should be between $\SI{100}{\hertz}$ and $\SI{200}{\hertz}$. $\tau_\mathrm{RC}$ should be $\SI{20}{\milli\second}$ and $\tau_{ref}$ should be $\SI{2}{\milli\second}$.
+	Make a new model with a single ensemble of neurons. It should have $100$ neurons, and represent a $1$-dimensional space. The intercepts should be between $-1$ and $1$, and the maximum firing rates should be between $\SI{100}{\hertz}$ and $\SI{200}{\hertz}$. $\tau_\mathrm{RC}$ should be $\SI{20}{\milli\second}$ and $\tau_\mathrm{ref}$ should be $\SI{2}{\milli\second}$.
 
 	\begin{itemize}
 		\item[{\symbolfont 🖈}]  You don't need to run the model over time for this question.
@@ -40,7 +40,7 @@
 		\end{itemize}
 		\item \Marks{0.5} \emph{RMSE and radius.} Compute the RMSE for (at least) the four different radii $0.5$, $1$, $2$, and $4$.
 		\begin{itemize}
-			\item[{\symbolfont 🖈}]  Nengo will automatically rescale the intercepts as the radius increases, so you don't have to worry about changing the intercepts as you had to in Assignment 3.3.
+			\item[{\symbolfont 🖈}]  Nengo will automatically rescale the intercepts as the radius increases, so you don't have to worry about changing the intercepts as you had to in Assignment 3.
 		\end{itemize}
 		\item \Marks{0.5} \emph{Discussion.} What relationship between the radius and the RMSE do you observe? Explain why this is the case.
 		\item \Marks{0.5} \emph{RMSE and refractory period.} What happens to the RMSE and the tuning curves as $\tau_\mathrm{ref}$ changes between \SIrange{1}{5}{\milli\second}? Plot the tuning curves for at least four different $\tau_\mathrm{ref}$ and produce a plot showing the RMSE over $\tau_\mathrm{ref}$.
@@ -58,7 +58,13 @@
 		\begin{verbatim}
 nd_input = nengo.Node(lambda t: 0.0 if t < 0.5 else (1.0 if t < 1.0 else 0.0))
 		\end{verbatim}
-		will create a step function that is $1$ for $0.5<t<1.0$ and $0$ otherwise.
+		will create a step function that is $1$ for $0.5<t<1.0$ and $0$ otherwise. Instead of using a lambda, you can also use the \texttt{Piecewise} process built into Nengo:
+		\begin{verbatim}
+nd_input = nengo.Node(nengo.processes.Piecewise({
+    0.5: 1.0,
+    1.0: 0.0
+}))
+		\end{verbatim}
 	\end{itemize}
 
 	\begin{enumerate}[a)]
@@ -69,16 +75,18 @@ nd_input = nengo.Node(lambda t: 0.0 if t < 0.5 else (1.0 if t < 1.0 else 0.0))
 
 	\section{Dynamics}
 	
-	Build a neural integrator. This consists of one ensemble, one input, a connection from the input to the ensemble, and a connection from the ensemble back to itself. The ensemble should have $200$ neurons and the same parameters as in question 1. The post-synaptic time constant of the recurrent connection is $\tau = \SI{50}{\milli\second}$, and the post-synaptic time constant of the input is $\SI{5}{\milli\second}$.
+	Build a neural integrator. This consists of one ensemble, one input, a connection from the input to the ensemble, and a connection from the ensemble back to itself. The ensemble should have $200$ neurons and the same parameters as in question 1.
 	
-	To be an integrator, the desired dynamical system is $\frac{\mathrm{d}x}{\mathrm{d}t} = u$, where $x$ is the state of the system and $u$ is the input.
+	\emph{Important:} Use two different time constants in your network. The post-synaptic time constant of the recurrent connection is $\tau = \SI{50}{\milli\second}$, and the post-synaptic time constant of the input is $\SI{5}{\milli\second}$. Having to different time constants violates what we assumed in the derivation of principle three. Part of this assignment is to explore how two different time constants affects the quality of the result compared to what we saw in the lecture.
+	
+	To be an integrator, the desired dynamical system is $\frac{\mathrm{d}x(t)}{\mathrm{d}t} = u$, where $x$ is the state of the system and $u$ is the input.
 	
 	For all probes, use a synapse of $\SI{10}{\milli\second}$. Explicitly plot the ideal, which can help when answering the questions.
 
 	\begin{enumerate}[a)]
-		\item \Marks{0.5} \emph{Transforming the dynamical system.} Rewrite the linear dynamical system describing the integrator in terms of $\frac{\mathrm{d}x}{\mathrm{d}t} = Ax + Bu$, i.e., write down the matrices $A$ and $B$. What are the matrices $A'$ and $B'$ we have to use when implementing this system using the post-synaptic filer?
+		\item \Marks{0.5} \emph{Transforming the dynamical system.} Rewrite the linear dynamical system describing the integrator in terms of $\frac{\mathrm{d}\vec x(t)}{\mathrm{d}t} = \mat A \vec x + \mat B \vec u$, i.e., write down the matrices $\mat A$ and $\mat B$. What are the matrices $\mat A'$ and $\mat B'$ we have to use when implementing this system using the post-synaptic filer?
 		\begin{itemize}
-			\item[{\symbolfont 🖈}] For this question, assume that the input $u$ and the state $x$ are $n$-dimensional, i.e., write down the equations to be as general as possible.
+			\item[{\symbolfont 🖈}] You may assume that the input $\vec u$ and the state $\vec x$ are $d$-dimensional, i.e., you may write down the equations as general as possible. In the remainder of this question we assume $d = 1$.
 		\end{itemize}
 		\item \Marks{0.5} \emph{Integrator using spiking neurons.} Show the input and the value represented by the ensemble when the input is a value of $0.9$ from $t=0.04$ to $t=1.0$ (and $0$ for other times). Run the simulation for $\SI{1.5}{\second}$.
 		\begin{itemize}
