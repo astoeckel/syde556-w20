@@ -1,0 +1,34 @@
+% !TeX spellcheck = en_GB
+\documentclass[10pt,letterpaper,oneside]{article}
+\input{../syde556_lecture_notes_preamble}
+
+\date{March 5, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 9: Analysing Representation}
+
+
+\begin{document}
+
+\MakeTitle{\textbf{Accompanying Readings: Chapter 7 of Neural Engineering}}
+
+
+\ConstructionSite
+
+\begin{itemize}
+	\item \textbf{Observation:} Some functions are \enquote{harder} to decoder than others (larger error)
+	\item \textbf{Goal:} Get a better understanding of the types of function that can be decoded
+	\item Tuning curves are a set of basis functions; decoders combine these basis functions
+	\begin{align*}
+		\hat x &= \sum_{i = 1}^n d_i a_i(x) = \langle \vec d, \vec a(x) \rangle
+	\end{align*}
+	\item Tuning curves are highly similar
+	\item Find basis transformation $\mat T$ that maximises the information in the basis functions $\Rightarrow$ PCA
+	\begin{align*}
+		\hat x &= \langle \vec d, \mat T \vec a \rangle = \langle \vec d \mat T^{-1}, \mat T \vec a \rangle
+	\end{align*}
+	\item The scale Eigenvalues corresponding to the individual Principal Compnents is inversely proportional to the noise in the decoding $\Rightarrow$ large Eigenvalue $\Rightarrow$ this basis function can be decoded well
+\end{itemize}
+
+\printbibliography
+
+\end{document}
+
