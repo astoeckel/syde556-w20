@@ -6,6 +6,9 @@
 \fi%
 \input{../syde556_lecture_slides_preamble}
 
+
+\usepackage{ragged2e}
+
 \date{February 25 \& 27, 2020}
 \title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 8: Learning}
 
@@ -136,6 +139,18 @@
 		\includegraphics[scale=0.95]{media/learning_example_unsupervised_3.pdf}
 	\end{frame}
 
+	\begin{frame}{Autoencoder}
+		\centering
+		\includegraphics[width=\textwidth]{media/autoencoder.pdf}
+	\end{frame}
+
+	\videoframe{clip_variational_autoencoder}{Q1XuXwPVFko}
+
+	\begin{frame}{PCA in Python}
+		\centering
+		\includegraphics[width=\textwidth]{media/pca_code.pdf}
+	\end{frame}
+
 	\begin{frame}{PCA Example: Source Images}
 		\centering
 		\begin{columns}[c]
@@ -199,6 +214,50 @@
 		\vspace{0.25cm}
 		\includegraphics{media/pca_limitations.png}\\[0.25cm]
 		\ImageSources{Barbara Hammer, \enquote{Maschinelles Lernen im Web}, Universität Bielefeld, WS 2014/15}
+	\end{frame}
+
+	\begin{frame}{Hebbian Learning}
+		\begin{columns}
+			\column{0.8\textwidth}
+			{\large\justify\quotefont When an axon of cell $A$ is near enough to excite a cell $B$ and repeatedly or persistently takes part in firing it, some growth process or metabolic change takes place in one or both cells such that $A$'s efficiency, as one of the cells firing $B$, is increased.\\[0.25cm]\raggedleft\color{aluminium4} --- Donald O. Hebb, \enquote{The Organization of Behaviour}, 1949\\}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Example: Normalised Hebbian Learning}
+		\centering
+		\includegraphics[width=\textwidth]{media/hebbian_learning_example.pdf}
+		Learning an encoder $\vec e$, with $\| \vec e \| = 1$, 10000 steps, $\eta = 0.2 \times 10^{-4}$, $\Delta \vec e = \eta (\vec x \circ \vec e)$
+	\end{frame}
+
+	\begin{frame}{Spike-Time Dependent Plasticity}
+        \centering
+		\includegraphics{media/stdp.pdf}
+	\end{frame}
+
+	\begin{frame}{Conclusion}
+		\begin{columns}[T]
+			\column{0.5\textwidth}
+			{\centering
+			\hl{Supervised Learning}\\[0.25cm]}
+			\begin{itemize}
+				\setlength{\itemsep}{0.3cm}
+				\item Find $\vec w$ such that $f(\vec x_k; \vec w) \approx \vec t_k$
+				\item \emph{Hope:} $f(\vec x_k; \vec w) \approx f_\mathrm{GT}(\vec x_k)$
+				\item Use gradient descent to find $\vec w$
+				\item Delta, PES learning rules
+				\item Modulatory synapses in the brain
+			\end{itemize}
+			\column{0.5\textwidth}
+			{\centering
+			\hl{Unsupervised Learning}\\[0.25cm]}
+			\begin{itemize}
+				\setlength{\itemsep}{0.25cm}
+				\item Dimensionality reduction $f(\vec x_k) = \lambda_k$
+				\item \emph{Hope:} latent dimensions $\vec \lambda$ are \enquote{meaningful}
+				\item Autoencoders (nonlinear),\\PCA (linear)
+				\item Hebbian learning $\Rightarrow$ learns PCA
+			\end{itemize}
+		\end{columns}
 	\end{frame}
 
 	\backupbegin

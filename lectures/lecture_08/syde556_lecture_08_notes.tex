@@ -2,7 +2,7 @@
 \documentclass[10pt,letterpaper,oneside]{article}
 \input{../syde556_lecture_notes_preamble}
 
-\date{February 25 \& 27, 2020}
+\date{February 25 \& 27; March 3, 2020}
 \title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 8: Learning}
 
 
@@ -14,13 +14,14 @@
 
 \Note{As mentioned several times in previous lectures, we so far assumed that the connection weights between individual neuron populations are constant. This is of course not the case in biology, where animals change their behaviour in response to experiences sometimes years in the past.}
 
-When talking about \emph{learning}, we should first define this term a little more rigorously. A very broad definition of learning from a neuroscientist's perspective (psychologists will have different definitions) could be \enquote{any process within a neural system that allows past stimuli to influence future behaviours}. Unfortunately, this definition would also include dynamical systems that we have already talked about, such as integrators or the Delay Network.
+When talking about \emph{learning}, we should first define this term a little more rigorously. A very broad definition of learning from a neuroscientist's perspective (psychologists will have different definitions) could be \enquote{any process within a neural system that allows past stimuli to influence future behaviours}. Perhaps confusingly, this definition would also include dynamical systems that we have already talked about, such as integrators or the Delay Network.
 
 In this course we will stick to a much more simple definition of learning:
 \begin{mdframed}
+	\hfill\emph{(Learning)}\\
 	\emph{Learning} is a directed change in synaptic weights $\mat W$ while the network is active.
 \end{mdframed}
-We refer to anything that fits into the category of \enquote{past-affecting-the-future} phenomena as \emph{adaptation}. Adaptation thus encompasses learning in the sense defined above, as well as dynamical systems, and short-term neural firing-rate adaptation.
+Conversely, we refer to anything that fits into the category of \enquote{past-affecting-the-future} phenomena as \emph{adaptation}. Adaptation thus encompasses learning according to our definition, as well as dynamical systems, and short-term neural firing-rate adaptation.
 
 Of course, now that we have defined what \enquote{learning} is, we should briefly discuss why this is a useful concept to talk about, especially within the Neural Engineering Framework. After all, we can already compute the \enquote{optimal} decoders, so why would we want to change those after the fact by changing the synaptic weights?
 
@@ -48,7 +49,7 @@ Of course, now that we have defined what \enquote{learning} is, we should briefl
 	Incorporating learning into our models allows us to answer a slightly different question, namely whether nervous systems with a certain overall connectivity can learn transformations from the stimuli that are available to it during its lifetime or growth (ontogenesis).
 \end{enumerate}
 
-These points should make it clear that incorporating learning into NEF networks is desirable. However, in order to do so, we will first take a short excursion to the field of Machine Learning, and the types of \enquote{learning} usually employed by computer scientists. We then apply some of these concepts, including supervised and unsupervised learning to biologically plausible neural networks.
+These points should make it clear that incorporating learning into NEF networks is desirable. However, in order to do so, we will first take a short excursion to the field of Machine Learning, and have a glance at the types of \enquote{learning} usually employed by computer scientists (who, unfortunately, chose to not follow the definition of \enquote{learning} we made up above). We then apply some of these concepts, including supervised and unsupervised learning to biologically plausible neural networks.
 
 \section{An Excursion to Machine Learning}
 
@@ -60,9 +61,9 @@ These points should make it clear that incorporating learning into NEF networks 
 \end{figure}
 
 
-Inspired by the learning abilities of biological systems, computer scientists have been working on \enquote{learning machines} since the early 1960s, giving rise to the field of machine learning. The main goal of this field is to apply computers to problems that have a less well-defined relationship between input and output.
+Inspired by the learning abilities of biological systems, computer scientists have been working on \enquote{learning machines} since the early 1960s, giving rise to the uncreatively named field of machine learning. The main goal of this field is to apply computers to problems that have a less well-defined relationship between input and output.
 
-\Example{Consider the following \enquote{image recognition} problem. A system receives an image encoded as a high-dimensional vector $\vec x$ (where each vector component corresponds to the intensity of one colour channel of a pixel in the image), and has to decide whether the image contains a dog, a cat, or a parrot (cf.~\cref{fig:learning_example_supervised}). It would be quite hard to write such a program \enquote{by hand}. After all, what are the rules by which we would categorize a set of pixels into these categories? The goal of machine learning is to be able to \enquote{program by example}. Instead of specifying an algorithm, we just specify examples, and the computer \enquote{figures out} (learns) on its own how to solve the problem in general.}
+\Example{Consider the following \enquote{image recognition} problem. A system receives an image encoded as a high-dimensional vector $\vec x$ (where each vector component corresponds to the intensity of one colour channel of a pixel in the image), and has to decide whether the image shows a dog, a cat, or a parrot (cf.~\cref{fig:learning_example_supervised}). It would be quite hard to write such a program \enquote{by hand}. After all, what are the rules by which we would categorize a mere bunch of pixels into these categories? The goal of machine learning is to be able to \enquote{program by example}. Instead of specifying an algorithm, we just specify examples, and the computer \enquote{figures out} (learns) on its own how to solve the problem in general.}
 
 \newpage
 
@@ -72,13 +73,13 @@ Within this field, computer scientists typically distinguish between three types
 	Given $N$ training samples $(\vec x_k, \vec t_k)$, and a model function $f(\vec x; \vec w)$, find weights/parameters $\vec w$ such that $f(\vec x_k) \approx \vec t_k$. We hope that after training, $f(\vec x; \vec w)$ will also work for unseen~$\vec x$. In other words, we assume that there is an unknown ground truth function $f_\mathrm{GT}(\vec x) = \vec t$ that we would like to approximate by tuning the parameters of our model function $f(\vec x; \vec w)$.\\
 	\emph{Examples:} Polynomial fitting, Perceptrons, generalised linear models (GLMs), Support Vector Machines (SVMs), Gaussian Processes, Multi-Layer Perceptrons (MLPs).
 	\item \textbf{Unsupervised Learning}\\
-	We are just given a set of $N$ samples $\vec x_k$ and would like to discover some inherent order within this dataset. Sometimes, we would like to map each $\vec x_k$ onto a lower-dimensional \enquote{latent} space $\vec \lambda$, where conceptually similar $\vec x$ are being assigned to similar $\vec \lambda$.\\
+	We are just given a set of $N$ samples $\vec x_k$ and would like to discover some inherent order within this dataset. Often, we would like to map each $\vec x_k$ onto a lower-dimensional \enquote{latent} space $\vec \lambda$, where conceptually similar $\vec x$ are being assigned to similar $\vec \lambda$.\\
 	\emph{Examples:} Clustering, autoencoders, dimensionality-reduction methods (PCA, tSNE, \textellipsis).
 	\item \textbf{Semi-supervised (or Reinforcement) Learning}\\
 	A system receives state information $\vec x(t)$ and a low-dimensional reward signal $r(t)$. Goal is to learn a policy $\pi(\vec x)$ that produces actions $\vec t(t)$ maximizing the time-cumulative reward.
 \end{itemize}
 
-Furthermore, there are additional constraints on the learning process place that are orthogonal to these concepts, such as \enquote{offline} (training happens while the system is not being used), \enquote{online} (the system learns on a stream of data), or \enquote{life-long} (the system is constantly learning whenever it is active) learning.
+Furthermore, there are additional constraints on the learning process place that are orthogonal to these concepts, such as \enquote{offline} (training happens while the system is not being used), \enquote{online} (the system learns on a stream of data), or \enquote{life-long} (the system is constantly learning whenever it is active, which is the type of learning we defined above) learning.
 
 In the following sections, we have a closer look at these concepts. Maybe we can borrow some insights from Machine Learning and apply them to our spiking neural network models!
 
@@ -178,28 +179,26 @@ The problem with this equation is that it is not biologically plausible. There a
 
 However, this problem can be easily fixed. Remember that the synaptic weights are given as
 \begin{align*}
-	w_{ij} &= \big((\vec \alpha \circ \mat E) \mat D\big)_{ij} = \alpha_j \langle \vec e_j, \vec d_i \rangle \,.
+	w_{ij} &= \big((\vec \alpha \circ \mat E) \mat D\big)_{ij} = \alpha_i \langle \vec e_i, \vec d_j \rangle \,.
 \end{align*}
-Substituting the decoder update $\Delta d_i$ into this equation (for the scalar case) gives us
+Substituting the decoder update $\Delta d_j$ into this equation (for the scalar case) gives us
 \begin{align*}
-	\Delta w_{ij} &= \alpha_j e_j \Delta d_i = - \eta \big( \alpha_j \epsilon(t) e_j \big) a_i(t) \,.
+	\Delta w_{ij} &= \alpha_i e_i \Delta d_j = - \eta \big( \alpha_i \epsilon(t) e_i \big) a_j(t) \,.
 \end{align*}
 For vectorial quantities $\vec x$ (i.e., $d > 1$) this just turns out to be
 \begin{ImportantEqn}{Prescribed Error Sensitivity (PES) Learning Rule}
 \Delta w_{ij} &= \alpha_j e_j \Delta d_i = -\eta \big( \alpha_j \langle \vec \epsilon(t), \vec e_j \rangle \big) a_i(t) \,.
 \end{ImportantEqn}
-Note that the term $\big( \alpha_j \langle \vec \epsilon(t), \vec e_j \rangle \big)$ looks very much like the linear part of the current-translation function in the NEF encoding equation. In particular, we are treating the error $\epsilon(t)$ as if it was an input $\vec x(t)$ -- and in a sense it is exactly that -- a so called \enquote{modulatory} input.
+Notice that the term $\big( \alpha_j \langle \vec \epsilon(t), \vec e_j \rangle \big)$ looks very much like the linear part of the current-translation function in the NEF encoding equation. In particular, we are treating the error $\epsilon(t)$ as if it was an input $\vec x(t)$ -- and in a sense it is exactly that -- a so called \enquote{modulatory} input.
 
 As it turns out, such modulatory inputs exist in the brain in the form of dopaminergic synapses, which enable synaptic plasticity in the post-synapse.
-
-\subsection{Example: Supervised Learning of Functions $f$}
 
 \begin{figure}[p]
 	\centering
 	\begin{subfigure}{\textwidth}
 		\centering
 		\includegraphics{media/learning_network.pdf}
-		\caption{Network used for the learning experiments depicted below}
+		\caption{Network used in the experiments depicted below}
 	\end{subfigure}
 	\begin{subfigure}{\textwidth}
 		\centering
@@ -217,100 +216,306 @@ As it turns out, such modulatory inputs exist in the brain in the form of dopami
 	\label{fig:pes_learning_network}
 \end{figure}
 
-\Cref{fig:pes_learning_network} shows an example of learning a function $f(x) : \mathbb{R} \longrightarrow \mathbb{R}$, with an \enquote{artificially} created error signal $\epsilon(t)$. As clearly visible in \cref{fig:pes_communication_channel_example}, we are able to quickly learn a communication channel, i.e., $f(x) = x$, between two neuron populations.
+\subsection{Example: Supervised Learning of Functions $f$}
+
+\Cref{fig:pes_learning_network} shows an example of learning a function $f(x) : \mathbb{R} \longrightarrow \mathbb{R}$, with an \enquote{artificially} created error signal $\epsilon(t)$, where \enquote{artificially} refers to the signal being generated outside of the system. As clearly visible in \cref{fig:pes_communication_channel_example}, we are able to quickly learn a communication channel, i.e., $f(x) = x$, between two neuron populations.
 
 Learning a more complex function such as $f(x) = x^2$ works as well, as depicted in \cref{fig:pes_square_example}. However, notice that learning progresses much slower in the second case. Correspondingly, we should note that not only the learning rate $\eta$ plays a role in how fast a function is being learned, but also the \enquote{complexity} of the function that is being learned.
 
 \Note{We will have a closer look at why some functions may be harder to learn than others in the next lecture, when we analyse representations.}
 
+\Note{Given an appropriate learning rate $\eta$ and a long enough training period, learning a function in this way will often result in a smaller error than computing the decoders offline, the reason being that the PES rule has access to the actual spike data instead of \enquote{just} the rate approximation.}
+
 \subsection{Example: Classical Conditioning}
 
-\begin{figure}[t]
+\begin{figure}[p]
 	\centering%
 	\begin{subfigure}{0.5\textwidth}%
 		\centering%
 		\includegraphics[scale=0.85]{media/classical_conditioning_a.pdf}%
 		\caption{Before conditioning}%
+		\label{fig:classical_conditioning_a}
 	\end{subfigure}%
 	\begin{subfigure}{0.5\textwidth}%
 		\centering%
 		\includegraphics[scale=0.85]{media/classical_conditioning_b.pdf}%
 		\caption{After conditioning}%
+		\label{fig:classical_conditioning_b}
 	\end{subfigure}\\[0.5cm]
 	\begin{subfigure}{\textwidth}%
 		\centering%
 		\includegraphics[scale=0.85]{media/conditioning_network.pdf}%
 		\caption{Network model}
+		\label{fig:conditioning_network}
 	\end{subfigure}\\[0.5cm]
 	\begin{subfigure}{\textwidth}
 		\centering
 		\includegraphics{media/classical_conditioning_experiment.pdf}
 		\caption{Neural network implementing classical conditioning}
+		\label{fig:classical_conditioning_experiment}
 	\end{subfigure}
 	\caption{Classical conditioning experiment. \textbf{(a, b)} Illustration of classical conditioning. An unconditioned stimulus (US, smell of cheese) causes an unconditioned response (UR, mouse is salviating). Paring a neutral conditioned stimulus (CS, light) with the unconditioned stimulus causes the animal to produce a conditioned response (CR). Adapted from \href{https://commons.wikimedia.org/wiki/File:Classical_conditioning_-_extinction.svg}{Wikimedia}. \textbf{(c)} Network model using the PES learning rule to implement classical conditioning.  \textbf{(d)} Graphs showing the values represented by the individual populations.}
+	\label{fig:classical_conditioning}
 \end{figure}
+
+As mentioned, the above example relies on an \enquote{outside} error signal $\epsilon(t)$. That is, the error signal is produced by the \enquote{environment} that had knowledge about the function $f$ that we wanted to learn. That is, of course, unrealistic. What we would like to have is a system that internally generates the error signal $\epsilon(t)$. One example where we can clearly see how such an error signal could be computed within a neural system itself is classical conditioning.
 
 Classical conditioning is a phenomenon observed in human- and non-human animals, colloquially known through research performed by Ivan Pavlov on dogs (\enquote{Pavlov's dog}).
 
-The general experimental setup is the following. An animal \enquote{unconditonally} (i.e.,~without initial training) responds to a stimulus. A well-studied example is the eye-blink reflex: here, an animal blinks whenever a \enquote{puff} of air is directed at their cornea. This stimulus-response pair is called \enquote{unconditioned stimulus} (US) and \enquote{unconditioned response} (UR).
+The general experimental setup is the following. An animal \enquote{unconditonally} (i.e.,~without initial training) responds to a stimulus. In Pavlov's original experiment the unconditional stimulus is the smell of meat presented to a dog (US), that then starts to produce saliva (UR). Another well-studied example is the eye-blink reflex: here, an animal blinks whenever a \enquote{puff} of air is directed at their cornea. This stimulus-response pair is called \enquote{unconditioned stimulus} (US) and \enquote{unconditioned response} (UR). See also \cref{fig:classical_conditioning_a}.
 
-If the unconditioned stimulus is paired with a so called conditioned stimulus (CS) (for example a tone, or a flash of light), the animal gradually learns to associate the conditioned stimulus with the unconditioned stimulus and will produce a conditioned response (CR) mimicking the unconditioned response even in the absence of the unconditioned stimulus.
+If the unconditioned stimulus is paired with a so called conditioned stimulus (CS) (for example a tone, or a flash of light), the animal gradually learns to associate the conditioned stimulus with the unconditioned stimulus and will produce a conditioned response (CR) mimicking the unconditioned response even in the absence of the unconditioned stimulus (\cref{fig:classical_conditioning_b}).
 
-One possible implementation of classical conditioning using the PES learning rule is given 
+One possible implementation of classical conditioning using the PES learning rule is depicted in \cref{fig:conditioning_network}. As visible, the system solely receives two modalities as sensory input.
 
-\subsection{Example: Adaptive Control}
-
-\ConstructionSite
 
 \section{Unsupervised Learning}
 
-\ConstructionSite
+Another way to eliminate the need for an external error signal is to not define an explicit target signal $\mat y^\mathrm{d}(t)$ at all, but to instead try to learn structure inherent to samples of data $\vec x_k$ without any external guidance. Often, what we would like to accomplish is some sort of \emph{dimensionality reduction}. That is, we would like to map each high dimensional datum $\vec x_k$ onto a low dimensional space $\vec \lambda$ (the so called \enquote{latent space}), where each dimension in the low dimensional space has some dimension that intrinsically describes the data.
+
+As with supervised learning, the assumption is that there exists a ground-truth function
+\begin{align*}
+	f^{-1}_\mathrm{GT}(\vec \lambda) : \mathbb{R}^{d'} \longrightarrow \mathbb{R}^d \text{, with } d' \ll d \text{ and } f^{-1}_\mathrm{GT}(\vec \lambda_k) = \vec x_k + \text{ noise} \,.
+\end{align*}
+That is, we assume that the high-dimensional samples $\vec x_k$ we observe are actually the result of a process that only depends on a few variables $\vec \lambda$.
+
+\Example{\emph{Faces.} For a moment, think about a set of greyscale photographs of faces. Naturally, we could describe each of these photographs as a vector of pixel intensities $\vec x_k \in \mathbb{R}^d$, where $d$ is the product of the width and height of the photographs in number of pixels. Typically, $d$ would be on the order of magnitude of a few thousand (i.e., for a $32 \times 32$ pixel image we have $d = 1024$) to a few million ($d = 20\times10^6$ for a \enquote{20 megapixel} image).
+	
+However, we could try to convince ourselves that the most prominent properties of a face can be reduced onto a few dozen dimensions (a good analogy being the character editors present in popular role-playing computer games):
+\begin{multicols}{2}
+\begin{itemize}
+	\item Ratio between width and height
+	\item Relative eye, mouth, nose distance
+	\item Nose, eye, mouth shape
+	\item Emotion (happy, angry, surprise, \textellipsis)
+	\item Skin tone
+	\item Hair color and length
+\end{itemize}
+{\centering
+\includegraphics[height=4cm]{media/face_database_2.pdf}\\}
+{\small\stepcounter{figure}\textbf{Figure \arabic{figure}.} Excerpt from the face database used in the following experiments. \href{http://pics.stir.ac.uk/2D_face_sets.htm}{Source}}
+\end{multicols}
+We could devise a way to quantify each of these features in terms of a scalar value $\lambda_i$. Then, we can write a function $f$ that takes a parameter vector $\vec \lambda$ and outputs a face.
+
+The goal of unsupervised learning is to automatically determining both the parameter space $\vec \lambda$, as well as an encoder $f$ (encoding a set of parameters $\vec \lambda$ into the high dimensional space), and the decoder $f^{-1}$ (estimating $\vec \lambda$ given a high-dimensional input).
+}
+
+\subsection{Autoencoders}
+
+An extremely powerful dimensionality reduction method are so called autoencoders. The idea is to build a neural network $f(\vec x, \vec w)$ such that after training $f(\vec x; \vec w) = \vec x$, i.e., the output of the network is equal to its input. Crucially however, the network posesses a so called \enquote{information bottleneck}, a neural layer with just a few dimensions $d' \ll d$. The activities of the neurons in this layer correspond to the latent space $\vec \lambda$. See \cref{fig:autoencoder} for a sketch of an autoencoder network.
+
+To train an autoencoders we optimize the loss $\| f(\vec x; \vec w) - \vec x \|$. Since the desired output is just the input, this can be interpreted as a supervised learning problem. Correspondingly, we can do stochastic gradient descent using back-propagation (see above). This method can yield quite impressive results (see this \YouTube{Q1XuXwPVFko} for varying $\lambda$ in a trained autoencoder).
+
+Unfortunately, back-propagation in a multi-layer network is biologically implausible (cf.~\cite{hunsberger2018spiking}). Correspondingly this method does not really qualify for our purpose of building a brain model.
+
+\Aside{\emph{Regularisation of $\vec \lambda$ -- Variational Autoencoders.}
+One caveat when training autoencoders is overfitting (i.e., a small error on the training dataset $X$, but bad generalisation). While this problem is of course not exclusive to autoencoders, they tend to exhibit this behaviour in a particularly interesting way. Even with a bottleneck dimension of $d' = 1$, the training error goes to zero -- the dataset is somehow being compressed into a single scalar~$\lambda_1$. Of course, this does not mean that the autoencoder actually learned something useful, but merely that the encoding function $f(\lambda; \vec w)$ \enquote{remembers} the entire dataset in its connection weights $\vec w$ and that $\lambda_1$ is effectively an index into our datapoints.
+
+Crucially, as impressively shown by Piantadosi, 2018 \cite{piantadosi2018one} (see below) this may happen when learning a function with just a single parameter $w$, since a single real number can encode an infinite amount of information (or up to 64 bit of information when using a double precision floating point number on a computer).
+
+To prevent this from happening, we need to apply some regularisation to the bottleneck of the autoencoder, either by discretising $\lambda$ to much less than 64 bit, adding noise, or treating $\lambda$ as parameters of a probability distribution from which we sample the input to the encoding layer. The latter method is known as a \emph{Variational Autoencoder}.
+
+{\centering\includegraphics{media/piantadosi_2018_one_parameter_is_always_enough.pdf}\\}
+{\small\stepcounter{figure}\textbf{Figure \arabic{figure}.} Compressing a large training set $\mat X$ into a single parameter $\theta$. The depicted $f(x, \theta)$ \enquote{stores} two different datasets $X$ in a single parameter $\theta \in [0, 1]$ each. Figure copied from \cite{piantadosi2018one}.}
+}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.833]{media/autoencoder.pdf}
+	\caption{Network diagram of a potential autoencoder architecture. A neural network is trained to reproduce a $d$ dimensional input $\vec x_k$ while feeding the data through a $d'$ dimensional bottleneck with $d' \ll d$. Note that $d$ would usually be much larger than what is shown here.}
+	\label{fig:autoencoder}
+\end{figure}
 
 \subsection{Principal Component Analysis}
 
-\begin{itemize}
-	\item \textbf{Basis Transformation} An orthonormal matrix $\mat T \in \mathbb{R}^{d \times d'}$ (\emph{orthonormal:} $\mat T \mat T^\T = \mat I$) is a so called \enquote{basis transformation}:
-	\begin{itemize}
-		\item $\vec \lambda = \mat T \vec x$
-		\item $\vec x = \mat T^\T \vec \lambda$
-	\end{itemize}
-	$\vec \lambda$ and $\vec x$ contain exactly the same information, but from a different perspective.
-	\item \textbf{Idea:} Find the $\mat T$ that packs the \enquote{most information} into the first dimensions.
-	\item \textbf{Then:}
-	\begin{itemize}
-		\item \textbf{Can compress data}\\
-			Can \enquote{throw away} (set to zero) coefficients $\lambda_i$ with $i > d'$
-		\item \textbf{Can interpret the first dimensions}
-	\end{itemize}
-	\item This is exactly what Principal Component Analysis (PCA) does!
-	\item PCA: Eigenvectors of the data covariance matrix sorted by the magnitude of the eigenvalue
-	\item Algorithm:
-	\begin{lstlisting}[language=python]
-		# Input X: (N x d) array
-		# Output T: (d x d) array
-		X_cen = X - np.mean(X, axis=0)
-		X_cov = (X_cen.T @ X_cen) / (N - 1)
-		E, T = np.linalg.eigh(X_cov)
-		# T sorted by magnitude of E
-		T = T.T[::-1, :]
-	\end{lstlisting}
-\end{itemize}
+An interesting concept that -- as we will see -- is directly related to unsupervised learning in biologically plausible neural networks, is the so called Principal Component Analysis, often referred to as PCA. In short, the PCA computes a linear basis transformation $\mat T$ that transforms the input samples $\vec x_k$ in such a way that the most information (in terms of variance) is explained by the first dimensions of the resulting $\lambda_k$.
 
-\subsection{Unsupervised Hebbian Encoder Learning}
+\paragraph{Basis Transformation}
+In order to understand this a little better, let's first define what a \emph{basis transformation} is. Let $\mat T \in \mathbb{R}^{d \times d}$ be an orthogonal matrix, that is $\mat T \mat T^\T = \mat T^\T \mat T = \mat I$, then $\mat T$ can be seen as a so called \enquote{basis transformation}. The mathematical term for an orthogonal transformation matrix is \emph{rotation}. Rotations are quite intuitive in two and three dimensions (they do exactly what their name suggests, i.e.,~they change the orientation of points in space without changing their distance), where we can easily visualise rotations, but we can no longer to so for $d > 3$. In particular, it holds
+\begin{align*}
+	\vec \lambda = \mat T \vec x \,, \quad \text{ and }\quad \vec x = \mat T^\T \vec \lambda \,, && \text{ where } \mat T \in \mathbb{R}^{d \times d} \, \text{ and } \vec x, \vec \lambda \in \mathbb{R}^d \,.
+\end{align*}
+Note the equalities: the transformation from $\vec x$ to $\lambda$ is \emph{lossless}. We can go from one space to the other without losing any information.
 
-\begin{itemize}
-	\item Hebbian Learning: \enquote{What fires together wires together}
-	\item $\Delta w_{ij} = \eta a_i a_j$
-	\item Problem: Unstable weights go to infinity
-	\item BCM rule (Bienenstock, Cooper, \& Munro, 1982):
-	\begin{align*}
-		\Delta_{ij} = \eta a_i a_j (a_j - \theta)
-	\end{align*}
-	\item $\theta$: Activity Threshold (recent average activity of the pre-neuron)
-	\item One can show: weights trained by the Hebbian Learning Rules converge to the first principal component
-	\item \enquote{Encoder Learning}
-	\item Active field of research; how to learn multiple PCA-like encoders in a biologically plausible manner?
-\end{itemize}
+\Note{We have already seen some basis transformations in this course. For example, the Discrete Fourier Transformation (DFT), the Discrete Cosine Transformation (DCT), and the Laplace transformation can all be defined in terms of such a matrix $\mat T$.}
+
+\paragraph{Computing Principal Components}
+The idea behind the PCA is the following. What if we could find the transformation $\mat T$ that packs the most \enquote{information} into the first dimensions of our rotated vectors $\lambda$? Then, we might be able to do the following.
+\begin{enumerate}
+	\item \textbf{Compression}\\
+	If we only look at the first $d'$ dimensions of $\lambda$, i.e.,~discard (set to zero) all dimensions $i > d'$, we might still be able to get a good (though no longer lossless) reconstruction of~$\vec x$.
+	\item \textbf{Interpretation}\\
+	If the first $d'$ dimensions contain the \enquote{most information}, these dimensions could have interesting semantics.
+\end{enumerate}
+One way to define \enquote{the most information}, is by the variance of our dataset along a certain axis. Hence, for the first PCA dimension, we want to project our dataset $X$ onto a vector $\vec t_1$ such that the variance is maximal
+\begin{align*}
+	\vec t_1 &= \arg\max_{\vec t_1} \mathrm{var}\big(\vec t_1 \mat X\big) \,, \text{ where } \vec t_1 \in \mathbb{R}^{1 \times d} \text{ and } \mat X \in \mathbb{R}^{d \times N} \,.
+\end{align*}
+We can find \enquote{the second best} transformation vector $\vec t_2$ by subtracting the data that is aligned with $\vec t_1$ from our dataset and then repeating the above process
+\begin{align*}
+	\vec t_2 &= \arg\max_{\vec t_2} \mathrm{var}\big(\vec t_2 ( \mat X - \vec t_1^\T \vec t_1 \mat X) \big) \,, \text{ where } \vec t_1 \in \mathbb{R}^{1 \times d} \text{ and } \mat X \in \mathbb{R}^{d \times N} \,.
+\end{align*}
+This process can be repeated $d$ times, giving us vectors $\vec t_1, \ldots, \vec t_d$.
+
+\paragraph{Eigendecomposition}
+Solving the above optimization problem as we did multiple times before, one can show, that the above process is equivalent to computing the Eigenvectors $\mat V$ of the covariance matrix $\mat C$ of $\mat X$, sorted by the magnitude of the Eigenvalues $\lambda_i$. That is, the Eigenvector with the largest Eigenvalue is equal to $\vec t_1$, the Eigenvector with the second-largest Eigenvalue is equal to $\vec t_2$, and so on.
+
+The covariance matrix of $\mat X$ is given as
+\begin{align*}
+	\mat C = \frac{\big(\mat X - \bar{\vec x}\big)^\T \big(\mat X - \bar{\vec x}\big)}{N - 1} \,,
+\end{align*}
+the Eigenvalues and Eigenvectors are part of the so called Eigendecomposition. For any real symmetric square matrix $\mat C$ with linearly independent eigenvectors
+\begin{align*}
+	\mat C = \mat V \mat \Lambda \mat V^\T \,,
+\end{align*}
+where $\mat V$ is an orthogonal matrix, and $\Lambda$ is a diagonal matrix of Eigenvalues.
+
+\cprotect\Python{In Python using \texttt{numpy}, the PCA can be computed as follows
+\begin{lstlisting}[language=python]
+def PCA(X): # X: N x d matrix
+    N, d = X.shape 
+    X_cen = X - np.mean(X, axis=0)
+    C = (X_cen.T @ X_cen) / (N - 1)
+    L, V = np.linalg.eigh(C) # "eigh" faster than "eig" for symmetric matrices
+    return V.T[::-1, :] # d x d matrix
+\end{lstlisting}}
+
+\newpage
+
+\cprotect\Note{\emph{Computing the PCA using Singular Value Decomposition (SVD).}
+An alternative to computing the PCA using Eigen decomposition is to use the so called \enquote{Singular Value Decomposition} (SVD) instead. The SVD is a generalised form of the Eigen decomposition for non-square matrices. This saves having to compute the covariance matrix $\mat X$, making the above code a wee bit shorter:
+\begin{lstlisting}[language=python]
+def PCA_SVD(X): # X: N x d matrix
+    return np.linalg.svd(X - np.mean(X, axis=0))[2]
+\end{lstlisting}
+To see why this works, consider that the SVD decomposes a matrix $\mat X$ into a product of three matrices $\mat U$, $\mat S$, $\mat V$ with $\mat X = \mat U \mat S \mat V^\T$, where $\mat S$ is a diagonal matrix of the so called \emph{singular values}, and both $\vec U$ and $\vec V$ are orthogonal matrices.
+
+Assume that we have the SVD of the centered data matrix $\mat X$ with
+\begin{align*}
+	(\mat X - \bar{\vec x}) &= \mat U \mat S \mat V^\T \,.
+\end{align*}
+Comparing this to the Eigen decomposition of the covariance matrix $\mat C$ we get
+\begin{align*}
+	\mat C &= \frac{(\mat X - \bar{\vec x})^\T (\mat X - \bar{\vec x})}{N - 1}
+	        = \frac{\mat V \mat S \mat U^\T \mat U \mat S \mat V^\T}{N - 1}
+	        = \mat V \frac{\mat S^2}{N - 1} \mat V^\T¸
+	        = \mat V \mat L \mat V^\T \,.
+\end{align*}
+Hence the matrix $\mat V$ of the SVD of the centered data matrix $\mat X - \bar{\vec x}$ is equivalent to the matrix $\mat V$ of the Eigen decomposition of the covariance matrix of $\mat X$.}
+
+\subsection{Example: Applying the PCA to Faces}
+
+\begin{figure}[p]
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/eigenfaces_normal_basis.pdf}
+		\caption{Normal basis $\mat I$}
+		\label{fig:eigenfaces_normal_basis}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/eigenfaces.pdf}
+		\caption{PCA basis $\mat T$}
+		\label{fig:eigenfaces}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics[scale=0.9]{media/eigenfaces_dim_2_3.pdf}		
+		\caption{Images plotted along the magnitude of the third and fourth principal components.}
+		\label{fig:eigenfaces_dim_2_3}
+	\end{subfigure}
+	\caption{Principal component analysis of a set of faces. \textbf{(a)} Orthonormal basis used to represent pixel data. Each vector component in $\vec x_k$ corresponds to exactly one pixel. \textbf{(b)} Orthonormal basis vectors computed by the PCA. Each vector component in $\vec \lambda$ affects all pixels. Any image in the dataset $\mat X$ can be reconstructed by forming a weighted sum of these \enquote{basis images}. \textbf{(c)} Plotting a set of images according to the magnitude of their third and fourth principal component. Images appear to be approximately spatially arranged by emotion. \CodeLink{lecture_08/media/code/eigenfaces.ipynb}}
+	\label{fig:pca_faces}
+\end{figure}
+
+An example applying the PCA to a set of faces is shown in \cref{fig:pca_faces}. The face database (available \href{http://pics.stir.ac.uk/2D_face_sets.htm}{here}), contains 84 grayscale images of 12 women with 7 different facial expressions. The images are normalised such that the eyes are located at approximately the same pixel location. Each image is $45 \times 60$ pixels large (resolution quartered compared to the original dataset), corresponding to a total dimensionality of $d = 2700$.
+
+Since the individual principal components $\vec t_1, \ldots, \vec t_d$ are $2700$ dimensional vectors, we can draw them as images in the same way we can draw the original $\vec x_k$ as images (\cref{fig:eigenfaces}). In this particular example, these images are known as \enquote{Eigenfaces}. The first principal component vectors correspond to \enquote{average} faces in the dataset. That is, each component of $\vec \lambda_k$ affects the entire image -- compare this to vector components in the original image $\vec x_k$ which only affect a single pixel (cf.~\cref{fig:eigenfaces_normal_basis}). In particular, the first two basis vectors and the corresponding latent space dimensions $\lambda_1$ and $\lambda_2$ encode information about the skin tone and the background/hair color. Subsequent principal components weight information from individual face areas and can be interpreted as encoding the facial expressions of the subjects (\cref{fig:eigenfaces_dim_2_3}).
+
+Hence, the PCA seems to act as an unsupervised learner. We are able to automatically extract high-level semantic features from a set of data points without specifying what we were looking for -- the individual principal components correspond to common patterns in the dataset $\vec X$.
+
+\newpage
+
+\Note{\emph{Machine learning and human data.} Be careful when using (unsupervised) machine learning on any data related to humans! In this example, the PCA algorithm determined on its own that skin color (principal component coefficient $\lambda_1$) contains the \enquote{most information} about the photos. This makes sense from a purely visual perspective (after all, most pixels in the photo depict skin). Luckily, the result of the PCA can be easily analysed as shown in \cref{fig:pca_faces}. Hence, we can decide not to use this dimension for subsequent processing. However, performing such analyses is much more difficult in more complex machine learning algorithms (i.e.,~\enquote{deep neural networks}). The machine might implicitly discriminate against certain groups of people without the engineers building the system noticing.}
+
+\Note{\emph{Limitations of the PCA.} While the PCA seems to be quite powerful in the above example, it is generally inferior to an autoencoder. We are restricting ourselves to linear transformations $\mat T$. In many cases, nonlinear transformations are required to extract useful information from datasets.}
+
+\subsection{Hebbian Learning}
+
+We have now discussed Principal Component Analysis, but it is still unclear how this relates to biology.
+One of the first attempts at characterising learning in biological systems was made by Donald Hebb in his 1949 book \enquote{The organization of behavior} \cite{hebb1949organization}:
+\begin{quotation}
+	When an axon of cell $A$ is near enough to excite a cell $B$ and repeatedly or persistently takes part in firing it, some growth process or metabolic change takes place in one or both cells such that $A$'s efficiency, as one of the cells firing $B$, is increased.
+\end{quotation}
+An often made qualitative summary of the above statement is \enquote{what fires together wires together}, that is, the synaptic strength $w_{ij}$ between a post-neuron $i$ and a pre-neuron $j$ increases. We can easily turn this into a mathematical equation:
+\begin{ImportantEqn}{Hebbian Learning}
+	\Delta w_{ij} &= \eta a_i a_j
+	\label{eqn:hebbian_learning}
+\end{ImportantEqn}
+Evidence for this rule has (among others) been gathered by Eric Kandel in the synaptic connections responsible for the \enquote{siphon withdrawal reflex} in the sea slug \emph{Aplysia Californica}.
+
+There are two problems with this equation. First, it is \emph{unstable} -- the weights $w_{ij}$ tend to grow to infinity. Correspondingly, this rule is never used directly, and instead, there are several learning rules based on \cref{eqn:hebbian_learning} that solve this problem. We will discuss some of these learning rules below. Depending on how the stabilisation of the equation is performed, these learning rules compute the principal components online.
+
+Second, the equation does not take \emph{causation} into account (i.e., which neuron caused the firing of the post neuron). This is solved by a \enquote{Spike-Time Dependent Plastiticy}, which we will also discuss below.
+
+\subsection{Stable Hebbian Learning}
+
+\begin{figure}
+	\centering
+	\includegraphics{media/hebbian_learning_example.pdf}
+	\caption{Normalised Hebbian Learning. Visualisation of the weight vector $\vec w_i$ connecting from a pre-population of $2700$ neurons representing individual pixel intensities onto a single post neuron. When initialised with normal-distributed values, the weight vector approaches the first principal component over time (left to right, numbers correspond to individual iterations; compare to \cref{fig:pca_faces}). \CodeLink{lecture_08/media/code/bcm_example.ipynb}}
+	\label{fig:hebbian_learning_example}
+\end{figure}
+
+\paragraph{Normalised Hebbian Learning}
+One way to prevent the synaptic weights from diverging is to force normalisation of the post-synaptic weights in the post-neuron $i$, that is
+\begin{align*}
+	\Delta w_{ij} &= \eta a_i a_j \,, & \text{ where } \vec w_{i} \gets \frac{\vec w_i + \Delta \vec w_{i}}{\|\vec w_i + \Delta \vec w_{i}\|} \text{ in every time step}\,.
+\end{align*}
+This way, the overall magnitude of the synaptic weight vector $\vec w_{i}$ describing all connections to the post-neuron $i$ is limited. This could be interpreted as a \enquote{homeostasis} mechanism in the post-neuron. As mentioned above, one can show that --- under the assumption of a linear post-neuron model -- the weights $\vec w_i$ converge to the first principal component of the pre-population activity (see also \cref{fig:hebbian_learning_example}). Several methods exist that ensure learning of more principal components, however, this is an active field of research.
+
+From a biological perspective, the above equation is a little implausible in that it assumes that the post neuron is able to compute a vector norm. Correspondingly, several alternative rules exist that implicitly incorporate the normalisation into the weight-update.
+
+\paragraph{Oja rule}
+The Oja rule (proposed by Erkki Oja, 1982) can be derived from the above \enquote{normalised} equation and is equivalent to it for a post-neuron with a linear activation function
+\begin{align*}
+\Delta w_{ij} &= \eta \big(a_i a_j - a_i^2 w_{ij}\big) \,.
+\end{align*}
+Instead of requiring repeated computation of the vector norm $\|\vec w_i\|$, this rule ensures stability by subtracting the weighted squared post-neuron activity. This rule can be used as a learning rule in Nengo connection objects.
+
+\paragraph{BCM Rule}
+The BCM (Bienenstock, Cooper \& Munro, 1981) rule balances the weight update by adding a target firing rate $\theta$ -- if the post neuron is below that firing rate, the weight is increased, otherwise the weight is being decreased:
+\begin{align*}
+	\Delta w_{ij} &= \eta a_j a_i (a_i - \theta) \,.
+\end{align*}
+Often, $\theta$ is modelled as an averaged function of the past neural activity -- this way, the post-neuron attempts to maintain a more or less steady firing rate. This rule can also be used as a learning rule in Nengo connection objects.
+
+\subsection{Spike-Time Dependent Plasticity (STDP)}
+
+\begin{figure}
+	\centering
+	\includegraphics{media/stdp.pdf}
+	\caption{The STDP function $W(\theta)$. If the pre-spike occurs after the post-spike ($\theta < 0$), the synaptic weight decreases. Otherwise, if the pre-spike occurs before the post-spike ($\theta > 0$) the synaptic weight increases.}
+	\label{fig:stdp}
+\end{figure}
+
+Note that Hebb's original theory quoted above is a little more precise than what is expressed in \cref{eqn:hebbian_learning}. The term \enquote{takes part in firing it} suggests that there must be a \emph{causal} relationship between the pre-neuron activity $a_j^\mathrm{pre}$ and the post-neuron activity $a_i^\mathrm{post}$. Here, \enquote{causal} means that the pre-neuron must contribute to the firing of the post neuron; in other words, two neurons just \enquote{randomly} firing independently of each other will on average not cause an increase in synaptic strength.
+
+One way to incorporate such a causal relationship into the learning rule is to consider individual spike times. If post-neuron $B$ spikes \emph{before} pre-neuron $A$ spikes, then neuron $A$ cannot have \emph{caused} the spike. Conversely, if neuron $B$ spikes shortly after neuron $A$, then there it is more likely that $A$ caused the spike in $B$.
+
+This is commonly modelled as \enquote{Spike-Time Dependent Plasticity} (STDP) \cite{sjostrom2010spiketiming}. Let $t^\mathrm{pre,j}_1, \ldots, t^\mathrm{pre,j}_N$ denote the spike times of the pre-neuron $A$, and $t^\mathrm{post,i}_1, \ldots, t^\mathrm{post,i}_{N'}$ denote the spike times of the post-neuron $B$. Then, the weight update is given as
+\begin{align*}
+	\Delta w_{ij} = \eta \sum_{k = 1}^N \sum_{\ell = 1}^{N'} W\left(t^\mathrm{post,i}_k - t^\mathrm{pre,j}_\ell\right) \,.
+\end{align*}
+A popular choice for $W(\theta)$ (see \cref{fig:stdp}) is
+\begin{align*}
+	W(\theta) = \begin{cases}
+		\alpha^+ e^{-\theta / \tau^+}¸& \text{if } \theta > 0 \,,\\
+		-\alpha^- e^{-\theta / \tau^-}& \text{if } \theta \leq 0 \,,
+	\end{cases}
+\end{align*}
+where the time constants $\tau^+$ and $\tau^-$ are typically in the range of \SI{10}{\milli\second}. There is strong experimental support for this type of learning -- see \cite{sjostrom2010spiketiming} for more details.´
+
 
 \printbibliography
 
