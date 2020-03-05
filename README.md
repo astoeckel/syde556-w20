@@ -101,7 +101,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_07/syde556_lecture_07_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_07/syde556_lecture_07_notes.pdf)]
 
-### Lecture 8 ― Learning ― February 25, 27
+### Lecture 8 ― Learning ― February 25, 27; March 3
 
 -   **Slides**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_08/syde556_lecture_08_slides_distr.pdf)]
