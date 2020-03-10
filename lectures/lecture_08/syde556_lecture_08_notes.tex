@@ -463,7 +463,7 @@ Second, the equation does not take \emph{causation} into account (i.e., which ne
 \begin{figure}
 	\centering
 	\includegraphics{media/hebbian_learning_example.pdf}
-	\caption{Normalised Hebbian Learning. Visualisation of the weight vector $\vec w_i$ connecting from a pre-population of $2700$ neurons representing individual pixel intensities onto a single post neuron. When initialised with normal-distributed values, the weight vector approaches the first principal component over time (left to right, numbers correspond to individual iterations; compare to \cref{fig:pca_faces}). \CodeLink{lecture_08/media/code/bcm_example.ipynb}}
+	\caption{Normalised Hebbian Learning, or, equivalently, the Oja rule. Visualisation of the weight vector $\vec w_i$ connecting from a pre-population of $2700$ neurons representing individual pixel intensities onto a single post-neuron. The initially random weight vector approaches the first principal component over time (left to right, $t$ corresponds to iterations; compare to \cref{fig:pca_faces}). \CodeLink{lecture_08/media/code/bcm_example.ipynb}}
 	\label{fig:hebbian_learning_example}
 \end{figure}
 
@@ -486,18 +486,21 @@ Instead of requiring repeated computation of the vector norm $\|\vec w_i\|$, thi
 \paragraph{BCM Rule}
 The BCM (Bienenstock, Cooper \& Munro, 1981) rule balances the weight update by adding a target firing rate $\theta$ -- if the post neuron is below that firing rate, the weight is increased, otherwise the weight is being decreased:
 \begin{align*}
-	\Delta w_{ij} &= \eta a_j a_i (a_i - \theta) \,.
+	\Delta w_{ij} &= \eta a_j a_i (\theta - a_i) \,.
 \end{align*}
 Often, $\theta$ is modelled as an averaged function of the past neural activity -- this way, the post-neuron attempts to maintain a more or less steady firing rate. This rule can also be used as a learning rule in Nengo connection objects.
 
-\subsection{Spike-Time Dependent Plasticity (STDP)}
+\newpage
 
-\begin{figure}
-	\centering
-	\includegraphics{media/stdp.pdf}
-	\caption{The STDP function $W(\theta)$. If the pre-spike occurs after the post-spike ($\theta < 0$), the synaptic weight decreases. Otherwise, if the pre-spike occurs before the post-spike ($\theta > 0$) the synaptic weight increases.}
-	\label{fig:stdp}
-\end{figure}
+\Note{\emph{Unsupervised learning from the perspective of individual neurons.} Another, perhaps overly metaphorical way to look at unsupervised learning is from the perspective of an individual neuron. Individual neurons have very little information about global information processing in the brain---all they \enquote{know} about the world are the firing patterns of their respective pre-neurons.
+	
+Still, the \enquote{goal} of an individual neuron could be seen as being \enquote{useful} to the organism as a whole. While a precise definition of \enquote{useful} is hard, certainly, a neuron not firing at all or just firing all the time is not very useful. Also, a neuron just repeating what their neighbouring neurons are doing might not be very helpful to the system as a whole---this is why we often find so called \enquote{lateral inhibition} between neighbouring neurons, acting as a sparsification of the population response.
+
+One possible definition of \enquote{usefulness} is to extract as much information as possible from pre-synaptic events, accounting for what neighbouring neurons population are already sensitive to. In other words, a neuron should seek to extract patterns in the pre-neuron activities that other neurons in the population are not sensitive to, for example by each neuron being sensitive to a different principal component of the pre-population.
+
+There are many different ways of characterising the amount of information in a post-neuron, relative to the pre-neuron activities. In case you are interested in this, have a look at Chapter 4 of Dayan and Abbott, \emph{Theoretical Neuroscience}, 2001 \cite{abbott2001theoretical}.}
+
+\subsection{Spike-Time Dependent Plasticity (STDP)}
 
 Note that Hebb's original theory quoted above is a little more precise than what is expressed in \cref{eqn:hebbian_learning}. The term \enquote{takes part in firing it} suggests that there must be a \emph{causal} relationship between the pre-neuron activity $a_j^\mathrm{pre}$ and the post-neuron activity $a_i^\mathrm{post}$. Here, \enquote{causal} means that the pre-neuron must contribute to the firing of the post neuron; in other words, two neurons just \enquote{randomly} firing independently of each other will on average not cause an increase in synaptic strength.
 
@@ -514,7 +517,14 @@ A popular choice for $W(\theta)$ (see \cref{fig:stdp}) is
 		-\alpha^- e^{-\theta / \tau^-}& \text{if } \theta \leq 0 \,,
 	\end{cases}
 \end{align*}
-where the time constants $\tau^+$ and $\tau^-$ are typically in the range of \SI{10}{\milli\second}. There is strong experimental support for this type of learning -- see \cite{sjostrom2010spiketiming} for more details.´
+where the time constants $\tau^+$ and $\tau^-$ are typically in the range of \SI{10}{\milli\second}. There is strong experimental support for this type of learning -- see \cite{sjostrom2010spiketiming} for more details.
+
+\begin{figure}
+	\centering
+	\includegraphics{media/stdp.pdf}
+	\caption{The STDP function $W(\theta)$. If the pre-spike occurs after the post-spike ($\theta < 0$), the synaptic weight decreases. Otherwise, if the pre-spike occurs before the post-spike ($\theta > 0$) the synaptic weight increases.}
+	\label{fig:stdp}
+\end{figure}
 
 
 \printbibliography

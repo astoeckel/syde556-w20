@@ -111,6 +111,27 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_08/syde556_lecture_08_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_08/syde556_lecture_08_notes.pdf)]
 
+### Lecture 9 ― Analysing Representation ― March 5
+
+-   **Slides**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_09/syde556_lecture_09_slides_distr.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_09/syde556_lecture_09_slides_distr.pdf)]
+
+-   **Notes**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_09/syde556_lecture_09_notes.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_09/syde556_lecture_09_notes.pdf)]
+
+### Lecture 10 ― Symbols and Symbol-like Representations ― March 10, 12
+
+-   **Slides**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_10/syde556_lecture_10_slides_distr.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_10/syde556_lecture_10_slides_distr.pdf)]
+
+-   **Notes**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_10/syde556_lecture_10_notes.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_10/syde556_lecture_10_notes.pdf)]
+
+
 ## 📝 Assignments
 
 ### Assignment 1 ― due Thursday, January 30
