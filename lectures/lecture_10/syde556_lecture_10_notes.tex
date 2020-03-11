@@ -197,8 +197,10 @@ We can use the reversibility property to \enquote{ask questions}. For example, \
 \begin{align*}
 	\vec y &= \big( \Obj{BLUE} \CC \Obj{SQUARE} + \Obj{RED} \CC \Obj{CIRCLE} \big) \CC \Obj{BLUE}^{-1} \\
 		   &= \big( \Obj{BLUE} \CC \Obj{SQUARE} \big) \CC \Obj{BLUE}^{-1} + \big( \Obj{RED} \CC \Obj{CIRCLE} \big) \CC \Obj{BLUE}^{-1} \\
-		   &\approx \Obj{SQUARE} + 0 \,.
+		   &\approx \Obj{SQUARE} + \underbrace{\Obj{RED} \CC \Obj{CIRCLE} \CC \Obj{BLUE}^{-1}}_{\text{\enquote{noise}}} 
+		    \approx \Obj{SQUARE} \,.
 \end{align*}
+Note that we call the term $\Obj{RED} \CC \Obj{CIRCLE} \CC \Obj{BLUE}^{-1}$ \enquote{noise} because it does not correspond to any meaningful symbol without our vocabulary. Correspondingly, due to the linearity of addition, we know that the vector $\approx \Obj{SQUARE} + \text{\enquote{noise}}$ is highly similar to $\Obj{SQUARE}$, but to no other symbol in our vocabulary---this is what we mean by the last approximate equality in the above equation.
 
 We can use this technique to write down more interesting concepts, such as the sentences we talked about in the previous section:
 \begin{itemize}
@@ -246,7 +248,8 @@ The information we can pack into a single vector $\vec x$ is limited! The larger
 	\end{align*}
 	\item The Problem of Variables: How can we manipulate abstract placeholders?
 	\begin{align*}
-		 \Obj{S} &= \Obj{RED} \CC \Obj{NOUN}\\
+		 \Obj{S} &= \Obj{RED} \CC \Obj{NOUN}
+\\
 		 \Obj{VAR} &= \Obj{BALL} \CC \Obj{NOUN}^{-1} \\
 		 \Obj{S} \CC \Obj{VAR} &= \Obj{RED} \CC \Obj{BALL}
 	\end{align*}
