@@ -14,17 +14,17 @@
 
 \Note{So far we have mostly been concerned with representing vectors $\vec x$ in populations of neurons. In this lecture we instead think about the representation of \emph{symbols}, leading up to the Semantic Pointer Architecture (SPA).}
 
-As discussed at the beginning of the lecture, our ultimate goal is to build models of human brains, and, by extension, human cognition. So far it seems as if had not made much progress in this direction. What we have discussed so far is \enquote{merely} allowing us to represent vectors in a population of neurons, to compute transformations of the represented values within the connections between populations, and to build dynamical systems treating the represented values as control-theoretic state variables.
+As discussed at the beginning of the course, our ultimate goal is to build models of human brains, and, by extension, human cognition. So far, it might seem as if we had not made much progress in this direction. What we have discussed up to this point is \enquote{merely} allowing us to represent vectors in a population of neurons, to compute transformations of those represented values within the connections between populations, and to build dynamical systems treating the represented values as control-theoretic state variables.
 
-In particular, one hallmark of human cognition is \emph{language}. So far, it is not clear how to apply the NEF to language, or facts expressed in language, such as \enquote{the number eight comes after the number nine}, \enquote{all dogs chase cats}, \enquote{Anne knows that Bill thinks that Charlie likes Dave}.
+In particular, one hallmark of human cognition is \emph{language}, and it is not clear how to apply the NEF to language, or facts expressed in language. Examples of language-based statements that we may want to encode are sentences such as \enquote{the number eight comes after the number nine}, \enquote{all dogs chase cats}, or \enquote{Anne knows that Bill thinks that Charlie likes Dave}.
 
-We attempt to solve this problem by first having a look at other modelling approaches in Cognitive Science. In particular, we will have a look at so called Vector Symbolic Architectures (VSAs), which can be easily mapped onto the NEF. We then use VSAs to build a particular model of cognition, the Semantic Pointer Architecture (SPA).
+We attempt to solve this problem by first having a look at other modelling approaches in Cognitive Neuroscience. In particular, we will have a look at so called Vector Symbolic Architectures (VSAs), which can be easily mapped onto the NEF. We then use VSAs to build a particular model of cognition, the Semantic Pointer Architecture (SPA).
 
 \section{Neural Theories of Cognition}
 
-\Note{For more details on theories of cognition, have a look at Chapter 9 of \enquote{How to Build a Brain}~\cite{eliasmith2013how}.}
+\Note{For more details on the theories of cognition listed here, have a look at Chapter 9 of \enquote{How to Build a Brain}~\cite{eliasmith2013how}.}
 
-Traditionally, cognitive scientists (and computer scientists) have been working on theories of cognition that involve structured information using some kind of representational framework, such as predicate logic. For example, the first two facts mentioned above could be written in predicate logic like this:
+Traditionally, both cognitive scientists and early computer scientists working on artificial intelligence have constructed theories of cognition that involve processing structured information using symbol-based representational frameworks, such as predicate logic. For example, the statements mentioned above could be written like this (this notation is supposed to resemble predicate logic):
 \newcommand{\Pred}[1]{\mathbf{\textcolor{Crimson}{#1}}}
 \newcommand{\Obj}[1]{\mathtt{\textcolor{RoyalBlue}{#1}}}
 \newcommand{\Fun}[1]{\mathit{\textcolor{ForestGreen}{#1}}}
@@ -33,18 +33,18 @@ Traditionally, cognitive scientists (and computer scientists) have been working 
 	\item \enquote{All dogs chase cats}: $\forall x \forall y \, \big ( \Pred{isDog}(x) \wedge \Pred{isCat}(y) \big) \rightarrow \Pred{doesChase}(x, y)\,$.
 	\item \enquote{Anne knows that Bill thinks that Charlie likes Dave}:$$\Pred{knows}\Big(\Obj{ANNE}, ``\Pred{thinks}\big(\Obj{BILL}, `\Pred{likes}(\Obj{CHARLIE}, \Obj{DAVE})\text{'}\big)\text{''}\Big)\,.$$
 \end{itemize}
-Both computer scientists and cognitive scientists have successfully built cognitive models which are roughly based on representations akin to the ones listed above. These \enquote{symbolic} approaches are generally quite successful in modelling aspects of human cognition and can match behavioural data. However, they do not answer the question of how these symbols are represented and manipulated within a human brain.
+Both computer scientists and cognitive scientists have built cognitive models that are roughly based on representations akin to the ones listed above. These \enquote{symbolic} approaches are generally quite successful in modelling certain aspects of human cognition and can be made to fit behavioural data. However, they do not answer the question of how these symbols are represented and manipulated within a human brain.
 
 \subsection{Jackendoff's Challenges for Cognitive Neuroscience}
 
-In his 2002 book \enquote{Foundations of Language: Brain, Meaning, Grammar, Evolution} \cite{jackendoff2002foundations}, linguist Ray Jackendoff poses four challenges cognitive neuroscientists who aim to build a neural model of language. These challenges are
+In his 2002 book \enquote{Foundations of Language: Brain, Meaning, Grammar, Evolution} \cite{jackendoff2002foundations}, linguist Ray Jackendoff poses four challenges aimed at cognitive neuroscientists who aim to build a neural model of language. These challenges are
 \newcommand{\RS}{$\color{Crimson}\blacksquare$}
 \newcommand{\BC}{$\color{RoyalBlue}\bullet$}
 \begin{itemize}
-	\item \textbf{The Binding Problem.} Suppose you see a red square and a blue circle. Now, how does the concept of \enquote{red} get bound with the concept of \enquote{square}, and how is it kept separate from \enquote{blue} and \enquote{circle}?
-	\item \textbf{The Problem of Two.} Consider the sentence \enquote{the little star is besides the big star}. How do we keep those two uses of the concept \enquote{star} separate? For example, if there was group of neurons representing the concept of \enquote{star}, how can this group of neurons both represent the \enquote{little star}, the \enquote{large star}, as well as the fact that the two stars are next to each other.
+	\item \textbf{The Binding Problem.} Suppose you see a red square and a blue circle. How does the concept of \enquote{red} get bound with the concept of \enquote{square}, and how is it kept separate from \enquote{blue} and \enquote{circle}?
+	\item \textbf{The Problem of Two.} Consider the sentence \enquote{the little star is besides the big star}. How do we keep those two uses of the concept \enquote{star} separate? For example, if there was a group of neurons representing the concept of \enquote{star}, how can this group of neurons both represent the \enquote{little star}, the \enquote{large star}, as well as the fact that the two stars are next to each other?
 	\item \textbf{The Problem of Variables.} Grammar imposes certain rules on sentences. For example, it is \enquote{correct} to say \enquote{blue $x$}, if $x$ is a noun, but not \enquote{blue $y$}, if $y$ is a verb. Correspondingly, the question is how these rules, which rely on placeholders, or \enquote{variables}, are represented in the brain.
-	\item \textbf{Working Memory versus Long-Term Memory.} We can both \emph{use} sentences (working memory; i.e., current neural activities), while also being able to \emph{store} them for very long times (long-term memory; synaptic weights). A neural architecture of language must explain how sentences can be transferred from working memory to long-term memory and back. In other words, we must be able to turn representations from neural activities into synaptic weight changes.
+	\item \textbf{Working Memory versus Long-Term Memory.} We can both \emph{use} sentences (and keep them in working memory; i.e., current neural activities), while also being able to \emph{store} them for very long times (long-term memory; synaptic weights). A neural architecture of language must explain how sentences can be transferred from working memory to long-term memory and back. In other words, we must be able to turn representations from neural activities into synaptic weight changes.
 \end{itemize}
 
 \subsection{Solution Attempt 1: Neural Synchrony (Oscillations)}
@@ -52,22 +52,22 @@ In his 2002 book \enquote{Foundations of Language: Brain, Meaning, Grammar, Evol
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{media/eliasmith_2013_lisa.pdf}
-	\caption{The LISA architecture. Boxes corresponds to groups of neurons representing individual concepts, lines to synaptic conncetions. Concepts are \enquote{bound} together by neurons oscillating at the same frequency. Figure copied from Figure~9.1~in Eliasmith, 2013 \cite{eliasmith2013how}, which is in turn adapted from Hummel and Holyoak, 2003~\cite{hummel2003symbolicconnectionist}.}
+	\caption{The LISA architecture. Boxes corresponds to groups of neurons representing individual concepts, lines to synaptic conncetions. Concepts are \enquote{bound} by neurons oscillating at the same frequency/phase. Figure copied from Figure~9.1~in Eliasmith, 2013 \cite{eliasmith2013how}, which is in turn adapted from Hummel and Holyoak, 2003~\cite{hummel2003symbolicconnectionist}.}
 	\label{fig:eliasmith_2013_lisa.pdf}
 \end{figure}
 
-One of the earliest theories of how the \enquote{binding problem} could be solved is the LISA architecture \cite{hummel2003symbolicconnectionist}, which has been developed in the early 1990s. This architecture solves the binding problem by proposing to exploit what is known as neural synchrony.
+One relatively early theory of how the \enquote{binding problem} could be solved is the LISA architecture \cite{hummel2003symbolicconnectionist}, which has been developed in the early 1990s. This architecture solves the binding problem by proposing to exploit \enquote{neural synchrony}.
 
-A central idea of this approach is that individual groups of neurons represent concepts---this is a so called \emph{localist} representation; individual spatially colocated groups of neurons correspond to individual concepts. Higher-level concepts can be created by connecting groups of neurons. For example, the neurons representing the symbol \enquote{cat} can be connected to neurons representing the concepts \enquote{furry}, \enquote{solitary}, and \enquote{animal} (cf.~\cref{fig:eliasmith_2013_lisa.pdf}).
+A central idea of this approach is that individual groups of neurons represent concepts. This is a so called \emph{localist} representation; individual spatially colocated groups of neurons correspond to individual concepts. Higher-level concepts can be created by connecting groups of neurons. For example, the neurons representing the symbol \enquote{cat} can be connected to neurons representing the concepts \enquote{furry}, \enquote{solitary}, and \enquote{animal} (cf.~\cref{fig:eliasmith_2013_lisa.pdf}).
 
-Concepts are bound together by neurons representing the concept oscillating at the same frequency. That is, for our example of \enquote{red square and blue circle}, the neuron populations of these concepts would oscillate synchronously in phase, while separate, currently active concepts oscillate with a different frequency and/or out of phase.
+Concepts are bound by neurons representing the concept oscillating at the same frequency. That is, for our example of \enquote{red square and blue circle}, the neuron populations of these concepts would oscillate synchronously in phase, while separate, currently active concepts oscillate with a different frequency and/or out of phase.
 
 \newpage
 
 Let's evaluate this architecture.
 \begin{itemize}
 	\item[\OPlus] The architecture solves the binding problem.
-	\item[\OMeh] The architecture assumes localist representation, i.e., a few neurons represent a single concept. Most evidence points towards a distributed representation.
+	\item[\OMeh] The architecture assumes localist representation, i.e., a few neurons represent a single concept. Most evidence points towards at least a distributed representation.
 	\item[\OMeh] It is unclear how this architecture would solve the \enquote{problem of two} -- maybe the same symbol used multiple times could oscillate with two superimposed frequencies.
 	\item[\OMeh] This architecture cannot solve Jackendoff's third and fourth challenge.
 	\item[\OMinus] It is unclear how these oscillations are generated and controlled in the first place, i.e., how is language translated into activation of these localist representations?
@@ -83,7 +83,7 @@ Let's evaluate this architecture.
 	\caption{Neural Blackboard Architecture. \textbf{(a)} Groups of neurons represent concepts (words)---they are connected via a switchboard circuit (symbolised by $\circledast$ and depicted in panels \textbf{(b)} and \textbf{(c)}) to slots corresponding to individual roles in a sentence. These roles are then combined via switchboards into higher-level sentences. Image copied from Figure~9.2~in Eliasmith, 2013~\cite{eliasmith2013how}, which is in term adapted from van der Velde and de Kamps, 2006~\cite{vandervelde2006neural}.}
 \end{figure}
 
-An attempt at solving all four problems posed by Jackendoff is the \enquote{Neural Blackboard Architecture} by van der Velde and de Kamps~\cite{vandervelde2006neural}, solving the exponential growth problem posed by synchrony approaches. In particular, the idea is to introduce switchboard circuits that can arbitrarily route signals from neurons representing individual concepts to assemblies (a \enquote{temporary pool}) representing bound concepts. These high level concepts can then be associated with specific roles a concept might have in a sentence.
+An attempt at solving all four problems posed by Jackendoff is the \enquote{Neural Blackboard Architecture} by van der Velde and de Kamps~\cite{vandervelde2006neural}. The idea is to solve the exponential growth problem posed by synchrony approaches by introducing switchboard circuits that can arbitrarily route signals from neurons representing individual concepts to so called \enquote{assemblies} representing bound concepts. These high level concepts can then be associated with specific roles a concept might have in a sentence.
 \begin{itemize}
 	\item[\OPlus] This approach has a much lower resource consumption than LISA.
 	\item[\OPlus] Can solve all four of Jackendoffs challenges (according to the authors).
@@ -96,9 +96,9 @@ An attempt at solving all four problems posed by Jackendoff is the \enquote{Neur
 
 \subsection{Solution Attempt 3: Vector Operators}
 
-As mentioned, both approaches discussed above are \emph{localist}. We could instead decouple concepts from the underlying neural substrate. That is, populations of neurons can represent different symbols, and send represented symbols for processing to other groups of neurons.
+As mentioned, both approaches discussed above are \emph{localist}. We could instead try to decouple concepts from the underlying neural substrate. That is, populations of neurons can represent different symbols, and \enquote{send} represented symbols for processing to other groups of neurons.
 
-This would be more in line with what the NEF suggests, and knowing that we can represent vectors in neural populations, we could thus represent symbols by assigning vectors $\vec x \in \mathbb{R}^d$ to individual symbols. For now, we assume that these vectors $\vec x$ have been randomly generated.
+This would be more in line with the kind of information processing suggested by the NEF. Knowing that we can represent vectors in neural populations, we could represent symbols as vectors $\vec x \in \mathbb{R}^d$. For now, let's assume that these vectors $\vec x$ are randomly generated.
 
 This idea is actually quite old, and there have been multiple suggestions as for how to symbol vectors $\vec x$ and $\vec y$ could be bound together. One approach suggested by Smolensky in 1990 \cite{smolensky1990tensor} is to simply use a tensor product $\vec x \otimes \vec y$, a generalisation of a vector outer product to matrices:
 \begin{align*}
@@ -134,7 +134,7 @@ This way, two vectors $\vec x$, $\vec y$ can be bound without losing any informa
 
 \section{Vector Symbolic Architectures}
 
-The last idea---using vectors $\vec x$ to represent symbols and to then use an operator such as $\otimes$ to bind them---seems to be reasonable, and fits the Neural Engineering Framework quite well. However, what we would like to have is an operator that maintains the size of the vectors (i.e., takes two vectors of dimensionality $d$ as an input and outputs a vector of dimensionality $d$), while still allowing us to reconstruct information about the operands.
+The last idea---using vectors $\vec x$ to represent symbols and to then use an operator such as $\otimes$ to bind them---seems to be reasonable, and fits the Neural Engineering Framework quite well. However, what we would like to have is an operator that maintains the dimensionality of the vectors (i.e., takes two vectors of dimensionality $d$ as an input and outputs a vector of dimensionality $d$), while still allowing us to reconstruct information about the operands.
 
 \Example{\emph{Using \enquote{$+$} as a binding operator}.
 Let's reconsider the \enquote{Binding Problem} as originally posed above. We would like to represent the fact that we are seeing a blue square and a red circle. Hence, we could---for now, randomly---generate four $d$-dimensional vector representing these four concepts, where $d$ is relatively large, for example $d = 64$. 
@@ -188,8 +188,8 @@ Circular convolution compresses the outer product by summation along the diagona
 }
 
 
-\subsection{Examples: Binding and Unbinding}
-We can use the binding operator \enquote{$\circledast$} and the plus operator \enquote{$+$} to encode all kinds of information in a single vector. For example, we can now write the above example as
+\subsection{Example: Binding and Unbinding}
+We can use the binding operator \enquote{$\circledast$} and the plus operator \enquote{$+$} to compress multiple symbols into a single vector. For example, we can now write the above example as
 \begin{align*}
 	\vec x = \Obj{BLUE} \CC \Obj{SQUARE} + \Obj{RED} \CC \Obj{CIRCLE} \,.
 \end{align*}
@@ -215,8 +215,9 @@ We can use this technique to write down more interesting concepts, such as the s
 	 	\Obj{SUBJ} \CC \Obj{ANNE} + \Obj{ACT} \CC \Obj{KNOWS} + \Obj{OBJ} \CC \\\Big(\Obj{SUBJ} \CC \Obj{BILL} + \Obj{ACT} \CC \Obj{THINKS} + \Obj{OBJ} \CC \\ \big(\Obj{SUBJ} \CC \Obj{CHARLIE} + \Obj{ACT} \CC \Obj{LIKES} + \Obj{OBJ} \CC \Obj{DAVE}\big)\Big) \,.
 	\end{align*}
 \end{itemize}
+
 \Note{\emph{Graceful degradation.}
-The information we can pack into a single vector $\vec x$ is limited! The larger the number of binding operations, and the number of additions, the lower the precision of operations such as the approximate inverse. While this may sound bad, humans have similar limitations: for example, the nesting depth of sentences, or the number of objects we can keep in working memory is limited. This makes for interesting predictions if we use VSAs to model cognitive phenomena.}
+	The information we can pack into a single vector $\vec x$ is limited! The larger the number of binding operations, and the number of additions, the lower the precision of operations such as the approximate inverse. While this may sound bad, humans have similar limitations: for example, the nesting depth of sentences, or the number of objects we can keep in working memory is limited. This makes for interesting predictions if we use VSAs to model cognitive phenomena.}
 
 \subsection{Circular Convolution}
 
@@ -236,6 +237,29 @@ The information we can pack into a single vector $\vec x$ is limited! The larger
 	\item Can be easily implemented in the NEF; three constant linear transformations and a multiplication
 \end{itemize}
 
+\subsection{Example: Encoding Numbers}
+
+Another fun example is encoding integers. Suppose that we have a symbol $\Obj{ONE}$ representing the number one. Then, we can define integers as repeated binding of this vector with itself
+\begin{align*}
+	\Obj{TWO} &= \Obj{ONE} \CC \Obj{ONE} \,, \\
+	\Obj{THREE} &= \Obj{ONE} \CC \Obj{TWO} = \Obj{ONE} \CC \Obj{ONE} \CC \Obj{ONE} \,, \\
+	\Obj{NUMBER\text{-$k$}} &= \underbrace{\Obj{ONE} \CC \Obj{ONE} \CC \text{\textellipsis} \CC \Obj{ONE}}_{\text{$k$-times}} \,.
+\end{align*}
+Using what we know about the relationship between circular convolution and the discrete Fourier transformation, we can also write the above as
+\begin{align*}
+	\Obj{NUMBER\text{-$k$}} &= \mathcal{DFT}^{-1} \big( \mathcal{DFT}(\Obj{ONE})^k \big) \,,
+\end{align*}
+where exponentiation operator \enquote{$\cdot^k$} corresponds to element-wise exponentiation.
+
+\Note{\emph{Representing continuous values as symbol vectors.}
+Notice that this allows us to represent any continuous scalar $k$, and not just integers! We will come back to this when we discuss spatial semantic pointers.}
+
+\Note{\emph{Unitary vectors.}
+One potential problem with this approach is that the magnitude of the vector $\vec x$ might exponentially increase with repeated binding. We thus want binding by $\Obj{ONE}$ to preserve inner products. A symbol vector $\vec x$ with this property is called a \emph{unitary} vector. \enquote{Unitary} because binding with this vector results in \enquote{unit} scaling (i.e., no scaling, or scaling by a factor of one). Mathematically, a unitary vector is a vector $\vec x$ with the following property
+\begin{align*}
+	\| \vec y \CC \vec x \| = \| \vec y \| \text{ for all } \vec y \in \mathbb{R}^d \,.
+\end{align*}}
+
 \subsection{Jackendoff's Challenges}
 
 \begin{itemize}
@@ -246,7 +270,8 @@ The information we can pack into a single vector $\vec x$ is limited! The larger
 	\end{align*}
 	\item The Problem of Variables: How can we manipulate abstract placeholders?
 	\begin{align*}
-		 \Obj{S} &= \Obj{RED} \CC \Obj{NOUN}\\
+		 \Obj{S} &= \Obj{RED} \CC \Obj{NOUN}
+\\
 		 \Obj{VAR} &= \Obj{BALL} \CC \Obj{NOUN}^{-1} \\
 		 \Obj{S} \CC \Obj{VAR} &= \Obj{RED} \CC \Obj{BALL}
 	\end{align*}
