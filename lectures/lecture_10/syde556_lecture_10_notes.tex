@@ -188,7 +188,7 @@ Circular convolution compresses the outer product by summation along the diagona
 }
 
 
-\subsection{Example: Binding and Unbinding}
+\subsection{Example: Encoding Sentences}
 We can use the binding operator \enquote{$\circledast$} and the plus operator \enquote{$+$} to compress multiple symbols into a single vector. For example, we can now write the above example as
 \begin{align*}
 	\vec x = \Obj{BLUE} \CC \Obj{SQUARE} + \Obj{RED} \CC \Obj{CIRCLE} \,.
@@ -223,21 +223,30 @@ We can use this technique to write down more interesting concepts, such as the s
 
 \subsection{Circular Convolution}
 
-\begin{itemize}
-	\item \enquote{Default convolution operator} to use in conjunction with the NEF
-	\item Exhaustively studied by Tony Plate in the 1990s \cite{plate1995holographic}
-	\item Has the properties demanded above (see \cref{fig:cconv_sim})
-	\item Definition $\vec z = \vec x \CC \vec y$:
-	\begin{align*}
-		z_i &= \sum_{j = 0}^{d - 1} x_{j} y_{i - j \hspace{-1.25mm} \mod d } \,.
-	\end{align*}
-	\item Alternatively, can use the DFT:
-	\begin{align*}
-		\vec z &= \mathcal{DFT}^{-1} \big( \mathcal{DFT}(\vec x) \odot \mathcal{DFT}(\vec y) \big) \\
-		       &= \mat T^{-1} \big( \mat T \vec x \odot \mat T \vec y \big)
-	\end{align*}
-	\item Can be easily implemented in the NEF; three constant linear transformations and a multiplication
-\end{itemize}
+In the following, we are going to focus on \emph{circular convolution} as a binding operator. Circular convolution has been used in signal processing for a long time, but has been proposed by Tony Plate in the 1990s as a binding operator \cite{plate1995holographic}. Circular convolution of two vectors $\vec z = \vec x \CC \vec y$ is defined as
+\begin{ImportantEqn}{Circular Convolution}
+	z_i &= \sum_{j = 0}^{d - 1} x_{j} y_{i - j \hspace{-1.25mm} \mod d } \,, & \text{ where } \vec x, \vec y, \vec z \in \mathbb{R}^d \,, \text{ and } a \hspace{-2mm} \mod b = a - b \left\lfloor \frac{a}b \right\rfloor \,.
+	\label{eqn:cc}
+\end{ImportantEqn}
+This operator has the properties we demanded above. A pseudo-inverse $\vec x^{-1}$ according to the above definition is given as
+\begin{align*}
+ 	\begin{pmatrix} x_0 & x_1 & x_2 & \hdots & x_{d - 2} & x_{d - 1} \end{pmatrix}^{-1} &= \begin{pmatrix} x_0 & x_{d-1} & x_{d-2} & \hdots & x_2 & x_1 \end{pmatrix}^{-1} \,,
+\end{align*}
+i.e., all elements except for the first one are reversed in order.
+
+\Note{For most vectors, one can also solve for a more precise inverse by solving a least-squares problem, i.e., minimizing the error $\| \vec y \CC \vec x \CC \vec x^{-1} - \vec y\|^2$. However, the pseudo-inverse as defined above is sufficient in most cases.}
+
+One potential problem with circular convolution as defined in \cref{eqn:cc}, especially with respect using it in conjunction with the NEF, is that the operator requires $d^2$ multiplications of vector coefficients. This means, that, if, for example, $d = 256$, then we need to perform $65536$ multiplications. This is a little concerning, particularly because even just multiplying a single pair of scalars with a reasonably small error requires on the order of one hundred pre-neurons. Correspondingly, we would end up with requiring about $6\times10^6$ neurons just for convolving two semantic pointers.
+
+Luckily, just as \enquote{normal} convolution, circular convolution can be expressed as a simple multiplication in the Fourier domain
+\begin{align*}
+	\vec z &= \mathcal{DFT}^{-1} \big( \mathcal{DFT}(\vec x) \odot \mathcal{DFT}(\vec y) \big) \,,
+\end{align*}
+where $\odot$ is element-wise multiplication, or the so-called \enquote{Hadamard} product. Recall that the discrete and inverse discrete Fourier transformation are just linear basis transformations, so we can rewrite the above equation as
+\begin{align*}
+	\vec z &= \mat T^{-1} \big( \mat T \vec x \odot \mat T \vec y \big) \,,
+\end{align*}
+where $\mat T$ is the constant (complex-valued) matrix describing the Fourier transformation for a $d$-dimensional vector. As discussed in the lecture about transformations, we can easily compute any linear transformation $\mat T$ in the connection between two neuron populations by simply multiplying the decoder $\mat D$ with $\mat T$. Hence, all we are left with is $d$ complex-values multiplications. Circular convolution is implemented in \texttt{nengo.networks.CircularConvolution} as an efficient NEF network.
 
 \subsection{Example: Encoding Numbers}
 
@@ -262,28 +271,65 @@ One potential problem with this approach is that the magnitude of the vector $\v
 	\| \vec y \CC \vec x \| = \| \vec y \| \text{ for all } \vec y \in \mathbb{R}^d \,.
 \end{align*}}
 
-\subsection{Jackendoff's Challenges}
+\subsection{Example: Raven's Progressive Matrices}
 
-\begin{itemize}
-	\item The Binding Problem: See above
-	\item The Problem of Two: Use symbols denoting roles
-	\begin{align*}
-		\Obj{OBJ1} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{LITTLE}) + \Obj{OBJ2} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{BIG}) + \Obj{REL} \CC \Obj{BESIDES}
-	\end{align*}
-	\item The Problem of Variables: How can we manipulate abstract placeholders?
-	\begin{align*}
-		 \Obj{S} &= \Obj{RED} \CC \Obj{NOUN}
-\\
-		 \Obj{VAR} &= \Obj{BALL} \CC \Obj{NOUN}^{-1} \\
-		 \Obj{S} \CC \Obj{VAR} &= \Obj{RED} \CC \Obj{BALL}
-	\end{align*}
-	\item Working vs. Long-Term Memory:
-	\begin{itemize}
-		\item Working memory: activity of neurons, currently represented concepts $\vec x$
-		\item Long term memory: connection weights, functions
-		\item Functions can return and modify $\vec x$
-	\end{itemize}
-\end{itemize}
+\begin{figure}[t]
+	\centering%
+	\begin{subfigure}{0.33\textwidth}%
+		\centering%
+		\includegraphics[width=0.9\textwidth]{media/ravens_example_a.pdf}%
+		\caption{}%
+		\label{fig:ravens_example_a}%
+	\end{subfigure}%
+	\begin{subfigure}{0.33\textwidth}%
+		\centering%
+		\includegraphics[width=0.9\textwidth]{media/ravens_example_b.pdf}%
+		\caption{}%
+		\label{fig:ravens_example_b}%
+	\end{subfigure}
+	\begin{subfigure}{0.33\textwidth}%
+		\centering%
+		\includegraphics[width=0.9\textwidth]{media/ravens_example_c.pdf}%
+		\caption{}%
+		\label{fig:ravens_example_c}%
+	\end{subfigure}
+	\caption{Examples similar to Raven's Progressive Matrices. Participants are asked to select one of eight possible answers that completes the matrix according to the rules underlying its construction.}
+	\label{fig:ravens_example}
+\end{figure}
+
+Raven's progressive matrices is a commonly used IQ test developed in 1936. Questions on the test typically consist of a set of $3 \times 3$ matrices filled with symbols arranged according to an unknown \enquote{hidden} rule. One of the cells in the matrix is empty, and test participants are asked to complete the matrix according to the unknown rule by choosing one of eight possible hidden cells. \Cref{fig:ravens_example} shows two examples of what the test could conceptually look like (the actual test is kept secret and has not changed since 1936).
+
+Perhaps surprisingly, this IQ test can be solved with a relatively high precision using Vector Symbolic Architectures. To this end, consider the example in \cref{fig:ravens_example_c} and assume that we already have a vision system that translates each cell into a corresponding vector representation. We can argue that this is a problem that we could solve really well using a modern convolutional neural network.
+
+Given this translation between vision and symbol vector, each of the eight given cells could be described in the following way:
+\begin{align*}
+	\Obj{C1} &= \Obj{ONE}  \CC \Obj{P1}                                                       \,, &
+	\Obj{C5} &= \Obj{FOUR} \CC \Obj{P1} + \Obj{FOUR} \CC \Obj{P2}                             \,, \\
+	\Obj{C2} &= \Obj{ONE}  \CC \Obj{P1} + \Obj{ONE}  \CC \Obj{P2}                             \,, &
+	\Obj{C6} &= \Obj{FOUR} \CC \Obj{P1} + \Obj{FOUR} \CC \Obj{P2} + \Obj{FOUR} \CC \Obj{P3}   \,, \\
+	\Obj{C3} &= \Obj{ONE}  \CC \Obj{P1} + \Obj{ONE}  \CC \Obj{P2} + \Obj{ONE}  \CC \Obj{P3}   \,, &
+	\Obj{C7} &= \Obj{FIVE} \CC \Obj{P1}                                                       \,, \\
+	\Obj{C4} &= \Obj{ONE}  \CC \Obj{P1} + \Obj{ONE}  \CC \Obj{P2} + \Obj{ONE}  \CC \Obj{P3}   \,, &
+	\Obj{C8} &= \Obj{FIVE} \CC \Obj{P1} + \Obj{FIVE} \CC \Obj{P2}                             \,.
+\end{align*}
+We can then extract the hidden \enquote{rule}, or \enquote{transformation} between the cells using the pseudo-inverse (here, we're only looking at the \enquote{horizontal} rule from one cell to the next)
+\begin{align*}
+	\Obj{T1} &= \Obj{C2} \CC \Obj{C1}^{-1} \,, &
+	\Obj{T4} &= \Obj{C6} \CC \Obj{C5}^{-1} \,, \\
+	\Obj{T2} &= \Obj{C3} \CC \Obj{C2}^{-1} \,, &
+	\Obj{T5} &= \Obj{C8} \CC \Obj{C7}^{-1} \,, \\
+	\Obj{T3} &= \Obj{C5} \CC \Obj{C4}^{-1} \,.
+\end{align*}
+Assuming the rule is consistent, we should be able to extract a clean version of the rule by just averaging these five vectors:
+\begin{align*}
+	\Obj{T} &= \frac{\Obj{T1} + \Obj{T2} + \Obj{T3} + \Obj{T4} + \Obj{T5}}5 \,.
+\end{align*}
+Then, we can make a prediction as for what the ninth cell should contain:
+\begin{align*}
+	\Obj{C9} &= \Obj{C8} \CC \Obj{T} \approx \Obj{FIVE}  \CC \Obj{P1} + \Obj{FIVE}  \CC \Obj{P2} + \Obj{FIVE}  \CC \Obj{P3} \,.
+\end{align*}
+\pagebreak
+\Note{For more detail on the Raven's Progressive Matrices particular example, see \cite{rasmussen2014spikinga}. Also, have a look at this video showing Spaun solving this task: \YouTube{Q_LRvnwnYp8}. This is based on a memory system showing both recency and primacy effects observed in humans: \YouTube{U_Q6Xjz9QHg}.}
 
 \section{The Semantic Pointer Architecture}
 
@@ -296,6 +342,33 @@ One potential problem with this approach is that the magnitude of the vector $\v
 		\item Theory as for where $\vec x$ comes from; \emph{compression} and \emph{decompression} $\Rightarrow$ Semantic Pointers
 	\end{itemize}
 \end{itemize}
+
+
+\subsection{Revisiting Jackendoff's Challenges}
+
+\begin{itemize}
+	\item The Binding Problem: See above
+	\item The Problem of Two: Use symbols denoting roles
+	\begin{align*}
+	\Obj{OBJ1} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{LITTLE}) + \Obj{OBJ2} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{BIG}) + \Obj{REL} \CC \Obj{BESIDES}
+	\end{align*}
+	\item The Problem of Variables: How can we manipulate abstract placeholders?
+	\begin{align*}
+	\Obj{S} &= \Obj{RED} \CC \Obj{NOUN} \\
+	\Obj{VAR} &= \Obj{BALL} \CC \Obj{NOUN}^{-1} \\
+	\Obj{S} \CC \Obj{VAR} &= \Obj{RED} \CC \Obj{BALL}
+	\end{align*}
+	\item Working vs. Long-Term Memory:
+	\begin{itemize}
+		\item Working memory: activity of neurons, currently represented concepts $\vec x$
+		\item Long term memory: connection weights, functions
+		\item Functions can return and modify $\vec x$
+	\end{itemize}
+\end{itemize}
+
+\subsection{Using Semantic Pointers in Nengo}
+
+\subsection{Spaun}
 
 \printbibliography
 

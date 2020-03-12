@@ -46,7 +46,7 @@
 				\setlength{\itemsep}{0.33cm}
 				\item[\OPlus] Solves the binding problem
 				\item[\OMeh] Localist representation
-				\item[\OMeh] Unclear how to solve problems 1 to 3
+				\item[\OMeh] Unclear how to solve problems 2 to 4
 				\columnbreak
 				\item[\OMinus] Unclear how these oscillations are generated and controlled
 				\item[\OMinus] Unclear how the representations are processed
@@ -125,20 +125,23 @@
 		\end{columns}
 	\end{frame}
 
-	\begin{frame}{VSAs: Potential Binding Operators (I)}
-		\begin{align*}
-		\begin{pmatrix}1 \\ 0 \\ 1 \\ 0\end{pmatrix} \oplus \begin{pmatrix}1 \\ 1 \\ 0 \\ 0\end{pmatrix} &= \begin{pmatrix}0 \\ 1 \\ 1 \\ 0\end{pmatrix} && \textit{(XOR)}\\
-		\begin{pmatrix}A \\ B \\ C \\ D\end{pmatrix} \odot \begin{pmatrix}E \\ F \\ G \\ H\end{pmatrix} &= \begin{pmatrix}AE \\ BF \\ CG \\ DH\end{pmatrix} && \textit{(Hadamard Product)}
-		\end{align*}
-	\end{frame}
-
-	\begin{frame}{VSAs: Potential Binding Operators (II)}
-		\begin{align*}
-		\begin{pmatrix}A \\ B \\ C \\ D\end{pmatrix} \CC \begin{pmatrix}E \\ F \\ G \\ H\end{pmatrix} &= \begin{pmatrix}AE &+& BH &+& CG &+& DF \\ AF &+& BE &+& CH &+& DG \\ AG &+& BF &+& CE &+& DH \\ AH &+& BG &+& CF &+& DE\end{pmatrix} && \textit{(Circular Convolution)}
-		\end{align*}
-		\vspace{0.25cm}
-		Circular Convolution is a \enquote{compressed} outer product:\\[0.25cm]
-		\hspace{0.7cm}\includegraphics{media/cconv_outer_product.pdf}
+	\begin{frame}{Binding Operator Properties}
+		\begin{columns}\column{0.6\textwidth}
+		\begin{enumerate}[i.]
+			\setlength{\itemsep}{0.75cm}
+			\item Preservation of Dimensionality
+			\begin{align*}
+	 			\CC &: \mathbb{R}^d \times \mathbb{R}^d \longrightarrow \mathbb{R}^d
+	 		\end{align*}
+			\item Approximately Reversible
+			\begin{align*}
+				\vec x &\approx (\vec x \CC \vec y) \CC \vec y^{-1}
+			\end{align*}
+			\item Dissimilar to Inputs
+			\begin{align*}
+				0 &\approx \langle \vec x \CC \vec y, \vec x \rangle \,, 0 \approx \langle \vec x \CC \vec y, \vec y \rangle
+			\end{align*}
+		\end{enumerate}\end{columns}
 	\end{frame}
 
 	\begin{frame}{Sentence Encoding Revisited}
@@ -159,13 +162,128 @@
 		\vspace{-0.25cm}
 		\begin{itemize}
 			\centering
-			\item<2->[\symbolfont ⚠] \hl{Compression of information; graceful degradation}
+			\item<2->[\symbolfont ⚠] \hl{Compression of information; graceful degradation; depends on $d$}
 		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Using the Reversibility Property to Answer Questions}
+		\begin{itemize}
+		\item \enquote{A blue square and a red circle:}
+		\begin{align*}
+			\vec x = \Obj{BLUE} \CC \Obj{SQUARE} + \Obj{RED} \CC \Obj{CIRCLE} \,.
+		\end{align*}\\[0.5cm]
+		\item \enquote{Which object is blue?}
+		\begin{align*}
+			\vec y &= \big( \Obj{BLUE} \CC \Obj{SQUARE} + \Obj{RED} \CC \Obj{CIRCLE} \big) \CC \Obj{BLUE}^{-1} \\
+			&= \big( \Obj{BLUE} \CC \Obj{SQUARE} \big) \CC \Obj{BLUE}^{-1} + \big( \Obj{RED} \CC \Obj{CIRCLE} \big) \CC \Obj{BLUE}^{-1} \\
+			&\approx \Obj{SQUARE} + \underbrace{\Obj{RED} \CC \Obj{CIRCLE} \CC \Obj{BLUE}^{-1}}_{\text{\enquote{noise}}} \\
+			&\approx \Obj{SQUARE} \,.
+		\end{align*}
+		\end{itemize}
+		\vspace{-0.25cm}
+		\begin{itemize}
+			\centering
+			\item<2->[\symbolfont ⚠]\hl{Supposes that there is a set of valid symbols $\Rightarrow$ \enquote{Cleanup Memory}}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{VSAs: Potential Binding Operators (I)}
+		\begin{align*}
+		\begin{pmatrix}1 \\ 0 \\ 1 \\ 0\end{pmatrix} \oplus \begin{pmatrix}1 \\ 1 \\ 0 \\ 0\end{pmatrix} &= \begin{pmatrix}0 \\ 1 \\ 1 \\ 0\end{pmatrix} && \textit{(XOR)}\\
+		\begin{pmatrix}A \\ B \\ C \\ D\end{pmatrix} \odot \begin{pmatrix}E \\ F \\ G \\ H\end{pmatrix} &= \begin{pmatrix}AE \\ BF \\ CG \\ DH\end{pmatrix} && \textit{(Hadamard Product)}
+		\end{align*}
+	\end{frame}
+
+	\begin{frame}{VSAs: Potential Binding Operators (II)}
+		\begin{align*}
+		\begin{pmatrix}A \\ B \\ C \\ D\end{pmatrix} \CC \begin{pmatrix}E \\ F \\ G \\ H\end{pmatrix} &= \begin{pmatrix}AE &+& BH &+& CG &+& DF \\ AF &+& BE &+& CH &+& DG \\ AG &+& BF &+& CE &+& DH \\ AH &+& BG &+& CF &+& DE\end{pmatrix} && \textit{(Circular Convolution)}
+		\end{align*}
+		\vspace{0.25cm}
+		Circular Convolution is a \enquote{compressed} outer product:\\[0.25cm]
+		\hspace{0.7cm}\includegraphics{media/cconv_outer_product.pdf}
 	\end{frame}
 
 	\begin{frame}{Circular Convolution: Dissimilarity and Reversibility}
 		\centering
 		\includegraphics[height=7.25cm]{media/cconv_sim.pdf}
+	\end{frame}
+
+	\begin{frame}{Raven's Progressive Matrices (I)}
+		\begin{columns}
+			\column{0.33\textwidth}%
+			\centering%
+			\includegraphics<1->[width=0.875\textwidth]{media/ravens_example_c.pdf}%
+			\column{0.33\textwidth}%
+			\centering%
+			\includegraphics<2->[width=0.875\textwidth]{media/ravens_example_a.pdf}%
+			\column{0.33\textwidth}%
+			\centering%
+			\includegraphics<3->[width=0.875\textwidth]{media/ravens_example_b.pdf}%
+		\end{columns}
+	\end{frame}
+
+	\videoframe{spaun_remembering_list}{U_Q6Xjz9QHg}
+
+	\videoframe{spaun_completing_pattern}{Q_LRvnwnYp8}
+
+	\begin{frame}{Raven's Progressive Matrices (II)}
+		\begin{columns}
+			\column{0.33\textwidth}%
+			\centering%
+			\includegraphics<1->[width=0.875\textwidth]{media/ravens_example_c.pdf}%
+			\column{0.66\textwidth}%
+			Representing cells:
+			\begin{align*}
+				\Obj{C1} &= \Obj{ONE}  \CC \Obj{P1}                                                       \,, \\
+				\Obj{C2} &= \Obj{ONE}  \CC \Obj{P1} + \Obj{ONE}  \CC \Obj{P2}                             \,, \\
+				\Obj{C3} &= \Obj{ONE}  \CC \Obj{P1} + \Obj{ONE}  \CC \Obj{P2} + \Obj{ONE}  \CC \Obj{P3}   \,, \\
+				\Obj{C4} &= \Obj{ONE}  \CC \Obj{P1} + \Obj{ONE}  \CC \Obj{P2} + \Obj{ONE}  \CC \Obj{P3}   \,, \\
+				\Obj{C5} &= \Obj{FOUR} \CC \Obj{P1} + \Obj{FOUR} \CC \Obj{P2}                             \,, \\
+				\Obj{C6} &= \Obj{FOUR} \CC \Obj{P1} + \Obj{FOUR} \CC \Obj{P2} + \Obj{FOUR} \CC \Obj{P3}   \,, \\
+				\Obj{C7} &= \Obj{FIVE} \CC \Obj{P1}                                                       \,, \\
+				\Obj{C8} &= \Obj{FIVE} \CC \Obj{P1} + \Obj{FIVE} \CC \Obj{P2}                             \,.
+			\end{align*}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Raven's Progressive Matrices (III)}
+		\begin{columns}
+			\column{0.33\textwidth}%
+			\centering%
+			\includegraphics<1->[width=0.875\textwidth]{media/ravens_example_c.pdf}%
+			\column{0.66\textwidth}%
+			Extracting the horizontal rule:
+			\begin{align*}
+				\Obj{T1} &= \Obj{C2} \CC \Obj{C1}^{-1} \,, &
+				\Obj{T4} &= \Obj{C6} \CC \Obj{C5}^{-1} \,, \\
+				\Obj{T2} &= \Obj{C3} \CC \Obj{C2}^{-1} \,, &
+				\Obj{T5} &= \Obj{C8} \CC \Obj{C7}^{-1} \,, \\
+				\Obj{T3} &= \Obj{C5} \CC \Obj{C4}^{-1} \,.
+			\end{align*}
+			\vspace{-0.25cm}
+			\begin{align*}
+				\Obj{T} &= \frac{\Obj{T1} + \Obj{T2} + \Obj{T3} + \Obj{T4} + \Obj{T5}}5 \,.
+			\end{align*}
+			Making a prediction:
+			\begin{align*}
+				\Obj{C9} &= \Obj{C8} \CC \Obj{T} \\ &\approx \Obj{FIVE}  \CC \Obj{P1} + \Obj{FIVE}  \CC \Obj{P2} + \Obj{FIVE}  \CC \Obj{P3} \,.
+			\end{align*}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Nengo SPA Example}
+		\centering
+		\includegraphics[width=\textwidth]{media/nengo_spa_example.pdf}
+	\end{frame}
+
+	\begin{frame}{Spaun -- Semantic Pointer Architecture Unified Network (I)}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/spaun_function.png}
+	\end{frame}
+
+	\begin{frame}{Spaun -- Semantic Pointer Architecture Unified Network (II)}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/spaun_anatomy.png}
 	\end{frame}
 
 	\backupbegin
