@@ -77,7 +77,7 @@ nd_input = nengo.Node(nengo.processes.Piecewise({
 	
 	Build a neural integrator. This consists of one ensemble, one input, a connection from the input to the ensemble, and a connection from the ensemble back to itself. The ensemble should have $200$ neurons and the same parameters as in question 1.
 	
-	\emph{Important:} Use two different time constants in your network. The post-synaptic time constant of the recurrent connection is $\tau = \SI{50}{\milli\second}$, and the post-synaptic time constant of the input is $\SI{5}{\milli\second}$. Having two different time constants violates what we assumed for deriving principle three; use the longer time constant $\tau$ (i.e., $\tau$ from the recurrent connection) when computing $A'$ and $B'$. Part of this assignment is to explore how having two different time constants affect the quality of the result compared to what we saw in the lecture.
+	\emph{Important:} Use two different time constants in your network. The post-synaptic time constant of the recurrent connection is $\tau = \SI{50}{\milli\second}$, and the post-synaptic time constant of the input is $\SI{5}{\milli\second}$. Having two different time constants violates what we assumed for deriving principle three; use the longer time constant $\tau$ (i.e., $\tau$ from the recurrent connection) when computing $A'$ and $B'$. Part of this assignment is to explore how having two different time constants affects the quality of the result compared to what we saw in the lecture.
 	
 	To be an integrator, the desired dynamical system is $\frac{\mathrm{d}x(t)}{\mathrm{d}t} = u$, where $x$ is the state of the system and $u$ is the input.
 	
