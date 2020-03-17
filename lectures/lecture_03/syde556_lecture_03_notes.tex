@@ -264,14 +264,12 @@ Now that we now how to decode the represented value $\vec x$ \emph{in principle}
 
 \subsection{Computing Identity Decoders}
 
-In order to compute the decoders, we first have to think about what the decoders should optimally do. The roles of the decoders is to estimate the represented value. In the optimal case we would like the decoded value $\hat{\vec x}$ to be equal to or as close as possible to the encoded value $\vec x$. That is, in general, we would like to minimize the error $E$ (also called a \emph{loss function})
+In order to compute the decoders, we first have to think about what the decoders should optimally do. The roles of the decoders is to estimate the represented value. In the optimal case we would like the decoded value $\hat{\vec x}$ to be equal to or as close as possible to the encoded value $\vec x$. That is, in general, we would like to minimize the average error $E$ (also called a \emph{loss function})
 \begin{align}
-	\arg\min_{\mat D} E = \int_{\mathbb{X}} \|\vec x - \hat{\vec x}\| \,\mathrm{d}\vec x = \int_{\mathbb{X}} \|\vec x - \mat D \vec a(\vec x)\| \,\mathrm{d}\vec x \,,
+	\arg\min_{\mat D} E = \frac{1}{|\mathbb{X}|} \int_{\mathbb{X}} \|\vec x - \hat{\vec x}\| \,\mathrm{d}\vec x = \frac{1}{|\mathbb{X}|} \int_{\mathbb{X}} \|\vec x - \mat D \vec a(\vec x)\| \,\mathrm{d}\vec x \,,
 	\label{eqn:optimisation_problem}
 \end{align}
-where $\mathbb{X}$ is a compact subspace of the possible represented values in $\mathbb{R}^d$ we are interested in.
-
-\newpage
+where $\mathbb{X}$ is a compact subspace of the possible represented values in $\mathbb{R}^d$ we are interested in, and $|\mathbb{X}|$ denotes the area or volume of that subspace -- dividing by $|\mathbb{X}|$ ensures that we are actually computing the average.
 
 \Note{The dynamic range of a neural representation is limited due to neural saturation and noise -- it is not possible to represent all real numbers in a single neuron population. This is why we are using this \enquote{weird} integral over a subspace $\mathbb{X}$ -- we must restrict ourselves to a range of numbers we want to be able to decode well.
 	
@@ -280,11 +278,11 @@ The quantifier \emph{compact} is just a mathematical technicality that ensures t
 \paragraph{Mathematical derivation} In order to make the math a little more digestible, assume that we want to find the decoders for scalar represented values ($d = 1$) and that the represented values we are interested in are over the interval $\mathbb{X} = [-1, 1]$. The above equation becomes
 \begin{align}
 	\arg\min_{\vec d} E
-		&= \arg\min_{\vec d} \int_{-1}^1 \sqrt{ \left(x - \langle \vec d, \vec a(x) \rangle\right)^2 } \,\mathrm{d}x
-		 = \arg\min_{\vec d} \frac{1}2 \int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x \,.
+		&= \arg\min_{\vec d} \frac{1}{2} \int_{-1}^1 \sqrt{ \left(x - \langle \vec d, \vec a(x) \rangle\right)^2 } \,\mathrm{d}x
+		 = \arg\min_{\vec d} \frac{1}{2} \int_{-1}^1 \left(x - \sum_{i = 1}^n d_i a_i(x) \right)^2 \,\mathrm{d}x \,.
 	\label{eqn:decoder_loss}
 \end{align}
-This equality holds because eliminating the square root and adding a factor $\frac{1}2$ does not change the location of the minimum. Since this is a quadratic equation we know that there is exactly one extremum. In this particular case, we also know that this extremum must be a minimum (since the quadratic term has a positive sign). Hence, we can find the $\vec d$ that minimizes the error by differentiating with respect to individual $d_i$ and setting the derivative to zero:
+This equality holds because eliminating the strictly monotonic square root does not change the location of the minimum. Since this is a quadratic equation we know that there is exactly one extremum. In this particular case, we also know that this extremum must be a minimum (since the quadratic term has a positive sign). Hence, we can find the $\vec d$ that minimizes the error by differentiating with respect to individual $d_i$ and setting the derivative to zero:
 \begin{align*}
 	\frac{\partial E}{\partial d_i}
 		&= \frac{1}2 \int_{-1}^1 2 \left(x - \sum_{j = 1}^n d_j a_j(x) \right) \left(-a_i(x) \right) \,\mathrm{d}x
@@ -429,6 +427,7 @@ Since the mean of the distribution is zero, the remaining expectation value is e
 	+ \frac{1}2 \sigma^2 \sum_{i = 1}^n d_i^2 \,.
 	\label{eqn:decoder_loss_regularised}
 \end{align}
+\newpage
 \Note{\emph{Equivalence of \enquote{taking Gaussian noise into account} and $L_2$-regularisation.} \Cref{eqn:decoder_loss_regularised} can be interpreted in a different, but extremely useful manner. Essentially, our error expression is exactly the same as when we set out to derive this equation without noise, cf.~\cref{eqn:decoder_loss}. The difference is that we penalize the magnitude of the coefficients $d_i$: the larger $|d_i|$, the larger the error $E$ will be.
 
 Adding such a weight penalisation term is commonly referred to as \emph{regularisation}. Generally, $L_\ell$-regularisation (where $\ell$ is a positive number, usually one or two) adds the following loss term to $E$:
@@ -448,7 +447,7 @@ The effect of regularisation is the following: when solving for $\vec d$, we try
 
 We can now continue to solve for $\vec{d}$ as above. After some linear algebra, we arrive at the following equation (here, directly for arbitrary represented dimensions $d \geq 1$)
 \begin{ImportantEqn}{Computing decoders taking noise into account}
-	\mat D^\T &\approx  \left(\mat A \mat A^\T + \frac{N \sigma^2}{2} \mat I\right)^{-1} \mat A \mat X^\T \,, \text{ where $\mat I$ is the $n \times n$ identity matrix}
+	\mat D^\T &\approx  \left(\mat A \mat A^\T + N \sigma^2 \mat I\right)^{-1} \mat A \mat X^\T \,, \text{ where $\mat I$ is the $n \times n$ identity matrix}
 	\label{eqn:decoders_noise}
 \end{ImportantEqn}
 Adding a scaled version of the identity matrix to $\mat A \mat A^T$ ensures that the resulting matrix is always invertible. If $\sigma^2$ is large enough, this inversion is possible in a numerically stable way. As visible in \cref{fig:decoding_example_noise_accounted}, the decoding error is now in an acceptable range, even if we add noise to the pre-population.
