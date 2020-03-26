@@ -1,0 +1,124 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[svgnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{csquotes}
+\author{Andreas Stöckel}
+\begin{document}
+	
+\newcommand{\Pred}[1]{\mathbf{\textcolor{Crimson}{#1}}}
+\newcommand{\Obj}[1]{\mathtt{\textcolor{RoyalBlue}{#1}}}
+\newcommand{\Fun}[1]{\mathit{\textcolor{ForestGreen}{#1}}}
+\newcommand{\CC}{\circledast}
+
+\paragraph{3.5 Revisiting Jackendoff's Challenges}
+\begin{itemize}
+	\item \textbf{The Binding Problem.} How to combine concepts into a new concept? $\Rightarrow$ Binding operators
+	\begin{align*}	
+		\Obj{RED} \CC \Obj{SQUARE} + \Obj{BLUE} \CC \Obj{CIRCLE}
+	\end{align*}
+	\item \textbf{The Problem of Two.} How can the same concept be active in two different contexts?
+	$\Rightarrow $ Use symbols denoting the role. (Little star besides big star)
+	\begin{align*}
+		\Obj{OBJ1} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{LITTLE}) + \\
+		\Obj{OBJ2} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{BIG}) + \\
+		\Obj{REL} \CC \Obj{BESIDES}
+	\end{align*}
+	\item \textbf{The Problem of Variables.} How to express rules containing variables? $\Rightarrow$ Use inverse and role designators
+	\begin{align*}
+		\Obj{RULE} &= \Obj{RED} \CC \Obj{NOUN} \\
+		\Obj{VAR} &= \Obj{NOUN}^{-1} \CC \Obj{BALL} \\
+		\Obj{RULE} \CC \Obj{VAR} &\approx \Obj{RED} \CC \Obj{BALL}
+	\end{align*}
+	\item \textbf{Working vs. Long-Term Memory.}  How to manifest symbols in working and long-term memory?
+	$\Rightarrow$ NEF: neural activities $\leadsto$ working memory, connection weights $\leadsto$ functions (e.g., associative memory)
+\end{itemize}
+
+\paragraph{THE SEMANTIC POINTER ARCHITECTURE}
+
+\paragraph{1. Introduction}
+
+\begin{itemize}
+	\item VSAs: solve interesting cognitive tasks (Raven's Progressive Matrices, Jackendoff's Challenges)
+	\item But: not a cognitive architecture $\rightarrow$ unclear how to build a behaving agent
+	\item[$\Rightarrow$] Semantic Pointer Architecture (SPA)
+	\begin{itemize}
+		\item What is a semantic pointer?
+		\item Working memory
+		\item Action selection
+	\end{itemize}
+\end{itemize}
+
+\paragraph{2. Semantic Pointers}
+
+Combination of several concepts
+\begin{itemize}
+	\item VSAs (binding operator, circular convolution)
+	\item NEF (computational substrate, neurons)
+	\item Source of vectors: reversible compression/decompression (dereferencing $\leadsto$ semantic pointer, deep semantics)
+	\item Architecture: basal ganglia/cortex control loop
+	\item[$\Rightarrow$] can build small and large scale models
+	\item[$\Rightarrow$] flexible architecture, solve multiple tasks within the same model (SPAUN)
+\end{itemize}
+
+\paragraph{2.1 Deep vs. Shallow semantics}
+\begin{itemize}
+	\item Related to the \enquote{symbol grounding problem}
+	\item Shallow semantics: relational
+	\item Deep semantics: symbols link at \enquote{subjective experience}
+	\item Example for shallow semantics: random vectors, word embeddings
+	\item word2vec example:
+		\begin{align*}
+		\Obj{WOMAN} + (\Obj{KING} - \Obj{MAN}) &\approx \Obj{QUEEN} \,,\\
+		\Obj{SPACE} + (\Obj{SHIPS} - \Obj{WATER}) &\approx \Obj{SPACESHIP} \,.
+		\end{align*}
+\end{itemize}
+
+\paragraph{2.2 Deep Semantics for Perception}
+\begin{itemize}
+	\item Example: visual processing in cortex
+	\item Dimensionality reduction/compression from layer to layer
+	\item First layer: high-dimensional visual input
+	\item Final layer: semantic pointer
+	\item Can decompress: clamp semantic pointer and compute most likely intermediate layer representations (i.e., \enquote{mental imagery})
+\end{itemize}
+
+\paragraph{2.3 Deep Semantics for Action}
+
+\begin{itemize}
+	\item Decompress low-dimensional semantic pointer
+	\item Input: high-level action (\enquote{grab bottle})
+	\item Output: body muscle tensions over time
+	\item See HTBAB for an example (Chp. 3)
+\end{itemize}
+
+\paragraph{2.4 Using Semantic Pointers in Nengo}
+
+\begin{itemize}
+	\item \emph{See example}
+\end{itemize}
+
+\paragraph{2.5 SPAUN}
+
+\begin{itemize}
+	\item \emph{See slides}
+\end{itemize}
+
+\paragraph{3. Serial Working Memory}
+
+\begin{itemize}
+	\item Can use high-dimensional integrator for (working) memory
+	\item Bind elements to position semantic pointer
+	\begin{align*}
+		\Obj{WM} &= \Obj{ITEM\_A} \CC \Obj{POS\_1} + \Obj{ITEM\_B} \CC \Obj{POS\_2} \\
+		         &= \Obj{ITEM\_A} \CC \Obj{POS} + \Obj{ITEM\_B} \CC \Obj{POS} \CC \Obj{POS}
+	\end{align*}
+	\item In humans: primacy and recency effects
+	\item Can model using two separate systems
+\end{itemize}
+
+\end{document}

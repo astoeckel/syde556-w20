@@ -1,0 +1,138 @@
+% !TeX spellcheck = en_GB
+\ifcsname SlidesDistr\endcsname%
+\documentclass[handout,aspectratio=169]{beamer}
+\else%
+\documentclass[aspectratio=169]{beamer}
+\fi%
+\input{../syde556_lecture_slides_preamble}
+
+\usepackage{ragged2e}
+
+\newcommand{\Pred}[1]{\mathbf{\textcolor{scarletred3}{#1}}}
+\newcommand{\Obj}[1]{\mathtt{\textcolor{skyblue3}{#1}}}
+\newcommand{\Fun}[1]{\mathit{\textcolor{chameleon3}{#1}}}
+\newcommand{\CC}{\circledast}
+
+\date{March 24 \& 26, 2020\\[-1cm]~~}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 11: The Semantic Pointer Architecture}
+
+\begin{document}
+	
+	\begin{frame}{}
+		\vspace{0.5cm}
+		\begin{columns}[c]
+			\column{0.6\textwidth}
+			\MakeTitle
+			\column{0.4\textwidth}
+			\includegraphics[width=\textwidth]{media/reimer_librarian_small.jpg}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Administrative Notes -- Remaining Deadlines}
+		\begin{itemize}
+			\setlength{\itemsep}{0.5cm}
+			\item \hl{Assignment 4} -- Due Tuesday, Mar.~24\textsuperscript{*} (today!)\\[0.125cm]
+			\begin{itemize}
+				\item Worth 10\% of the final mark
+			\end{itemize}
+			\item \hl{Interim Project Report} -- Due Thursday, Apr.~2\textsuperscript{*} (no late submission!)\\[0.125cm]
+			\begin{itemize}
+				\setlength{\itemsep}{0.125cm}
+				\item One to two pages maximum; see the \href{https://raw.githubusercontent.com/astoeckel/syde556-w20/master/project/interim_report_template/syde556_project_interim_report_template.pdf}{website} for instructions
+				\item Not marked; either 0\% (not submitted) or 100\% (reasonable document submitted)
+				\item Worth 10 marks (25\% of the final project) of the final project
+			\end{itemize}
+			\item \hl{Final Project} -- Due Wednesday, Apr.~15\textsuperscript{*}\\[0.125cm]
+			\begin{itemize}
+				\item Worth 40\% of the final mark
+			\end{itemize}
+		\end{itemize}
+		\vspace{0.5cm}
+		{\footnotesize\color{aluminium4}\textsuperscript{*} All deadlines are 11:59pm EDT}
+	\end{frame}
+
+	\begin{frame}{Shallow Versus Deep Semantics}
+		\includegraphics[width=\textwidth]{media/shallow_vs_deep_semantics.pdf}
+	\end{frame}
+
+	\begin{frame}{Deep Semantic in Perception: Visual Processing Hierarchy}
+		\centering
+		\includegraphics[width=0.66\textwidth]{media/htbab_hierarchy.pdf}
+		\ImageSources{Eliasmith, \enquote{How to Build a Brain}, 2013, Figure 3.4}
+	\end{frame}
+
+	\begin{frame}{Deep Semantic in Perception: Dereferencing}
+		\centering
+		\vspace{0.5cm}
+		\includegraphics[width=0.975\textwidth]{media/htbab_dereference.pdf}\\
+		\vspace{0.0575cm}
+		\ImageSources{Eliasmith, \enquote{How to Build a Brain}, 2013, Figure 3.7}
+	\end{frame}
+
+	\begin{frame}{Perception vs. Action}
+		\centering
+		\includegraphics[height=7cm]{media/htbab_perceptual_motor.pdf}
+	\end{frame}
+
+	\begin{frame}{Spaun -- Semantic Pointer Architecture Unified Network (I)}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/eliasmith_2012_spaun_architecture.pdf}
+	\end{frame}
+	
+	\begin{frame}{Spaun -- Semantic Pointer Architecture Unified Network (I)}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/eliasmith_2012_spaun_anatomy.pdf}
+	\end{frame}
+
+	\begin{frame}{Nengo SPA Example}
+		\centering
+		\includegraphics[width=\textwidth]{media/nengo_spa_example.pdf}
+	\end{frame}
+
+	\begin{frame}{Recency and Primacy Experiment}
+		\centering
+		\Large
+		\hl{Experiment:} Remember this list
+		\begin{multicols}{2}
+		\begin{enumerate}
+			\centering
+			\setlength{\itemsep}{0.25cm}
+			\item<2,12> robot
+			\item<3,12> teflon
+			\item<4,12> kettlemaking
+			\item<5,12> big-league
+			\item<6,12> troubleshooter
+			\item<7,12> conglomerates
+			\item<8,12> waxberries
+			\item<9,12> electrograph
+			\item<10,12> overjoyous
+			\item<11,12> unquailing
+		\end{enumerate}
+		\end{multicols}
+	\end{frame}
+
+	\begin{frame}{Recency and Primacy Data}
+		\centering
+		\includegraphics[width=0.6\textwidth]{media/htbab_recall_accuracy_jahnke.pdf}
+	\end{frame}
+
+	\begin{frame}{Ordinal Serial Encoding (OSE) Model}
+		\centering
+		\includegraphics[width=0.9\textwidth]{media/htbab_ose.pdf}
+	\end{frame}
+
+	\begin{frame}{Ordinal Serial Encoding (OSE) Model: Experiment}
+		\centering
+		\includegraphics[width=\textwidth]{media/htbab_ose_experiment.pdf}
+	\end{frame}
+
+	\backupbegin
+
+	\begin{frame}[noframenumbering]{Image sources}
+		\small
+		\textbf{Title slide}\\\emph{Librarian (In a library)}, between 1850 and 1866,  Georg Reimer\\ \href{https://commons.wikimedia.org/wiki/File:Reimer_Librarian.jpg}{Wikimedia}.
+	\end{frame}
+
+	\backupend
+	
+\end{document}

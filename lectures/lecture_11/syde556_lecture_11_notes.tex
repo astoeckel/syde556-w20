@@ -1,0 +1,239 @@
+% !TeX spellcheck = en_GB
+\documentclass[10pt,letterpaper,oneside]{article}
+\input{../syde556_lecture_notes_preamble}
+
+\date{March 24 \& 26, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 11: The Semantic Pointer Architecture}
+
+\newcommand{\Pred}[1]{\ensuremath{\mathbf{\textcolor{Crimson}{#1}}}}
+\newcommand{\Obj}[1]{\ensuremath{\mathtt{\textcolor{RoyalBlue}{#1}}}}
+\newcommand{\Fun}[1]{\ensuremath{\mathit{\textcolor{ForestGreen}{#1}}}}
+\newcommand{\CC}{\circledast}
+
+\begin{document}
+
+\MakeTitle{\textbf{Accompanying Readings: Chapter 3, 5, 6 and 7 of \enquote{How to Build a Brain}}}
+
+\section{Introduction}
+
+\Note{In the previous lecture, we discussed Vector Symbolic Architectures (VSAs) in combination with circular convolution as a way to represent symbols as vectors and to \enquote{combine} concepts into a new one. However, VSAs alone are not a \enquote{cognitive architecture}. It is unclear how to build \enquote{cognitive agents} that receive information from the environment, turn this information into symbol vectors, and finally produce \emph{behaviour}. The semantic pointer architecture (SPA) is an attempt at providing a cognitive architecture based on VSAs.}
+
+As we have seen, we can use Vector Symbolic Architectures in conjunction with circular convolution to solve some relatively challenging cognitive problems, such as Raven's progressive matrices. However, so far, we have presumed that a certain vocabulary of random symbol vectors exists and that there is some kind of system in place that extracts these symbol vectors from the environment.
+
+In this lecture we are going to be a little more specific. We are going to describe an architecture based on symbol vectors that hypothesises how sensory information could be turned into symbol vectors, how these vectors a processed, and, lastly, how symbol vectors can be turned into motor commands. This architecture is called the \enquote{Semantic Pointer Architecture} (SPA).
+
+At a smaller scale, the SPA can be used to build neural models of cognitive phenomena such as working memory or language association tasks. At a larger scale, the SPA has been used to build one of the largest functional brain models to date, the Semantic Pointer Architecture Unified Network (SPAUN) \cite{eliasmith2012largescale,choo2018spaun}. SPAUN is able to solve a variety of cognitive tasks, using the same underlying neural network and without being \enquote{reprogrammed}. This ability is a major strength of the SPA in contrast to other models of cognition.
+
+In this lecture we will first have a broader look at the SPA, including the concepts of \enquote{shallow and deep semantics}. Then, we have quick look at SPAUN, and in particular a specific model of human serial working memory, followed by a discussion of cognitive control and action selection in particular.
+
+\section{The Semantic Pointer Architecture}
+
+\Note{The content of this section is to a large degree based on Chapter 3 of \enquote{How to Build a Brain} \cite{eliasmith2013how}. Read the chapter for a more thorough discussion of semantic pointers.}
+
+In a nutshell, the Semantic Pointer Architecture combines the idea of vector symbolic architectures (VSAs) with the NEF as a \enquote{computational substrate}. In addition, the SPA proposes, first, a specific cognitive architecture---the basal ganglia cortex control loop.
+
+Second, symbol vectors in the SPA are no longer random, but thought to be the result of a reversible \emph{compression} process. Just as a pointers in most programming languages can be \enquote{dereferenced} to access the original content, symbol vectors $\vec x$ constructed in this way can be \emph{decompressed} to access the information---\enquote{deep semantics}---about the underlying represented object. Hence, symbol vectors in the SPA are called \emph{semantic pointers}.
+
+
+\subsection{Shallow and Deep Semantics}
+
+In order to gain a better understanding of semantic pointers, we must first distinguish between \enquote{shallow} and \enquote{deep} semantics. The difference between the two can best be explained by what artificial intelligence researchers refer to as the \enquote{symbol grounding problem}.
+
+In general---and without going into any philosophical details---a \emph{symbol} is an arbitrary mapping from a short piece of information (the representation of the symbol itself) onto a richer semantic concept.
+
+For example, consider the symbol {\Obj{TREE}}. As a human being seeing this symbol, we tend to immediately map it onto a certain class of tall plants, along with the corresponding visual imagery, smells, sounds, and textures. All this cross-modal information establishes the \emph{deep semantics} of the symbol, i.e.,~our \enquote{subjective experience} of the concept.
+
+Now consider an early 1980s artificial intelligence researcher building a symbolic reasoning system. In such a system the symbol {\Obj{TREE}} might just be represented as a short sequence of bytes (i.e., \Obj{TREE} is \texttt{0x54 0x52 0x45 0x45} in ASCII), along with a set of similarly encoded information linking this symbol to other symbols, for example
+\begin{align*}
+	\forall x \Pred{is\_a}(x, \Obj{PINE}) &\rightarrow \Pred{is\_a}(x, \Obj{TREE}) \wedge \Pred{has}(x, \Obj{NEEDLES}) \wedge \Pred{is}(x, \Obj{EVERGREEN}) \,, \\
+	\forall x \Pred{is\_a}(x, \Obj{TREE}) &\rightarrow \Pred{is\_a}(x, \Obj{PLANT}) \,, \quad \forall x \Pred{is\_a}(x, \Obj{PLANT}) \rightarrow \Pred{is}(x, \Obj{ALIVE}) \,.
+\end{align*}
+The problem of \enquote{symbol grounding} is the observation that even though we could imagine building a database with all important information there is to know about a concept, the symbols we use in this relational description (the \emph{shallow semantics}) are not really linked or related to any sensory information or \enquote{subjective experience}.
+
+\Aside{A project that aims to build exactly such a database is Douglas Lenat's Cyc project, started in 1984. The database is still under active development. (\url{https://www.cyc.com/})}
+
+The random symbol vectors we discussed in the last lecture are as arbitrary a mapping onto concepts as the relationship between the byte sequence \texttt{0x54 0x52 0x45 0x45} and an actual tree. Such vectors will thus at most be useful for \emph{shallow} semantics. This is similarly true for some non-random methods deriving symbol vectors.
+
+One example of such methods are \emph{word embeddings}. Here, the general idea is to perform some statistical analysis of how often certain words appear closely together in large corpora of text, usually resulting in a term-frequency matrix. One can then apply a dimensionality reduction method (such as PCA or auto-encoders) to this data, mapping each word onto a vector with a few hundred dimensions.
+
+Interestingly, such mappings capture relational semantics of the represented concepts. For example, using the \enquote{word2vec} embedding \cite{mikolov2013efficient}, we can perform the following arithmetic\footnote{See \url{http://turbomaze.github.io/word2vecjson/} for an online demo. Ignore concepts in the output that are already present in your input.}:
+\begin{align*}
+	\Obj{WOMAN} + (\Obj{KING} - \Obj{MAN}) &\approx \Obj{QUEEN} \,,\\
+	\Obj{SPACE} + (\Obj{SHIPS} - \Obj{WATER}) &\approx \Obj{SPACESHIP} \,.
+\end{align*}
+While these embeddings are great as part of VSAs, they do not capture any \enquote{deep semantics}.
+
+\begin{figure}[p]
+	\centering
+	\includegraphics[scale=1.15]{media/htbab_hierarchy.pdf}
+	\caption{Visual processing hierarchy. The representation in the uppermost layer corresponds to a semantic pointer. Notice that there is a direct relationship between the input and the representation. Changing the visual stimulus (i.e., different styles of \enquote{fives}) will be captured in the final representation. Figure copied from Eliasmith, \enquote{How to build a brain}, 2013, Figure 3.4.}
+	\label{fig:htbab_hierarchy}
+\end{figure}
+
+\begin{figure}[p]
+	\centering
+	\includegraphics[scale=1.15]{media/htbab_dereference.pdf}
+	\caption{Dereferencing semantic pointers. \textbf{A.} Original input images. \textbf{B.} \enquote{Dereferenced} semantic pointers. \textbf{C.} Dereferenced average semantic pointer. \textbf{D.} Dimensionality reduction of the 50-dimensional semantic pointer space. Figure copied from Eliasmith, \enquote{How to build a brain}, 2013, Figure 3.7.}
+	\label{fig:htbab_dereference}
+\end{figure}
+
+\subsection{Deep Semantics for Perception}
+
+Now, how are semantic pointers supposed to capture parts of the \enquote{deep semantics} of objects? As mentioned above, the answer is that semantic pointers are thought to be generated by repeated compression of stimuli, i.e., the symbol is directly related to the stimulus it represents.
+
+As an example, take vision: we know that visual stimuli are processed in multiple \enquote{layers} of visual cortex, where the complexity of the represented concepts increases with each layer (V1, V2, V4, IT). In other words, each layer is performing dimensionality reduction (or compression) of the information in the previous layer, trying to extract as much information as possible from the previous layer (\cref{fig:htbab_hierarchy}).
+
+The representation in the \enquote{final} layer could be interpreted as a \emph{semantic pointer}. Notice that this vectorial representation is directly influenced by the input to the system. Changes to the visual stimulus will result in slightly different representations. Crucially, we can \enquote{dereference} or \enquote{decompress} the visual representation. That is, we can \enquote{clamp} the final layer to a specific semantic pointer and compute in \enquote{backwards direction} which neural activity is most likely to evoke a certain semantic pointer (\cref{fig:htbab_dereference}). In the context of visual processing, this would correspond to \enquote{mental imagery}.
+
+\subsection{Deep Semantics for Action}
+
+\begin{figure}
+	\centering
+	\includegraphics{media/htbab_perceptual_motor.pdf}
+	\caption{Perception and action can be described as similar, but reversed processes. Perception compresses a high-dimensional signal from the environment into a low-dimensional description, a semantic pointer. Motor-control decompresses a semantic pointer into a high-dimensional motor plan (i.e., muscle tensions over time). Figure copied from Eliasmith, \enquote{How to build a brain}, 2013, Figure 3.9.}
+\end{figure}
+
+Similar processing hierarchies do not only exist for visual perception, or, perception in general. For example, there is evidence that high-level motor commands are successively being translated into more detailed control signals. In a sense, this is exactly the opposite problem of turning a high-dimensional perceptual signal into a low-dimensional semantic pointer. 
+
+We can treat these high-level control signals as \enquote{semantic pointers} that are being decompressed into a high-dimensional control signal (i.e., all possible muscle tensions in the body over time). Correspondingly, a semantic pointer for motor control might be something such as \enquote{reach the bottle} (represented in cortical areas such as the pre-motor area \enquote{PM} and the supplemental motor area \enquote{SMA}), which is then turned into a detailed motor plan (in cortical areas such as M1, in conjunction with non-cortical areas such as S1, S2 and the cerebellum).
+
+\Note{A model that implements optimal motor control on top of this framework is the \enquote{NOCH} model by Travis Dewolf \cite{dewolf2010nocha}. This model is also described in Chapter 3 of \enquote{How to Build a Brain}.}
+
+\subsection{Using the Semantic Pointer Architecture in Nengo}
+
+\begin{figure}
+	\centering
+	\includegraphics{media/spa_network.pdf}
+	\caption{Network diagram of the SPA example network performing \enquote{question answering} described below. Grey boxes correspond to input nodes (\enquote{\texttt{spa.Transcode}} objects), large boxes to neuron populations. Grey neuron populations are implicitly generated by \texttt{nengo\_spa} in order to compute the circular convolution---as we have seen before, when computing multiplication (which is part of the circular convolution operator), both operands need to be represented in a common pre-population.}
+	\label{fig:spa_network}
+\end{figure}
+
+In order to use semantic pointers in Nengo models, we can use the \texttt{nengo\_spa} library. While this library does not implement the perception and action systems we discussed above (i.e., per default, semantic vectors are just random symbol vectors), it does provide an implementation of the action selection system we discuss below.
+
+In a nutshell, the \texttt{nengo\_spa} library provides \texttt{spa.Transcode} in lieu of \texttt{nengo.Node} objects whenever a symbolic stimulus is received from the environment. Furthermore, \texttt{nengo.Ensemble} instances can be replaced with \texttt{spa.State} objects to represent symbol vectors in a neural population.
+
+Consider the \enquote{question asking} example we discussed in the last lecture, where we saw that the pseudo-inverse of a symbol vector $\vec x$ can be used to reconstruct which other concept $\vec x$ has been bound to. For example, $(\Obj{RED} \CC \Obj{SQUARE}) \CC \Obj{SQUARE}^{-1} \approx \Obj{RED}$, i.e., we are asking the question \enquote{what property does the square have}?
+
+The following code example (\CodeLink{lecture_11/media/code/nengo_spa_example.ipynb}) shows how to implement a network that queries different properties from a dynamically changing set of inputs. A diagram giving a better overview of what we are implementing here is given in \cref{fig:spa_network}.
+\pagebreak\vspace*{-0.75cm}
+\cprotect\Python{\begin{lstlisting}[language=python,morekeywords=with]
+import nengo
+import nengo_spa as spa
+
+# Alternate between RED and BLUE as a color
+def colour_input(t):
+    if (t // 0.5) % 2 == 0:
+        return "RED"
+    else:
+        return "BLUE"
+
+# Alternate between CIRCLE AND SQUARE
+def shape_input(t):
+    if (t // 0.5) % 2 == 0:
+        return "CIRCLE"
+    else:
+        return "SQUARE"
+
+# Alternate between any of the four properties as a question/cue
+def cue_input(t):
+    sequence = ["0", "CIRCLE", "RED", "0", "SQUARE", "BLUE"]
+    idx = int((t // (1. / len(sequence))) % len(sequence))
+    return sequence[idx]
+
+with model:
+    colour_in = spa.Transcode(colour_input, output_vocab=dimensions)
+    shape_in = spa.Transcode(shape_input, output_vocab=dimensions)
+    cue = spa.Transcode(cue_input, output_vocab=dimensions)    
+
+    conv = spa.State(dimensions)
+    out = spa.State(dimensions)
+
+    # Connect the buffers using overloaded Python operators
+    colour_in * shape_in >> conv
+    conv * ~cue >> out
+\end{lstlisting}}
+
+\begin{figure}
+	\centering\hspace*{-0.33cm}\includegraphics{media/nengo_spa_example.pdf}
+	\caption{Output of the \texttt{nengo\_spa} \enquote{question asking} example detailed above. As can be seen in the output plot, the network correctly identifies the concept that is bound to any given cue. \CodeLink{lecture_11/media/code/nengo_spa_example.ipynb}}
+	\label{fig:nengo_spa_example}
+\end{figure}
+
+Note that the strings returned in the callback functions passed to \texttt{spa.Transcode} are automatically translated into unique, randomly generated symbol vectors, the so called \enquote{vocabulary} of the model. \Cref{fig:nengo_spa_example} shows the result of running the above code. Since it is hard to visualise higher-dimensional vectors, the plots show the similarity of any vector currently represented in a population to the vectors in the vocabulary.
+
+\Note{While the \texttt{nengo\_spa} library offers useful abstractions for building SPA models, keep in mind that the resulting network is still a low-level NEF network; even though you use the \texttt{spa.Transcode} or \texttt{spa.State} objects, the network is consisting of \texttt{nengo.Node} objects for anything input/output related and \texttt{nengo.Ensemble} objects for everything else.}
+
+\section{SPAUN}
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{media/eliasmith_2012_spaun_architecture.pdf}
+	\caption{SPAUN's architecture. Visual input and motor output translate visual stimuli into semantic pointers and vice versa. Information is routed to different subsystems according to an action selection system, which, turn, is controlled by the content of the working memory and a reward system. Figure copied from \cite{eliasmith2012largescale}.}
+	\label{fig:eliasmith_2012_spaun_architecture}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{media/eliasmith_2012_spaun_anatomy.pdf}
+	\caption{Brain areas modelled by SPAUN. Colours correspond to those found in \cref{fig:eliasmith_2012_spaun_architecture}. The orange dashed line corresponds to the Basal Ganglia. Figure copied from \cite{eliasmith2012largescale}.}
+	\label{fig:eliasmith_2012_spaun_anatomy}
+\end{figure}
+
+As mentioned above, SPAUN is one of the largest functional brain models to date~\cite{eliasmith2012largescale}. SPAUN implements the ideas discussed above. Visual input is directly translated into semantic pointers, and semantic pointers representing motor actions are used to drive a motor system (\cref{fig:eliasmith_2012_spaun_architecture}).
+
+Processing---apart from visual input and motor output---consists of a comparably small set of building blocks information is routed to according to an action selection system. The action selection system itself is driven by the state of a working memory and a reward evaluation model. All these building blocks are coarsely modelled after individual brain regions, as detailed in \cref{fig:eliasmith_2012_spaun_anatomy}. Although SPAUN consists of relatively few modules, it is able to flexibly use these components to solve a variety of tasks---without the experimenter having to intervene and reconfigure the model (see here for some videos showing SPAUN in action: \YouTube[digit recognition]{f6Ul5TYK5-o}, \YouTube[copy drawing]{WNnMhF7rnYo}, \YouTube[addition by counting]{mP7DX6x9PX8}, \YouTube[pattern completion]{Q_LRvnwnYp8}).
+
+For a detailed description of the model, refer to \enquote{How to Build a Brain} \cite{eliasmith2013how}. In the following, we will focus on two import sub-components: the working memory model used in SPAUN, as well as the Basal Ganglia/Thalamus model that is used for action selection and that lies at the heart of the Semantic Pointer Architecture.
+
+\subsection{Serial Working Memory}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[scale=1.2]{media/htbab_ose_experiment.pdf}
+	\caption{Human experimental data on serial recall, as well as the corresponding model-generated data. Figure copied from Eliasmith, \enquote{How to build a brain}, 2013, Figure 6.2. Human data from Jahnke, \emph{Delayed recall and the serial-position effect of short-term memory}, 1986 \cite{jahnke1968delayed}.}
+	\label{fig:htbab_ose_experiment}
+\end{figure}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[scale=1.2]{media/htbab_ose.pdf}
+	\caption{Ordinal serial encoding model. The left portion of the diagram shows the two sub-memories, responsible for the \enquote{recency} and \enquote{primacy} effects. Figure copied from Eliasmith, \enquote{How to build a brain}, 2013, Figure 6.3.}
+	\label{fig:htbab_ose}
+\end{figure}
+
+Working memory describes the ability of animals to remember a limited amount of information for immediate processing (colloquially, \enquote{keeping something in mind}). Correspondingly, working memory is typically assumed to span time spans of a couple of seconds, and, is as you might know from personal experience, quite flawed.
+
+Working memory (or, here, synonymously \emph{short-term memory}), has been extensively studied by psychologists in various experiments. One such experiment is delayed serial recall. Participants are presented with a list of random words, one at a time, and are then asked to reproduce the list in order.
+
+When repeating this experiment multiple times with lists of different lengths, one will find that participants are relatively good at remembering the first and last words in the list, but can often not remember the words in between. The ability to remember the initial words is called \emph{primacy effect} (i.e., the first (primal) observations of a new sequence of events are remembered), the ability to remember the last words is called \emph{recency effect} (i.e., the most recent events are still in memory) (\cref{fig:htbab_ose_experiment}).
+
+As we have discussed before, in the context of the NEF, we think about working memory content as being encoded in neural activity patterns and not in neural connection weights. Furthermore, we discussed neural integrators as a kind of working memory. Instead of just representing one dimension, we can also implement higher-dimensional neural integrators that \enquote{remember} entire semantic pointers $\vec x$ (this requires careful tuning of the neural encoders).
+
+When presenting a sequence of symbol vectors $\Obj{ITEM_A}, \Obj{ITEM_B}, \ldots, \Obj{ITEM_X}$, a perfect integrator will automatically remember the sum of these symbol vectors, i.e., the state $\vec x$ after all items have been presented is given as a weighted sum of the individual symbol vectors:
+\begin{align*}
+	\vec x &= \Obj{ITEM_A} + \Obj{ITEM_B} + \ldots + \Obj{ITEM_X} \,.
+\end{align*}
+Of course, when building a model of the above experiment, we also need to store the position of the items within the list. As we have discussed in the last lecture, we can use unitary symbol vectors to create an arbitrary long sequence of symbol vectors encoding integer positions
+\begin{align*}
+	\Obj{POS}_i &= \underbrace{\Obj{POS} \CC \Obj{POS} \CC \ldots \CC \Obj{POS}}_{i \text{ times}} \,, & \text{where } \Obj{POS} \text { is a unitary vector, i.e. } \| \vec x \CC \Obj{POS} \| = \| \vec x \| \,.
+\end{align*}
+We can thus create these position vectors \enquote{on the fly} whenever a new item is presented, by just binding \Obj{POS} to the previous position vector.
+
+Depending on how exactly the integrator is tuned (i.e., whether it is implemented as a leaky integrator or not, what the strength of the feedback connection is, radius of the population, etc.), a neural integrator implemented using NEF principle three can either show recency or primacy effects. Combining a primacy and a recency memory system thus allows us to implement a model of human serial working memory. Having two memory systems maps well onto the human brain, where we know that prefrontal cerebral cortex (PFC) is responsible for representing events in the immediate past, whereas Hippocampus is involved in remembering events in the more distant past (this type of memory is also referred to as \enquote{episodic memory}). See the left half of \cref{fig:htbab_ose} for an overview diagram of this memory model.
+
+Of course, in order to recall items from this memory in series, we need a circuit capable of decoding the sequence. Na\"ively, we can just apply the binding operator to the pseudo-inverse of the position we would like to extract. In order to improve the performance of the system, we can additionally  remember which items were already recalled, and subtract those from the symbol vector encoding the sequence. This system is depicted in the right half of \cref{fig:htbab_ose}.
+
+An experiment comparing human performance to the performance of this memory system is depicted in the right half of \cref{fig:htbab_ose_experiment}. As visible, the model data matches the human performance quite well, both qualitatively and quantitatively.
+
+\pagebreak
+
+\vspace*{-0.5cm}
+\Note{\emph{Repeating experiments.} When evaluating NEF models, one should always repeat the experiment several times with different random seeds. This will cause the $x$-intercepts, maximum firing rates and encoders to be different in each trial. Each of these experimental trials can be interpreted as a different \enquote{participant}. One should then look at the distribution of the results, for example by visualising the mean, median, standard deviation, and the 10-/90-percentiles in a box plot (see \href{https://en.wikipedia.org/wiki/Box_plot}{Wikipedia} and \href{https://matplotlib.org/3.1.0/api/_as_gen/matplotlib.pyplot.boxplot.html}{the Matplotlib documentation} for more information).}
+
+\subsection{Action Selection}
+
+\ConstructionSite
+
+
+\printbibliography
+
+\end{document}
+

@@ -12,13 +12,13 @@
 
 \section{Introduction}
 
-\Note{So far we have mostly been concerned with representing vectors $\vec x$ in populations of neurons. In this lecture we instead think about the representation of \emph{symbols}, leading up to the Semantic Pointer Architecture (SPA).}
+\Note{So far we have mostly been concerned with representing vectors $\vec x$ in populations of neurons. In this lecture we instead think about the representation of \emph{symbols}, leading up to the Semantic Pointer Architecture (SPA) which we will discuss in the next lecture.}
 
 As discussed at the beginning of the course, our ultimate goal is to build models of human brains, and, by extension, human cognition. So far, it might seem as if we had not made much progress in this direction. What we have discussed up to this point is \enquote{merely} allowing us to represent vectors in a population of neurons, to compute transformations of those represented values within the connections between populations, and to build dynamical systems treating the represented values as control-theoretic state variables.
 
 In particular, one hallmark of human cognition is \emph{language}, and it is not clear how to apply the NEF to language, or facts expressed in language. Examples of language-based statements that we may want to encode are sentences such as \enquote{the number eight comes after the number nine}, \enquote{all dogs chase cats}, or \enquote{Anne knows that Bill thinks that Charlie likes Dave}.
 
-We attempt to solve this problem by first having a look at other modelling approaches in Cognitive Neuroscience. In particular, we will have a look at so called Vector Symbolic Architectures (VSAs), which can be easily mapped onto the NEF. We then use VSAs to build a particular model of cognition, the Semantic Pointer Architecture (SPA).
+We attempt to solve this problem by first having a look at other modelling approaches in Cognitive Neuroscience. In particular, we will have a look at so called Vector Symbolic Architectures (VSAs), which can be easily mapped onto the NEF. In the next lecture we then use VSAs to build a particular model of cognition, the Semantic Pointer Architecture (SPA).
 
 \section{Neural Theories of Cognition}
 
@@ -297,7 +297,7 @@ One potential problem with this approach is that the magnitude of the vector $\v
 	\label{fig:ravens_example}
 \end{figure}
 
-Raven's progressive matrices is a commonly used IQ test developed in 1936. Questions on the test typically consist of a set of $3 \times 3$ matrices filled with symbols arranged according to an unknown \enquote{hidden} rule. One of the cells in the matrix is empty, and test participants are asked to complete the matrix according to the unknown rule by choosing one of eight possible hidden cells. \Cref{fig:ravens_example} shows two examples of what the test could conceptually look like (the actual test is kept secret and has not changed since 1936).
+Raven's progressive matrices is a commonly used IQ test developed in 1936. Questions on the test typically consist of $3 \times 3$ matrices filled with symbols arranged according to an unknown, \enquote{hidden} rule. One of the cells in the matrix is empty, and participants are asked to complete the matrix according to the rule by choosing one of eight possible cells. \Cref{fig:ravens_example} shows two examples of what the test could conceptually look like (these are not actual questions on the test; the actual test is kept secret and has not changed since 1936).
 
 Perhaps surprisingly, this IQ test can be solved with a relatively high precision using Vector Symbolic Architectures. To this end, consider the example in \cref{fig:ravens_example_c} and assume that we already have a vision system that translates each cell into a corresponding vector representation. We can argue that this is a problem that we could solve really well using a modern convolutional neural network.
 
@@ -331,44 +331,36 @@ Then, we can make a prediction as for what the ninth cell should contain:
 \pagebreak
 \Note{For more detail on the Raven's Progressive Matrices particular example, see \cite{rasmussen2014spikinga}. Also, have a look at this video showing Spaun solving this task: \YouTube{Q_LRvnwnYp8}. This is based on a memory system showing both recency and primacy effects observed in humans: \YouTube{U_Q6Xjz9QHg}.}
 
-\section{The Semantic Pointer Architecture}
-
-\begin{itemize}
-	\item Combination of multiple ideas:
-	\begin{itemize}
-		\item NEF
-		\item VSAs (with circular convolution; other binding operators possible)
-		\item Basal Ganglia/Thalamus/Cortex control loop
-		\item Theory as for where $\vec x$ comes from; \emph{compression} and \emph{decompression} $\Rightarrow$ Semantic Pointers
-	\end{itemize}
-\end{itemize}
-
-
 \subsection{Revisiting Jackendoff's Challenges}
 
+The above example demonstrated that we can solve cognitively challenging tasks using vector symbolic architectures (VSAs). Before we extend VSAs into the semantic pointer architecture (SPA) in the next lecture, let's revisit Jackendoff's challenges, and discuss in how far VSAs are able to solve these.
+
 \begin{itemize}
-	\item The Binding Problem: See above
-	\item The Problem of Two: Use symbols denoting roles
+	\item \textbf{The Binding Problem.} We already discussed this in the example above. In short, if we have concepts such as $\Obj{RED}$, $\Obj{BLUE}$, $\Obj{SQUARE}$, and $\Obj{CIRCLE}$, we can use the binding operator $\CC$ to bind concepts, and the addition operator $+$ for concepts that are active at the same time. For example, \enquote{red square and blue circle} becomes
 	\begin{align*}
-	\Obj{OBJ1} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{LITTLE}) + \Obj{OBJ2} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{BIG}) + \Obj{REL} \CC \Obj{BESIDES}
+		\Obj{RED} \CC \Obj{SQUARE} + \Obj{BLUE} \CC \Obj{CIRCLE} \,.
 	\end{align*}
-	\item The Problem of Variables: How can we manipulate abstract placeholders?
+	\item \textbf{The Problem of Two.} This problem is concerned with the question of how the same concept can be active at the same time in two different contexts. We also had a glance at a solution to this particular problem above: we can simply use symbols denoting the role of individual concepts. Consider the sentence \enquote{the little star is besides the big star}. We can express this in the following way:
 	\begin{align*}
-	\Obj{S} &= \Obj{RED} \CC \Obj{NOUN} \\
-	\Obj{VAR} &= \Obj{BALL} \CC \Obj{NOUN}^{-1} \\
-	\Obj{S} \CC \Obj{VAR} &= \Obj{RED} \CC \Obj{BALL}
+		\Obj{OBJ1} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{LITTLE}) + \Obj{OBJ2} \CC (\Obj{TYPE} \CC \Obj{STAR} + \Obj{SIZE} \CC \Obj{BIG}) + \Obj{REL} \CC \Obj{BESIDES}
 	\end{align*}
-	\item Working vs. Long-Term Memory:
-	\begin{itemize}
-		\item Working memory: activity of neurons, currently represented concepts $\vec x$
-		\item Long term memory: connection weights, functions
-		\item Functions can return and modify $\vec x$
-	\end{itemize}
+	\item \textbf{The Problem of Variables.} Here the problem was that language seems to be governed by abstract rules using placeholders. For example, we know that the adjective $\Obj{RED}$ can only be followed by a noun. This rule could be expressed at
+	\begin{align*}
+		\Obj{RULE} &= \Obj{RED} \CC \Obj{NOUN} \,.
+	\end{align*}
+	Then, a variable that can be substituted into the position of \enquote{$\Obj{NOUN}$} is given as
+	\begin{align*}
+		\Obj{VAR} &= \Obj{BALL} \CC \Obj{NOUN}^{-1} \,.
+	\end{align*}
+	Binding the variable with the rule results in the desired concept:
+	\begin{align*}
+		\Obj{RULE} \CC \Obj{VAR} &= ( \Obj{RED} \CC \Obj{NOUN} ) \CC ( \Obj{BALL} \CC \Obj{NOUN}^{-1} ) \\
+		                         &= \Obj{RED} \CC \Obj{BALL} \CC ( \Obj{NOUN} \CC \Obj{NOUN}^{-1} ) \\
+		                         &\approx \Obj{RED} \CC \Obj{BALL} \,.
+	\end{align*}
+	Note that we did not demand binding operators $\CC$ to be commutative in general; however, circular convolution happens to be commutative. For the above to work with a non-commutative binding operator, we can define $\Obj{VAR}$ as $\Obj{NOUN}^{-1} \CC \Obj{BALL}$.
+	\item \textbf{Working vs.~Long-Term Memory.} This problem can be solved quite easily by considering vector symbolic architectures implemented on top of the NEF. Neural activities correspond to concepts that are currently in working memory. Long term memory corresponds to synaptic weights, and hence to functions transforming these concepts---for example, on possible function is an associative long-term memory.
 \end{itemize}
-
-\subsection{Using Semantic Pointers in Nengo}
-
-\subsection{Spaun}
 
 \printbibliography
 
