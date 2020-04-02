@@ -38,20 +38,23 @@
 			\item[{\symbolfont 🐍}]  Feel free to have a look at this \href{https://www.nengo.ai/nengo/examples/usage/tuning-curves.html}{Nengo tutorial} to solve this question.
 			\item[{\symbolfont 🐍}] Create a \enquote{dummy} identity connection from the ensemble to itself to have Nengo compute the population identity decoders. Then, you can use \texttt{nengo.utils.connection.eval\_point\_decoding} to compute $\hat{x}$. Nengo will take care of computing the decoders under noise. You don't have to use your code from previous assignments, but, of course, feel free to do so. In this case, compute the decoders under the assumption of noise with a magnitude of $\sigma = 0.1 \cdot \SI{200}{\hertz}$.
 		\end{itemize}
-		\item \Marks{0.5} \emph{RMSE and radius.} Compute the RMSE for (at least) the four different radii $0.5$, $1$, $2$, and $4$.
+		\item \Marks{0.5} \emph{RMSE and radius.} Compute the RMSE for (at least) the four different radii $0.5$, $1$, $2$, and $4$. Plot your results. Make sure your neurons have the same (relative, i.e., scaled by the radius) $x$-intercepts and maximum rates across all experiments.
 		\begin{itemize}
-			\item[{\symbolfont 🖈}]  Nengo will automatically rescale the intercepts as the radius increases, so you don't have to worry about changing the intercepts as you had to in Assignment 3.
+			\item[{\symbolfont 🖈}] Nengo will automatically rescale the intercepts as the radius increases, so you don't have to worry about changing the intercepts as you had to in Assignment 3.
+			\item[{\symbolfont 🖈}] To ensure that you are using the same neuron parameters, just fix the random seed before running the experiment, i.e., by passing a constant to the \texttt{nengo.Network} constructor.
 		\end{itemize}
-		\item \Marks{0.5} \emph{Discussion.} What relationship between the radius and the RMSE do you observe? Explain why this is the case.
-		\item \Marks{0.5} \emph{RMSE and refractory period.} What happens to the RMSE and the tuning curves as $\tau_\mathrm{ref}$ changes between \SIrange{1}{5}{\milli\second}? Plot the tuning curves for at least four different $\tau_\mathrm{ref}$ and produce a plot showing the RMSE over $\tau_\mathrm{ref}$.
-		\item \Marks{0.5} \emph{RMSE and membrane time constant.} What happens to the RMSE and the tuning curves as $\tau_\mathrm{RC}$ changes between \SIrange{10}{100}{\milli\second}? Plot the tuning curves for at least four different $\tau_\mathrm{RC}$ and produce a plot showing the RMSE over $\tau_\mathrm{RC}$.
-		\item \Marks{0.5} \emph{Discussion.} Discuss the last two results. Describe what happens to the tuning curves as $\tau_\mathrm{ref}$ and $\tau_\mathrm{RC}$ change. Explain why the change in tuning curve shape influences the RMSE in the way you observe.
+		\item \Marks{0.5} \emph{Discussion.} What mathematical relationship between the radius and the RMSE do you observe (write down an equation)? Explain why this is the case.
+		\item \Marks{0.5} \emph{RMSE and refractory period.} What happens to the RMSE and the tuning curves as $\tau_\mathrm{ref}$ changes between \SIrange{1}{5}{\milli\second}? Plot the tuning curves for at least four different $\tau_\mathrm{ref}$ and produce a plot showing the RMSE over $\tau_\mathrm{ref}$. Again, make sure to use the same neuron ensemble parameters in all your trials.
+		\item \Marks{0.5} \emph{RMSE and membrane time constant.} What happens to the RMSE and the tuning curves as $\tau_\mathrm{RC}$ changes between \SIrange{10}{100}{\milli\second}? Plot the tuning curves for at least four different $\tau_\mathrm{RC}$ and produce a plot showing the RMSE over $\tau_\mathrm{RC}$. Again, make sure to use the same neuron ensemble parameters in all your trials.
+		\item \Marks{0.5} \emph{Discussion.} Discuss the last two results. Describe what happens to the tuning curves as $\tau_\mathrm{ref}$ and $\tau_\mathrm{RC}$ change (you do not need to come up with a mathematical relationship here). Explain why the change in tuning curve shape influences the RMSE in the way you observe.
 	\end{enumerate}
+
+	\newpage
 
 
 	\section{Connecting neurons}
 	
-	Make a second ensemble of spiking neurons. It should have the same parameters as the first ensemble of neurons (from the first question), but have only $50$ neurons in it. Connect the first ensemble to the second such that it computes the identity function, using a post-synaptic time constant of $\SI{10}{\milli\second}$. Create a step-function input that is a value of $1$ for $0.1<t<0.4$ seconds, and otherwise is zero.
+	Make a second ensemble of spiking neurons. It should have the same parameters as the first ensemble of neurons (from the first question), but have only $50$ neurons in it. Connect the first ensemble to the second such that it computes the identity function, using a post-synaptic time constant of $\SI{10}{\milli\second}$. Use a synaptic filter of $\SI{10}{\milli\second}$ for your probes. Create a step-function input that is a value of $1$ for $0.1<t<0.4$ seconds, and otherwise is zero.
 
 	\begin{itemize}
 		\item[{\symbolfont 🐍}] You must use a Nengo \texttt{Node} object to feed an arbitrary Python function into a Nengo network. You can use a Python \texttt{lambda} to write this in a very concise way. For example
@@ -78,22 +81,24 @@ nd_input = nengo.Node(nengo.processes.Piecewise({
 	Build a neural integrator. This consists of one ensemble, one input, a connection from the input to the ensemble, and a connection from the ensemble back to itself. The ensemble should have $200$ neurons and the same parameters as in question 1.
 	
 	\emph{Important:} Use two different time constants in your network. The post-synaptic time constant of the recurrent connection is $\tau = \SI{50}{\milli\second}$, and the post-synaptic time constant of the input is $\SI{5}{\milli\second}$. Having two different time constants violates what we assumed for deriving principle three; use the longer time constant $\tau$ (i.e., $\tau$ from the recurrent connection) when computing $A'$ and $B'$. Part of this assignment is to explore how having two different time constants affects the quality of the result compared to what we saw in the lecture.
-	
-	To be an integrator, the desired dynamical system is $\frac{\mathrm{d}x(t)}{\mathrm{d}t} = u$, where $x$ is the state of the system and $u$ is the input.
-	
-	For all probes, use a synapse of $\SI{10}{\milli\second}$. Explicitly plot the ideal, which can help when answering the questions.
+
+	\begin{itemize}	
+		\item[{\symbolfont 🖈}] To be an integrator, the desired dynamical system is $\frac{\mathrm{d}x(t)}{\mathrm{d}t} = u$, where $x$ is the state of the system and $u$ is the input.
+		\item[{\symbolfont 🖈}] For all probes, use a synapse of $\SI{10}{\milli\second}$.
+		\item[{\symbolfont 🖈}] To answer the questions, you may want to run the experiments a few times with different random numbers. The behaviour of the system may be different in each run. Think about what this means regarding the sources of error you observe.
+	\end{itemize}
 
 	\begin{enumerate}[a)]
-		\item \Marks{0.5} \emph{Transforming the dynamical system.} Rewrite the linear dynamical system describing the integrator in terms of $\frac{\mathrm{d}\vec x(t)}{\mathrm{d}t} = \mat A \vec x + \mat B \vec u$, i.e., write down the matrices $\mat A$ and $\mat B$. What are the matrices $\mat A'$ and $\mat B'$ we have to use when implementing this system using the recurrent connection post-synaptic filter?
+		\item \Marks{0.5} \emph{Transforming the dynamical system.} Rewrite the linear dynamical system describing the integrator in terms of $\frac{\mathrm{d}\vec x(t)}{\mathrm{d}t} = \mat A \vec x + \mat B \vec u$, i.e., write down the matrices $\mat A$ and $\mat B$ (you can just use the equations from class, you do not have to re-derive the equations) What are the matrices $\mat A'$ and $\mat B'$ we have to use when implementing this system using the recurrent connection post-synaptic filter?
 		\begin{itemize}
 			\item[{\symbolfont 🖈}] You may assume that the input $\vec u$ and the state $\vec x$ are $d$-dimensional, i.e., you may write down the equations as general as possible. In the remainder of this question we assume $d = 1$.
 		\end{itemize}
-		\item \Marks{0.5} \emph{Integrator using spiking neurons.} Show the input and the value represented by the ensemble when the input is a value of $0.9$ from $t=0.04$ to $t=1.0$ (and $0$ for other times). Run the simulation for $\SI{1.5}{\second}$.
+		\item \Marks{0.5} \emph{Integrator using spiking neurons.} Show the input, the ideal integral, and the value represented by the ensemble when the input is a value of $0.9$ from $t=0.04$ to $t=1.0$ (and $0$ for other times). Run the simulation for $\SI{1.5}{\second}$.
 		\begin{itemize}
 			\item[{\symbolfont 🖈}] For this and the following questions, we consider the scalar case, i.e., the dimensionality $n$ of $x$ and $u$ is one.
 			\item[{\symbolfont 🐍}] We're going to run this simulation with various input functions and ensemble parameters in the following questions. It is highly recommended that you write a function that takes ensemble parameters and the input function as arguments and produces all plots you need.
 		\end{itemize}
-		\item \Marks{0.5} \emph{Discussion.} What is the expected ideal result, i.e., if we just mathematically computed the integral of the input, what would we get? How does the simulated output compare to that ideal?
+		\item \Marks{0.5} \emph{Discussion.} What is the expected ideal result, i.e., if we just mathematically computed the integral of the input, what is the equation describing the integral? How does the simulated output compare to that ideal?
 		\begin{itemize}
 			\item[{\symbolfont 🖈}] When you write down the integral of the step function, you have to distinguish between three cases. Your function should be a \emph{definite} integral of the form
 			\begin{align*}
@@ -103,16 +108,17 @@ nd_input = nengo.Node(nengo.processes.Piecewise({
 					\ldots & \text{if } 1 \leq t \,.\\
 				\end{cases}
 			\end{align*}
-			\item[{\symbolfont 🖈}] Feel free to plot the ideal on top of your simulation result in your answer for the previous question.
+			\item[{\symbolfont 🖈}] Make sure you understand the difference between a \emph{definite} and an \emph{indefinite} integral, before you continue to answer this question.
+			\item[{\symbolfont 🖈}] Plot the ideal on top of your simulation result in your answer for the previous question.
 			\item[{\symbolfont 🐍}] You can use the \texttt{numpy} function \texttt{np.cumsum} to compute the ideal integral numerically (don't forget to scale by \texttt{dt}). However, still write down the integral mathematically to answer this question.
 		\end{itemize}
-		\item \Marks{0.5} \emph{Simulation using rate neurons.} Change the neural simulation to rate mode. Re-run the simulation in rate mode. Show the resulting plots.
+		\item \Marks{0.5} \emph{Simulation using rate neurons.} Change the neural simulation to rate mode. Re-run the simulation in rate mode. Show the same plots as in the previous question.
 		\begin{itemize}
 			\item[{\symbolfont 🐍}] Pass the extra parameter \texttt{neuron\_type = nengo.LIFRate()} to the \texttt{Ensemble} constructor to switch an ensemble to rate mode.
 		\end{itemize}
-		\item \Marks{0.5} \emph{Discussion.} How does this compare to the result in part (b)?
-		\item \Marks{0.5} \emph{Integration of a shorter input pulse.} Returning to spiking mode, change the input to be a value of $0.9$ from $t=0.04$ to $0.16$. Show the same plots as before (the input and the value represented by the ensemble over $\SI{1.5}{\second}$). 
-		\item \Marks{0.5} \emph{Discussion.} How does this compare to (b)? Does it work as intended? If not, why is it better or worse?
+		\item \Marks{0.5} \emph{Discussion.}  How does this compare to the result in part (b)? What deviations from the ideal do you still observe? Where do those deviations come from?
+		\item \Marks{0.5} \emph{Integration of a shorter input pulse.} Returning to spiking mode, change the input to be a value of $0.9$ from $t=0.04$ to $0.16$. Show the same plots as before (the input, the ideal, and the value represented by the ensemble over $\SI{1.5}{\second}$). 
+		\item \Marks{0.5} \emph{Discussion.} How does this compare to (b)? What is the ideal equation? Does it work as intended? If not, why is it better or worse?
 		\item \Marks{0.5} \emph{Input ramp.} Change the input to a ramp input from $0$ to $0.9$ from $t=0$ to $t=0.45$ (and $0$ for $t>0.45$). Show the same plots as in the previous parts of this question.
 		\item \Marks{0.5} \emph{Discussion.} What does the ensemble end up representing, and why? What is the (ideal) equation for the curve traced out by the ensemble? 
 		\begin{itemize}
