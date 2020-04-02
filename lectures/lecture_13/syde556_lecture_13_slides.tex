@@ -1,0 +1,270 @@
+% !TeX spellcheck = en_GB
+\ifcsname SlidesDistr\endcsname%
+	\documentclass[handout,aspectratio=169]{beamer}
+\else%
+	\documentclass[aspectratio=169]{beamer}
+\fi%
+\input{../syde556_lecture_slides_preamble}
+
+\date{April 2, 2020}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 13: Conclusion}
+
+\begin{document}
+	
+\begin{frame}{}
+	\vspace{0.5cm}
+	\begin{columns}[c]
+		\column{0.6\textwidth}
+		\MakeTitle
+		\column{0.4\textwidth}
+		\includegraphics[width=\textwidth]{media/jean_baptiste_marc_bourgery_atlas_of_anatomy_human_brain.jpg}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Goal of This Course}
+	\begin{overlayarea}{\textwidth}{7cm}
+		\vspace{0.25cm}
+		\begin{center}
+			\only<2->{\huge Building Large-Scale Brain Models\\[0.25cm]}
+			\only<3->{\large Why?}
+		\end{center}
+		\begin{columns}[T]
+			\column{0.33\textwidth}
+			\centering
+			\only<4->{\includegraphics[height=3cm]{media/chimp_brain_in_a_jar_small.jpg}\\Understand how Brains Work}
+			\column{0.33\textwidth}
+			\centering
+			\only<5->{\includegraphics[height=3cm]{media/CPBR2015_11_small.jpg}\\Build Better AI Systems}
+			\column{0.33\textwidth}
+			\centering
+			\only<6->{\includegraphics[height=3cm]{media/necka1abcd-2881432-large.png}\\Program Neuromorphic Hardware}
+		\end{columns}
+	\end{overlayarea}
+	
+	\ImageSources{%
+		Left: \enquote{A chimpanzee brain at the Science Museum London}, from  
+		\href{https://commons.wikimedia.org/wiki/File:Chimp_Brain_in_a_jar.jpg}{Wikimedia}.
+		Centre: \enquote{Robot at a campus faire in São Paulo} from
+		\href{https://commons.wikimedia.org/wiki/File:CPBR2015_-_11.jpg}{Wikimedia}.
+		Right: The Braindrop Neuromorphic hardware system,
+		from \enquote{Braindrop: A Mixed-Signal Neuromorphic Architecture With a Dynamical Systems-Based Programming Model}, Neckar et al., 2019.}
+\end{frame}
+
+\begin{frame}{Theoretical Neuroscience}
+	\centering
+	\includegraphics[height=7cm]{media/levels.pdf}
+\end{frame}
+
+\begin{frame}{The Brain -- Some Statistics}
+	\begin{itemize}
+		\item \textbf{Weight:}\\
+		\SI{2}{\kilogram} (2\% of the body weight)
+		\item \textbf{Power consumption:}\\
+		\SI{20}{\watt} (25\% of the body's total power consumption)
+		\item \textbf{Surface area:}\\
+		\SIrange{1500}{2000}{\centi\metre\squared} (roughly four A4/letter pages of paper)
+		\item \textbf{Number of neurons:}\\
+		\SI{100} billion ($10^{11}$, \SI{150000}{\per\milli\metre\squared})
+		\item \textbf{Number of synapses:}\\
+		100 trillion ($10^{14}$, about $1000$ per neuron)
+	\end{itemize}	
+\end{frame}
+
+
+\begin{frame}{Neuromorphic Hardware}
+	\centering
+	\hl{Goal:} Brain-inspired hardware; lower power consumption; stream processing\\[0.25cm]
+	\begin{overlayarea}{\textwidth}{6cm}
+	\begin{columns}[t]
+		\column{0.5\textwidth}
+		\centering
+		\only<2->{\hl{Digital}\\[0.5cm]
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item<3-> Specialised digital hardware for simulating spiking neural networks
+			\item<3-> Trivial weight-spike multiplication
+			\item<3-> Often asynchronous (no central clock)
+			\item[\OPlus]<5-> Deterministic
+			\item[\OMeh]<5-> Higher power consumption than analogue
+		\end{itemize}}
+		\column{0.5\textwidth}
+		\centering
+		\only<2->{\hl{Analogue/Mixed Signal}\\[0.5cm]
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item<4-> Neuron models in analogue hardware (capacitors, resistors, ...)
+			\item<4-> Digital interconnect and programming (weights, neuron parameters)
+			\item[\OMinus]<6-> Not deterministic
+			\item[\OMinus]<6-> Hard to program
+			\item[\OPlus]<6-> Very low power consumption
+		\end{itemize}}
+	\end{columns}
+	\end{overlayarea}
+\end{frame}
+
+\begin{frame}{Neuromorphic Hardware -- SpiNNaker}
+	\centering
+	\begin{columns}
+		\column{0.4\textwidth}
+		\includegraphics[width=\textwidth]{media/spinnaker_48board.jpg}
+		\column{0.6\textwidth}
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item Manchester/Dresden collaboration; HBP
+			\item Fully digital
+			\item 18 ARM968 processors @ \SI{180}{\mega\hertz} per chip
+			\item 1000 current-based LIF neurons per core
+			\item Toroidal, asynchronous interconnect mesh
+			\item Up to $\approx 10^{9}$ neurons in one system
+			\item[\OPlus]<2-> Easy to program, (outdated) Nengo interface
+			\item[\OPlus]<2-> Public access via HBP
+			\item[\OMeh]<2-> Not very power efficient (version from 2013)
+			\item[\OMinus]<2-> High setup times
+		\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Neuromorphic Hardware -- Loihi}
+	\centering
+	\begin{columns}
+		\column{0.4\textwidth}
+		\includegraphics[width=\textwidth]{media/loihi.jpg}\\
+		\ImageSources{Intel Marketing Material}
+		\column{0.6\textwidth}
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item Developed by Intel
+			\item Digital, fully asynchronous architecture
+			\item Circuits accelerating individual spiking neurons
+			\item<2->[\OPlus] Extremely low power consumption
+			\item<2->[\OPlus] Nengo Interface
+			\item<2->[\OMinus] Proprietary/no low level programming without signing an NDA
+		\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Neuromorphic Hardware -- BrainDrop}
+	\centering
+	\begin{columns}
+		\column{0.4\textwidth}
+		\includegraphics[width=\textwidth]{media/necka1abcd-2881432-large_2.jpg}\\[0.5cm]
+		\ImageSources{Braindrop: A Mixed-Signal
+Neuromorphic Architecture
+With a Dynamical
+Systems-Based
+Programming Model, Neckar et al.~2019}
+		\column{0.6\textwidth}
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item Research project at Stanford
+			\item Mixed signal, analogue neurons, synapse arrays
+			\item Exploits process noise for diverse neural tuning
+			\item Optimized for NEF networks
+			\item<2->[\OPlus] Extremely low power consumption
+			\item<2->[\OPlus] Nengo Interface
+			\item<2->[\OMeh] Availability/Documentation?
+			\item<2->[\OMinus] Small networks only
+		\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Neuromorphic Hardware -- BrainScaleS}
+	\vspace{0.45cm}
+	\centering
+	\includegraphics[width=0.33\textwidth]{media/brain_scales.png}\hspace{0.5cm}%
+	\includegraphics[width=0.33\textwidth]{media/brainscales_system1_small.jpg}\\[0.5cm]
+	\begin{columns}
+		\column{0.5\textwidth}
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item Research Project in Heidelberg; HBP
+			\item Mixed signal; above realtime
+			\item Wafer-scale system; 384 x 256 neurons
+		\end{itemize}
+		\column{0.5\textwidth}
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item<2->[\OPlus] Low power consumption
+			\item<2->[\OPlus] Public access via HBP
+			\item<2->[\OMinus] Complex; relatively low precision
+		\end{itemize}
+	\end{columns}
+	\vspace{1cm}
+	\ImageSources{Electronic Visions Group; Kirchhoff Institute for Physics; BrainScales/HBP Neuromorphics Project}
+\end{frame}
+
+\begin{frame}{Review: What Did We Learn? (I)}
+	\begin{itemize}
+		\item \textbf{The Neural Engineering Framework}\\[0.25cm]
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item Theory for theoretical neuroscience (\hl{bridging laws})
+			\item \emph{Principle 1:}\\Populations of neurons represent values $\vec x$
+			\item \emph{Principle 2:}\\Connections compute functions $f$
+			\item \emph{Principle 3:}\\Values are states in a dynamical system
+			\item<2-> Model of how the brain computes. \only<3->{Is it wrong?} \only<4->{Of course!} \only<5->{But hopefully useful!}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Review: What Did We Learn? (II)}
+	\begin{itemize}
+		\item \textbf{Cognitive Architectures}\\[0.25cm]
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item \emph{Jackendoff's Challenges:}\\
+			How to explain language in neural networks?
+			\item \emph{Vector Symbolic Architectures:}\\
+			Compressing symbolic information into vectors,\\circular convolution, word embeddings
+			\item \emph{Semantic Pointer Architecture:}\\
+			Combination of four ideas
+			\begin{itemize}
+				\setlength{\itemsep}{0.125cm}
+				\item VSAs
+				\item NEF
+				\item Deep Semantics: compression, decompression
+				\item Architecture: Basal Ganglia/Thalamus/Cortex Loop
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Review: What Did We Learn? (III)}
+	\begin{itemize}
+		\item \textbf{Methods \& Techniques}\\[0.25cm]
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item \emph{The Delay Network:}\\
+			Efficiently compress past history into a vector; optimal recurrent update rule
+			\item \emph{Machine Learning:}\\
+			Unsupervised, supervised learning, gradient descent,\\least squares, nonnegative least squares, delta learning rule (PES)
+			\item \emph{Signal Processing:}\\
+			Fourier, Laplace transformation; computing optimal filters
+			\item \emph{Dimensionality Reduction:}\\
+			PCA/SVD; function bases; Hebbian learning/Oja learning rule
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Review: What Did We Learn? (IV)}
+	\begin{itemize}
+		\item \textbf{\enquote{Meta-Level Skills}}\\[0.25cm]
+		\begin{itemize}
+			\setlength{\itemsep}{0.5cm}
+			\item \emph{Solving Problems by Building a Signal Flow Graph:}\\
+			Applications to Hardware design, differentiable computing
+			\item \emph{Programming with Python/Numpy}
+			\item \emph{Building Neural Networks using Nengo:}\\
+			Can be applied to neuromorphic hardware (see above)
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+	\centering
+	{\Huge Thank You!}
+\end{frame}
+
+\end{document}

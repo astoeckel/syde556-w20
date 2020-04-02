@@ -230,7 +230,74 @@ An experiment comparing human performance to the performance of this memory syst
 
 \subsection{Action Selection}
 
-\ConstructionSite
+\begin{itemize}
+	\item \emph{Talk about SPAUN, need for action selection, need for  routing of information between modules}
+\end{itemize}
+
+\paragraph{What is an action?}
+\begin{itemize}
+	\item Physical movements ($\Rightarrow$ control theory)
+	\item Moving attention
+	\item Changing the contents of working memory
+	\item Recalling items from long-term memory
+	\item[$\Rightarrow$] Routing information
+\end{itemize}
+
+\paragraph{A simple example}
+\begin{itemize}
+	\item A critter is trying to survive in a harsh environment
+	\item Possible actions
+	\begin{itemize}
+		\item[\textbf{A}] Go home
+		\item[\textbf{B}] Move randomly
+		\item[\textbf{C}] Go towards food
+		\item[\textbf{D}] Go away from predator
+	\end{itemize}
+	\item Which one do we pick?
+	\item[$\Rightarrow$] Reinforcement learning
+\end{itemize}
+
+\paragraph{Reinforcement Learning}
+\begin{itemize}
+	\item Learn function $Q(\vec s, \vec a)$ assigning a \emph{utility} to the current state
+	\item Policy: choose action $\vec a$ with the highest utility $Q(\vec s, \vec a)$ in a given state $\vec s$
+\end{itemize}
+
+\paragraph{Action Selection Example}
+\begin{itemize}
+	\item Use lateral/mutual inhibition
+	\item Hard to tune, especially in more complicated cases (higher dimensional $\vec q$, $\vec s$)
+	\item How does the brain do it? $\Rightarrow$ Basal Ganglia
+\end{itemize}
+
+\paragraph{Basal Ganglia}
+Notes, do not write down!
+\begin{itemize}
+	\item All of cortex connects to this
+	\item Output goes to Thalamus, central routing system
+	\item Clinical evidence
+	\begin{itemize}
+		\item Parkinson's disease
+		\begin{itemize}			
+			\item Neurons in the substantia nigra die off
+			\item Extremely difficult to trigger actions to start
+			\item Usually physical actions; as disease progresses and more of the SNc is gone, can get cognitive effects too			
+		\end{itemize}
+		\item Huntington's disease		
+		\begin{itemize}
+			\item Neurons in the striatum die off
+			\item Actions are triggered inappropriately (disinhibition)
+			\item Small uncontrollable movements
+			\item Trouble sequencing cognitive actions too
+		\end{itemize}
+	\end{itemize}
+	\item Neurophysiological Evidence that BG are involved in RL, dopamine levels in BG correspond to reward prediction error
+	\item Thalamus disinhibits other brain regions
+	\item I.e., outputs $[1, 1, 0, 1]$ if action \textbf{C} is chosen
+	\item Use inhibitory connections to suppress information from being transmitted
+\end{itemize}
+
+
 
 
 \printbibliography

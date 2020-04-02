@@ -79,12 +79,17 @@
 		\includegraphics[width=0.8\textwidth]{media/eliasmith_2012_spaun_architecture.pdf}
 	\end{frame}
 	
-	\begin{frame}{Spaun -- Semantic Pointer Architecture Unified Network (I)}
+	\begin{frame}{Spaun -- Semantic Pointer Architecture Unified Network (II)}
 		\centering
 		\includegraphics[width=0.8\textwidth]{media/eliasmith_2012_spaun_anatomy.pdf}
 	\end{frame}
 
-	\begin{frame}{Nengo SPA Example}
+	\begin{frame}{Nengo SPA Example (I)}
+		\centering
+		\includegraphics[width=\textwidth]{media/spa_network.pdf}
+	\end{frame}
+
+	\begin{frame}{Nengo SPA Example (II)}
 		\centering
 		\includegraphics[width=\textwidth]{media/nengo_spa_example.pdf}
 	\end{frame}
@@ -92,21 +97,35 @@
 	\begin{frame}{Recency and Primacy Experiment}
 		\centering
 		\Large
-		\hl{Experiment:} Remember this list
+		\hl{Experiment:} Remember this list (presented one at a time)
 		\begin{multicols}{2}
+%		\begin{enumerate}
+%			\centering
+%			\setlength{\itemsep}{0.25cm}
+%			\item<2,12> robot
+%			\item<3,12> teflon
+%			\item<4,12> kettlemaking
+%			\item<5,12> big-league
+%			\item<6,12> troubleshooter
+%			\item<7,12> conglomerates
+%			\item<8,12> waxberries
+%			\item<9,12> electrograph
+%			\item<10,12> overjoyous
+%			\item<11,12> unquailing
+%		\end{enumerate}
 		\begin{enumerate}
 			\centering
 			\setlength{\itemsep}{0.25cm}
-			\item<2,12> robot
-			\item<3,12> teflon
-			\item<4,12> kettlemaking
-			\item<5,12> big-league
-			\item<6,12> troubleshooter
-			\item<7,12> conglomerates
-			\item<8,12> waxberries
-			\item<9,12> electrograph
-			\item<10,12> overjoyous
-			\item<11,12> unquailing
+			\item robot
+			\item teflon
+			\item kettlemaking
+			\item big-league
+			\item troubleshooter
+			\item conglomerates
+			\item waxberries
+			\item electrograph
+			\item overjoyous
+			\item unquailing
 		\end{enumerate}
 		\end{multicols}
 	\end{frame}
@@ -125,6 +144,66 @@
 		\centering
 		\includegraphics[width=\textwidth]{media/htbab_ose_experiment.pdf}
 	\end{frame}
+
+	\begin{frame}{Basal Ganglia (BG)}
+		\centering
+		\includegraphics[height=7.5cm]{media/basal_ganglia.jpg}
+	\end{frame}
+
+	\begin{frame}{Clinical Evidence for the Role of the BG in Action Selection}
+		\begin{columns}[t]
+			\column{0.5\textwidth}
+			\begin{block}{\hl{Parkinson's disease}}
+				\begin{itemize}			
+					\setlength{\itemsep}{0.5cm}
+					\item Neurons in the substantia nigra die off
+					\item Difficult to trigger actions to start
+					\item Usually physical actions
+					\item Cognitive effects in later stages
+				\end{itemize}
+			\end{block}
+			\column{0.5\textwidth}
+			\begin{block}{\hl{Huntingtons's disease}}
+				\begin{itemize}			
+					\setlength{\itemsep}{0.5cm}
+					\item Neurons in the striatum die off
+					\item Actions triggered inappropriately
+					\item Small uncontrollable movements
+					\item Trouble sequencing cognitive actions					
+				\end{itemize}
+			\end{block}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Neurophysiological Evidence for the Role of the BG in Action Selection}
+		\begin{multicols}{2}
+		\begin{itemize}
+			\setlength{\itemsep}{0.25cm}
+			\item Role in reinforcement learning
+			\item Dopamine levels map onto reward prediction error
+		\end{itemize}
+		\end{multicols}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/dopamine.png}
+	\end{frame}
+
+	\begin{frame}{Microcircuitry of the Basal Ganglia}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/basal_ganglia2.png}
+	\end{frame}
+
+	\begin{frame}{Simplified Model}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/gpr3.png}
+		\ImageSources{Gurney, Prescott, and Redgrave, \emph{Model of Action Selection in the Basal Ganglia, 2001}}
+	\end{frame}
+
+	\begin{frame}{The Cortex-Basal Ganglia-Thalamus loop}
+		\centering
+		\includegraphics[width=0.8\textwidth]{media/ctx-bg-thal.png}
+	\end{frame}
+
+	\videoframe{nengo_hanoi}{sUvHCs5y0o8}
 
 	\backupbegin
 

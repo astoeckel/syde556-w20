@@ -1,0 +1,93 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[svgnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{csquotes}
+\author{Andreas Stöckel}
+
+\newcommand{\mat}[1]{\mathbf{#1}}
+
+\begin{document}
+
+\paragraph{BIOLOGICAL DETAIL}
+
+\paragraph{1. Missing detail}
+\begin{itemize}
+	\item Dale's principle.\\$\approx$ \emph{Neurons} are either excitatory or inhibitory.
+	\item No bias current.\\Unclear what the biological correlate of $J^\mathrm{bias}$ is.
+	\item Conductance-based synapses.\\Two consecutive spikes do not have the same effect.
+	\item Neural dynamics may dominate synaptic dynamics.
+	\item[!] Detail added to the NEF should connect biology to behaviour
+\end{itemize}
+
+\paragraph{2. Dale's Principle/Eliminating Bias Currents}
+\begin{itemize}
+	\item Not all weights $w_{ij}$ for a pre-neuron $j$ are either positive or negative
+	\item We know $\mat W = \mat E \mat D$.
+	\item Problem: Hard to figure out signs in $\mat W$
+	\item Directly solve for \emph{full} $\mat W$ with constraints
+	\item[!] No decoding/re-encoding
+\end{itemize}
+
+\paragraph{2.1 Solving for weights in current-space}
+\begin{itemize}
+	\item \textbf{Idea:} Solve for a \emph{current decoder} $\vec w_i$ for each post-neuron $i$ (rows in $W$)
+	\item Current-based synapse model:
+	\begin{align*}
+		\hat J_i &= \langle \vec a(\vec x), \vec w_i \rangle
+	\end{align*}
+	\item NEF encoding equation:
+	\begin{align*}
+		J_i &= \alpha_i \langle \vec x, \vec e_i \rangle + J^\mathrm{bias}_i
+	\end{align*}
+	\item Want to find $\vec w_i$ that minimizes $(\hat J_i - J_i)^2$
+	\begin{align*}
+		\vec w_i &= \arg\min_{\vec w_i} \sum_{k = 1}^N \left( \big\langle \vec a(\vec x_k), \vec w_i \big\rangle - \alpha_i \big\langle f(x_k), \vec e_i \big\rangle + J^\mathrm{bias}_i \right)^2 \,.
+	\end{align*}
+	\item In matrix form:
+	\begin{align*}
+		\vec w_i &= \arg\min_{\vec w_i} \big\| \mat A \vec w_i - \mat J^\mathrm{tar} \big\|^2 \,
+	\end{align*}
+	\item[$\Rightarrow$] Least-squares problem
+	\item[$\Rightarrow$] Directly decodes post-synaptic current; $\alpha_i, \vec e_i, J^\mathrm{bias}_i$ are now merely \emph{normative}
+\end{itemize}
+
+\paragraph{2.2 Accounting for Dale's Principle}
+\begin{itemize}
+	\item Split pre-neurons into excitatory ($+$) and inhibitory ($-$) set
+	\item Two sets of connection weights $\vec w^+$, $\vec w^-$, pre-activities $\mat A^+$, $\mat A^-$
+	\item New optimization problem:
+	\begin{align*}
+		\vec w_i^+, \vec w_i^- &= \arg\min_{\vec w_i^+, \vec w_i^-} \big\| \mat A^+ \vec w^+_i - \mat A^- \vec w^-_i - \mat J^\mathrm{tar} \big\|^2 \,, & \text{with respect to} \quad \vec w_i^+, \vec w_i^- \geq 0 \,.
+	\end{align*}
+	\item Rearrange:
+	\begin{align*}
+		\vec w'_i &= \big(\vec w^-_i, \vec w^+_i\big) 
+		= \arg\min_{\vec w_i} \big\| \big( \mat A^+, - \mat A^- \big) \big(\vec w^-_i, \vec w^+_i \big)^T - \mat J^\mathrm{tar} \big\|^2
+		= \arg\min_{\vec w_i} \big\| \mat A' \big(\vec w'_i\big)^T - \mat J^\mathrm{tar} \big\|^2 \,, \\
+		\text{w.r.t. } &~ \vec w'_i \geq 0 \,.
+	\end{align*}
+	\item Non-negative least square (NNLS) problem
+\end{itemize}
+
+\paragraph{3. Conductance-based synapses}
+\begin{itemize}
+	\item Second of two consecutive spikes induces a smaller current $\Rightarrow$ Synapses are not linear
+	\item[!] Central assumption of the NEF!
+	\item \textbf{Question:} Can we still get things to work \emph{and} explain behaviour/computation in nervous systems?
+	\item \textbf{Idea:} Multi-dimensional neuron model
+	\begin{align*}
+		\mathcal{G}[g_\mathrm{E}, g_\mathrm{I}] &\overset{\text{decompose}}= G[H(g_\mathrm{E}, g_\mathrm{I})] \\
+		H^\mathrm{cond}(g_\mathrm{E}, g_\mathrm{I}) &= \frac{b_1 g_\mathrm{E} + b_2 g_\mathrm{I})}{a_0 + a_1 g_\mathrm{E} + a_2 g_\mathrm{I}} \\
+		\hat J_i &= H[\langle \vec a(\vec x), \vec w^\mathrm{E}_i \rangle, \langle \vec a(\vec x), \vec w^\mathrm{I}_i \rangle]
+	\end{align*}
+	\item Use above approach to solve for $H$
+\end{itemize}
+
+
+
+\end{document}

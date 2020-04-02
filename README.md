@@ -97,7 +97,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_07/syde556_lecture_07_slides_distr.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_07/syde556_lecture_07_slides_distr.pdf)]
 
--   **Notes**  
+-   **Notes (incomplete)**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_07/syde556_lecture_07_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_07/syde556_lecture_07_notes.pdf)]
 
@@ -117,7 +117,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_09/syde556_lecture_09_slides_distr.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_09/syde556_lecture_09_slides_distr.pdf)]
 
--   **Notes**  
+-   **Notes (incomplete)**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_09/syde556_lecture_09_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_09/syde556_lecture_09_notes.pdf)]
 
@@ -137,10 +137,25 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_11/syde556_lecture_11_slides_distr.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_11/syde556_lecture_11_slides_distr.pdf)]
 
--   **Notes**  
+-   **Notes (incomplete)**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_11/syde556_lecture_11_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_11/syde556_lecture_11_notes.pdf)]
 
+### Lecture 12 ― The Semantic Pointer Architecture ― March 31
+
+-   **Slides**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_12/syde556_lecture_12_slides_distr.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_12/syde556_lecture_12_slides_distr.pdf)]
+
+-   **Notes**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_12/syde556_lecture_12_notes.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_12/syde556_lecture_12_notes.pdf)]
+
+### Lecture 13 ― Conclusion ― April 2
+
+-   **Slides**  
+    [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_13/syde556_lecture_13_slides_distr.pdf)]
+    [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_13/syde556_lecture_13_slides_distr.pdf)]
 
 
 ## 📝 Assignments

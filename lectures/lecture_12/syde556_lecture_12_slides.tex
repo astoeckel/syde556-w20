@@ -1,0 +1,175 @@
+% !TeX spellcheck = en_GB
+\ifcsname SlidesDistr\endcsname%
+\documentclass[handout,aspectratio=169]{beamer}
+\else%
+\documentclass[aspectratio=169]{beamer}
+\fi%
+\input{../syde556_lecture_slides_preamble}
+
+\usepackage{ragged2e}
+
+\newcommand{\Pred}[1]{\mathbf{\textcolor{scarletred3}{#1}}}
+\newcommand{\Obj}[1]{\mathtt{\textcolor{skyblue3}{#1}}}
+\newcommand{\Fun}[1]{\mathit{\textcolor{chameleon3}{#1}}}
+\newcommand{\CC}{\circledast}
+
+\date{March 31, 2020\\[-1cm]~~}
+\title{SYDE 556/750 \\ Simulating Neurobiological Systems \\ Lecture 12: Biological Detail}
+
+\begin{document}
+	
+	\begin{frame}{}
+		\vspace{0.5cm}
+		\begin{columns}[c]
+			\column{0.6\textwidth}
+			\MakeTitle
+			\column{0.4\textwidth}
+			\includegraphics[width=\textwidth]{media/beetles_small.jpg}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Cerebellum Model -- Microcircuits}
+		\centering
+		\includegraphics[width=\textwidth]{media/cerebellum_anatomy.pdf}
+	\end{frame}
+
+	\begin{frame}{Cerebellum Model -- Introduction}
+		\begin{columns}[c]
+			\column{0.5\textwidth}
+			\begin{block}{\hl{Cerebellum}}
+				\begin{itemize}
+					\setlength{\itemsep}{0.5cm}
+					\item Important for motor control
+					\item Mostly Feed-Forward architecture
+					\item May support cognitive tasks
+					\item Model task: eyeblink conditioning
+				\end{itemize}
+			\end{block}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Cerebellum Model -- Review: Classical Conditioning}
+		\centering
+		Before conditioning:\\[0.125cm]
+		\includegraphics{media/classical_conditioning_a.pdf}\\[0.5cm]
+		After conditioning:\\[0.125cm]
+		\includegraphics{media/classical_conditioning_b.pdf}\\[0.5cm]
+		\ImageSources{Images adapted from \href{https://commons.wikimedia.org/wiki/File:Classical_conditioning_-_extinction.svg}{Wikimedia}.}
+	\end{frame}
+	
+	\begin{frame}{Cerebellum Model -- Eyeblink Conditioning --- Experimental Setup}
+		\centering\hspace*{-1cm}\includegraphics[height=0.725\textheight]{media/heiney_at_al_apparatus.png}\includegraphics[height=0.725\textheight]{media/heiney_at_al_eyelid.png}
+	\end{frame}
+	
+	\begin{frame}{Cerebellum Model -- Eyeblink Conditioning --- Data}
+		\centering\includegraphics[width=\textwidth]{media/heiney_et_al_avg_cr_over_time_2.png}
+	\end{frame}
+	
+	\begin{frame}{Cerebellum Model -- Open Questions: How are Delays Learned?}
+		\begin{columns}[t]
+			\column{0.5\textwidth}
+			\centering
+			\hl{Hypothesis 1}\\[0.25cm]
+			\enquote{Dynamics Representation}/\\\enquote{Adaptive Filter Hypothesis}\\[0.775cm]
+			\includegraphics[width=\textwidth]{media/dynamics_rep.png}\\[0.775cm]
+			Maybe dynamics are produced in the recurrent Granule-Golgi connection?
+			\column{0.5\textwidth}
+			\centering
+			\hl{Hypothesis 2}\\[0.25cm]
+			\enquote{Intrinsic Neural Properties}\\[0.25cm]
+			\includegraphics[width=0.4\textwidth]{media/purkinje.pdf}\\[0.25cm]
+			Maybe the Purkinje cells are able to learn timings?
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}{Cerebellum Model -- The Delay Network}
+		\centering
+		\includegraphics[height=0.8\textheight]{media/delay_network_response.pdf}
+	\end{frame}
+	
+	\begin{frame}{Cerebellum Model -- Implementing The Delay Network}
+		\includegraphics[width=\textwidth]{media/delay_network_dale.pdf}
+	\end{frame}
+	
+	\begin{frame}{Cerebellum Model -- Experiment \& Results}
+		\includegraphics[width=\textwidth]{media/results_panel.pdf}
+	\end{frame}
+
+	\begin{frame}{Review -- Neuron Models}
+		\centering%
+		\vspace{0.125cm}%
+		\includegraphics<1>[scale=0.95]{media/nonlinearities_01.pdf}%
+		\includegraphics<2>[scale=0.95]{media/nonlinearities_02.pdf}%
+		\includegraphics<3>[scale=0.95]{media/nonlinearities_03.pdf}%
+		\includegraphics<4>[scale=0.95]{media/nonlinearities_04.pdf}%
+		\includegraphics<5>[scale=0.95]{media/nonlinearities_05.pdf}%
+		\includegraphics<6>[scale=0.95]{media/nonlinearities_06.pdf}%
+		%\includegraphics<7>[scale=0.95]{media/nonlinearities_07.pdf}%
+		%\includegraphics<7>[scale=0.95]{media/nonlinearities_08.pdf}%
+		\includegraphics<7>[scale=0.95]{media/nonlinearities_09.pdf}%
+	\end{frame}
+
+	\begin{frame}{Conductance-Based Synapses -- Neuron Model}
+		\centering
+		\includegraphics[scale=1.25]{media/neuron_model.pdf}
+	\end{frame}
+
+	\begin{frame}{Synaptic Nonlinearity Function}
+		\centering
+		\includegraphics[width=\textwidth]{media/two_compartment_response_curve.pdf}
+	\end{frame}
+
+	\begin{frame}{Conductance-Based Synapses -- Dendritic Computation Experiment (I)}
+		\textbf{Compute various two-dimensional functions}
+		\begin{columns}
+			\column{0.34\textwidth}
+			\begin{itemize}
+				\item Domain $(x, y) \in [0, 1]^2$
+			\end{itemize}
+			\column{0.36\textwidth}
+			\begin{itemize}
+				\item 100 neurons per population
+			\end{itemize}
+			\column{0.3\textwidth}
+			\begin{itemize}
+				\item Three topologies
+			\end{itemize}
+		\end{columns}
+		\vspace{1cm}
+		\begin{columns}
+			\column{0.33\textwidth}
+			\centering
+			\includegraphics{media/network_a.pdf}\\
+			\textbf{(a)} Additive network
+			\column{0.33\textwidth}
+			\centering
+			\includegraphics{media/network_c.pdf}\\
+			\textbf{(b)} Intermediate layer
+			\column{0.33\textwidth}
+			\centering
+			\includegraphics{media/network_d.pdf}\\
+			\textbf{(c)} Synaptic computation
+		\end{columns}
+	\end{frame}
+
+
+	\begin{frame}{Conductance-Based Synapses -- Dendritic Computation Experiment (II)}
+		\centering
+		\includegraphics[width=\textwidth]{media/results_example.pdf}
+	\end{frame}
+
+	\begin{frame}{Conductance-Based Synapses -- Dendritic Computation Experiment (III)}
+		\centering
+		\includegraphics[width=\textwidth]{media/result_table.pdf}
+	\end{frame}
+
+	\backupbegin
+
+	\begin{frame}[noframenumbering]{Image sources}
+		\small
+		\textbf{Title slide}\\Illustration of monographs Georgiy Jacobson "Beetles Russia and Western Europe"\\Around 1905\\ \href{https://commons.wikimedia.org/wiki/File:Jacobs24.jpg}{Wikimedia}.
+	\end{frame}
+
+	\backupend
+	
+\end{document}
