@@ -2,13 +2,6 @@
 
 Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
 
----
-
-### ⚠ Warning
-**All files in this repository are preliminary and subject to major changes unless they have been explicitly linked at from the [course website](http://compneuro.uwaterloo.ca/courses/syde-750.html).**
-
----
-
 ## 🎒 Lectures
 
 ### Lecture 0 ― Administrative Remarks ― January 7
