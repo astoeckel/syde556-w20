@@ -2,13 +2,6 @@
 
 Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
 
----
-
-### ⚠ Warning
-**All files in this repository are preliminary and subject to major changes unless they have been explicitly linked at from the [course website](http://compneuro.uwaterloo.ca/courses/syde-750.html).**
-
----
-
 ## 🎒 Lectures
 
 ### Lecture 0 ― Administrative Remarks ― January 7
@@ -77,7 +70,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_05/syde556_lecture_05_slides_distr.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_05/syde556_lecture_05_slides_distr.pdf)]
 
--   **Notes (highly unfinished)**  
+-   **Notes**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_05/syde556_lecture_05_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_05/syde556_lecture_05_notes.pdf)]
 
@@ -141,7 +134,7 @@ Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_11/syde556_lecture_11_notes.pdf)]
     [[Download PDF](https://github.com/astoeckel/syde556-w20/raw/master/lectures/lecture_11/syde556_lecture_11_notes.pdf)]
 
-### Lecture 12 ― The Semantic Pointer Architecture ― March 31
+### Lecture 12 ― Biological Details ― March 31
 
 -   **Slides**  
     [[Preview](https://github.com/astoeckel/syde556-w20/blob/master/lectures/lecture_12/syde556_lecture_12_slides_distr.pdf)]
