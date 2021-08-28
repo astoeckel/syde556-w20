@@ -147,7 +147,7 @@
 		}%
 		\begin{tikzpicture}[remember picture,overlay]%
 		\node[at=(current page.center)] {%
-			\includegraphics[width=\paperwidth]{{{video/#2_#3}.jpg}}%
+			\includegraphics[width=\paperwidth]{{video/#2_#3}.jpg}%
 		};%
 		\node[at=(current page.center)] {%
 			\ifcsname SlidesDistr\endcsname%
@@ -167,7 +167,7 @@
 	}%
 	\begin{tikzpicture}%
 	\node (A) {%
-		\includegraphics[width=#4]{{{video/#2_#3}.jpg}}%
+		\includegraphics[width=#4]{{video/#2_#3}.jpg}%
 	};%
 	\node[at=(A.center)] {%
 		\ifcsname SlidesDistr\endcsname%
