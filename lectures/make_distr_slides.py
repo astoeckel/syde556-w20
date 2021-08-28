@@ -58,6 +58,7 @@ exec(
     '-dNOPAUSE',
     '-dBATCH',
     '-dSAFER',
+    '-dPDFSETTINGS=/prepress',
     '-dPrinted=false',
     '-sPageList=' + ','.join(map(str, pages)),
     '-sOutputFile='+tar_pdf, pdf)
