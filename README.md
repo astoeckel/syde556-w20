@@ -1,5 +1,7 @@
 # Course material for SYDE 556/750
 
+## ⚠ Please see  https://github.com/tcstewar/syde556-f21 for the current version of this repository
+
 Course website: http://compneuro.uwaterloo.ca/courses/syde-750.html
 
 ## 🎒 Lectures
